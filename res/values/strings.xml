@@ -2,4 +2,8 @@
 <resources>
     <string name="hello">Hello World, agroAssistant!</string>
     <string name="app_name">AgroAssistant</string>
+    <string name="btn_home_farmer">Farmers</string>
+    <string name="btn_home_farm">Farms</string>
+    <string name="btn_home_crop">Crops</string>
+    <string name="btn_home_price">Prices</string>
 </resources>

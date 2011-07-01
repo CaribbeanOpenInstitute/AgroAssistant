@@ -2,27 +2,21 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="fill_parent"
+    android:layout_height="wrap_content"
     android:layout_weight="1"
     android:padding="6dip">
     
-    <include
-    	android:id="@+id/menu_bar" 
-    	layout="@layout/home_menu_bar"
-    	android:layout_weight="1"
-   	/>  
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:gravity="center"
-        android:layout_weight="1" android:layout_gravity="center">
+        android:layout_weight="1">
         <Button android:id="@+id/action_farmer"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
             android:onClick="onActionOneClick"
-            android:text="@string/btn_home_farmer" 
-            android:drawableTop="@drawable/ic_home_farmer" />
+            android:text="@string/btn_home_farmer"
+            android:drawableTop="@drawable/ic_home_farmer"/>
         <Button android:id="@+id/action_two_button"
        		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
@@ -33,10 +27,9 @@
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="wrap_content"
+        android:layout_width="fill_parent"
         android:layout_height="wrap_content"
-        android:layout_weight="1" android:gravity="center"
-        android:layout_gravity="center">
+        android:layout_weight="1">
         <Button android:id="@+id/action_three_button"
        		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
