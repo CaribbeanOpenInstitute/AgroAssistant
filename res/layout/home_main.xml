@@ -2,44 +2,51 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical"
     android:layout_width="fill_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="fill_parent"
     android:layout_weight="1"
-    android:padding="6dip">
+    android:padding="6dip" android:background="@drawable/bg_main">
     
+    <include
+    	android:id="@+id/menu_bar" 
+    	layout="@layout/home_bar"
+    	android:layout_weight="1"
+   	/>  
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:gravity="center"
+        android:layout_weight="1" android:layout_gravity="center">
         <Button android:id="@+id/action_farmer"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-            android:onClick="onActionOneClick"
-            android:text="@string/btn_home_farmer"
-            android:drawableTop="@drawable/ic_home_farmer"/>
+            android:onClick="onFarmerClick"
+            android:text="@string/btn_home_farmer" 
+            android:drawableTop="@drawable/ic_home_farmer" />
         <Button android:id="@+id/action_two_button"
        		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-            android:onClick="onActionTwoClick"
+            android:onClick="onFarmClick"
             android:text="@string/btn_home_farm"
             android:drawableTop="@drawable/ic_home_farm"/>
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
-        android:layout_width="fill_parent"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_weight="1">
+        android:layout_weight="1" android:gravity="center"
+        android:layout_gravity="center">
         <Button android:id="@+id/action_three_button"
        		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-            android:onClick="onActionThreeClick"
+            android:onClick="onCropClick"
             android:text="@string/app_name" 
             android:drawableTop="@drawable/ic_home_crop"/>
         <Button android:id="@+id/action_four_button"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
-            android:onClick="onActionFourClick"
+            android:onClick="onPriceClick"
             android:text="@string/btn_home_price"
             android:drawableTop="@drawable/ic_home_price"/>
     </LinearLayout>   

@@ -1,6 +1,7 @@
 package org.data.agroassistant;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Toast;
@@ -11,23 +12,26 @@ public class agroAssistant extends Activity {
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.home);
+        setContentView(R.layout.home_main);
     }
     
-    public void onActionOneClick(View v) {
-        Toast.makeText(this, "Action 1", Toast.LENGTH_SHORT).show();
+    public void onFarmerClick(View v) {
+        Toast.makeText(this, "Clicked Farmers", Toast.LENGTH_SHORT).show();
+        Intent myIntent = new Intent(agroAssistant.this, Farmers.class);
+        agroAssistant.this.startActivity(myIntent);
+
     }
 
-    public void onActionTwoClick(View v) {
-        Toast.makeText(this, "Action 2", Toast.LENGTH_SHORT).show();
+    public void onFarmClick(View v) {
+        Toast.makeText(this, "Clicked Farms", Toast.LENGTH_SHORT).show();
     }
 
-    public void onActionThreeClick(View v) {
-        Toast.makeText(this, "Action 3", Toast.LENGTH_SHORT).show();
+    public void onCropClick(View v) {
+        Toast.makeText(this, "Clicked Crops", Toast.LENGTH_SHORT).show();
     }
 
-    public void onActionFourClick(View v) {
-        Toast.makeText(this, "Action 4", Toast.LENGTH_SHORT).show();
+    public void onPriceClick(View v) {
+        Toast.makeText(this, "Clicked Prices", Toast.LENGTH_SHORT).show();
     }
     
 }

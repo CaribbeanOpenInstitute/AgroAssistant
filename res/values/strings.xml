@@ -1,9 +1,18 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <string name="hello">Hello World, agroAssistant!</string>
+    <!-- Home -->
     <string name="app_name">AgroAssistant</string>
     <string name="btn_home_farmer">Farmers</string>
     <string name="btn_home_farm">Farms</string>
     <string name="btn_home_crop">Crops</string>
     <string name="btn_home_price">Prices</string>
+    <!-- Farmers Activity -->
+    <string name="mnu_farmers_bar">Farmers</string>
+        <string-array name="ary_farmers_main">
+        <item>Farmer name / ID</item>
+        <item>Parish, Extension or District</item>
+        <item>My location</item>
+        <item>Detailed Search</item>
+    </string-array>
 </resources>
