@@ -15,4 +15,22 @@
         <item>My location</item>
         <item>Detailed Search</item>
     </string-array>
+    <!-- Farmers Search Activity -->
+    <string name="fname_title">Farmer name/ID</string>
+    <string name="rdo_fname">Farmer name</string>
+    <string name="rdo_fid">Farmer ID</string>
+    <string name="area_title">Parish, Extension or District</string>
+    <string name="rdo_parish">Parish</string>
+    <string name="rdo_extension">Extension</string>
+    <string name="rdo_district">District</string>
+    <string name="btn_search">Search</string>
+    <!-- Prices Activity -->
+    <string name="mnu_prices_bar">Prices</string>
+    <!-- Prices Activity -->
+        <string-array name="ary_prices_main">
+        <item>Crop Type / Crop Group</item>
+        <item>Parish</item>
+        <item>My location</item>
+        <item>Detailed Search</item>
+    </string-array>
 </resources>

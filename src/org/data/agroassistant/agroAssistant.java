@@ -16,7 +16,7 @@ public class agroAssistant extends Activity {
     }
     
     public void onFarmerClick(View v) {
-        Toast.makeText(this, "Clicked Farmers", Toast.LENGTH_SHORT).show();
+        //Toast.makeText(this, "Clicked Farmers", Toast.LENGTH_SHORT).show();
         Intent myIntent = new Intent(agroAssistant.this, Farmers.class);
         agroAssistant.this.startActivity(myIntent);
 
@@ -32,6 +32,8 @@ public class agroAssistant extends Activity {
 
     public void onPriceClick(View v) {
         Toast.makeText(this, "Clicked Prices", Toast.LENGTH_SHORT).show();
+        Intent myIntent = new Intent(agroAssistant.this, Prices.class);
+        agroAssistant.this.startActivity(myIntent);
     }
     
 }

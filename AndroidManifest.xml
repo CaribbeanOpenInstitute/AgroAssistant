@@ -14,5 +14,8 @@
 		</activity>
 
 		<activity android:name=".Farmers" />
+		<activity android:name=".Prices" /> 
+		<activity android:name="FarmerSearch" android:theme="@style/DialogTheme"></activity>
+		<activity android:name="AreaSearch" android:theme="@style/DialogTheme"></activity>
 	</application>
 </manifest>

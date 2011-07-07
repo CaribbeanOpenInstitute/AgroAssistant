@@ -43,7 +43,7 @@ public class AgroArrayAdapter extends ArrayAdapter<String> {
 			holder.imageView = (ImageView) rowView.findViewById(R.id.listImage);
 			rowView.setTag(holder);
 		} else {
-			holder = (ViewHolder) rowView.getTag();
+			holder = (ViewHolder) rowView.getTag(); 
 		}
 
 		holder.textView.setText(names[position]);
@@ -52,11 +52,13 @@ public class AgroArrayAdapter extends ArrayAdapter<String> {
 		if (s.startsWith("Farmer")) {
 			holder.imageView.setImageResource(R.drawable.ic_menu_person);
 		} else if (s.startsWith("My")) {
-			holder.imageView.setImageResource(R.drawable.ic_menu_location);
+			holder.imageView.setImageResource(R.drawable.ic_menu_map);
 		} else if (s.startsWith("Parish")) {  
 			holder.imageView.setImageResource(R.drawable.ic_menu_pictures);
 		} else if (s.startsWith("Detailed")) {  
 			holder.imageView.setImageResource(R.drawable.ic_menu_search);
+		} else if (s.startsWith("Crop")) {  
+			holder.imageView.setImageResource(R.drawable.ic_menu_picture);
 		}
 
 		return rowView;

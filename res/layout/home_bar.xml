@@ -1,6 +1,6 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:id="@+id/home_menu_bar" android:layout_width="fill_parent"
-	android:layout_height="wrap_content" android:background="@drawable/bg_menu_bar">
+	android:layout_height="wrap_content" android:background="@drawable/bg_menu_bar" >
 	<TextView android:id="@+id/title" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="@string/app_name"
 		android:layout_alignParentLeft="true" android:layout_centerVertical="true"
