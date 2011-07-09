@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout android:id="@+id/crop_main"
+	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
+	android:paddingLeft="15dp" android:paddingRight="15dp">
+	<TextView android:id="@+id/crop_search_title"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="@string/crop_title" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<EditText android:id="@+id/crop_input" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:text="@string/cropHint"
+		android:textSize="12sp">
+	</EditText>
+	<RadioGroup android:id="@+id/rdgrp_csearch"
+		android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<RadioButton android:id="@+id/rdo_cropType"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_cropType">
+		</RadioButton>
+		<RadioButton android:id="@+id/rdo_cropGroup"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_cropGroup">
+		</RadioButton>
+	</RadioGroup>
+	<Button android:id="@+id/btn_search" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/btn_search"
+		android:gravity="right">
+	</Button>
+</LinearLayout>

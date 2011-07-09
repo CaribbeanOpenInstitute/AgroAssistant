@@ -58,6 +58,6 @@ android:layout_height="wrap_content"
 android:text="@string/btn_search"
 android:layout_alignParentRight="true" 
 >
-</Button>
+</Button> 
 </RelativeLayout>
 </LinearLayout>

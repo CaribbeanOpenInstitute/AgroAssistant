@@ -41,7 +41,7 @@
        		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
             android:onClick="onCropClick"
-            android:text="@string/app_name" 
+            android:text="@string/btn_home_crop" 
             android:drawableTop="@drawable/ic_home_crop"/>
         <Button android:id="@+id/action_four_button"
         	android:layout_width="wrap_content"

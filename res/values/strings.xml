@@ -15,22 +15,49 @@
         <item>My location</item>
         <item>Detailed Search</item>
     </string-array>
-    <!-- Farmers Search Activity -->
-    <string name="fname_title">Farmer name/ID</string>
-    <string name="rdo_fname">Farmer name</string>
-    <string name="rdo_fid">Farmer ID</string>
-    <string name="area_title">Parish, Extension or District</string>
-    <string name="rdo_parish">Parish</string>
-    <string name="rdo_extension">Extension</string>
-    <string name="rdo_district">District</string>
-    <string name="btn_search">Search</string>
+	    <!-- Farmers Search Activity -->
+	    <string name="fname_title">Farmer name/ID</string>
+	    <string name="farmerHint">Enter farmer name or farmer ID</string>
+	    <string name="rdo_fname">Farmer name</string>
+	    <string name="rdo_fid">Farmer ID</string>
+	    <string name="area_title">Parish, Extension or District</string>
+	    <string name="rdo_parish">Parish</string>
+	    <string name="rdo_extension">Extension</string>
+	    <string name="rdo_district">District</string>
+	    <string name="btn_search">Search</string>
     <!-- Prices Activity -->
     <string name="mnu_prices_bar">Prices</string>
     <!-- Prices Activity -->
-        <string-array name="ary_prices_main">
+    <string-array name="ary_prices_main">
         <item>Crop Type / Crop Group</item>
         <item>Parish</item>
         <item>My location</item>
         <item>Detailed Search</item>
     </string-array>
+    	<!-- Crop Search -->
+    	 <string name="crop_title">Crop search</string>
+    	 <string name="cropHint">Enter crop name or crop group</string>
+    	 <string name="rdo_cropType">Crop type</string>
+	    <string name="rdo_cropGroup">Crop group</string>
+	    
+	    <!-- Parish Search -->
+	    <string name="parish_title">Parish search</string>
+	    <string name="parishes">Choose a parish</string>
+	    <string-array name="parishes_array">
+	        <item>Kingston</item>
+	        <item>St.Andrew</item>
+	        <item>St.Catherine</item>
+	        <item>Clarendon</item>
+	        <item>Manchester</item>
+	        <item>St.Elizabeth</item>
+	        <item>Westmoreland</item>
+	        <item>Hanover</item>
+	        <item>St.James</item>
+	        <item>Trelawny</item>
+	        <item>St.Ann</item>
+	        <item>St.Mary</item>
+	        <item>Portland</item>
+	        <item>St.Thomas</item>
+	    </string-array>
+	    
 </resources>
