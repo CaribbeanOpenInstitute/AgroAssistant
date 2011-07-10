@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/crop_main"
-	android:layout_width="fill_parent" android:layout_height="wrap_content"
+	android:layout_width="200dp" android:layout_height="wrap_content"
 	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
 	android:paddingLeft="15dp" android:paddingRight="15dp">
 	<TextView android:id="@+id/crop_search_title"
@@ -23,8 +23,11 @@
 			android:text="@string/rdo_cropGroup">
 		</RadioButton>
 	</RadioGroup>
-	<Button android:id="@+id/btn_search" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:text="@string/btn_search"
-		android:gravity="right">
-	</Button>
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<Button android:id="@+id/btn_crop_search" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/btn_search"
+			android:layout_alignParentRight="true">
+		</Button>
+	</RelativeLayout>
 </LinearLayout>

@@ -6,7 +6,7 @@
 
         <!-- hide the Window Title -->
         <item name="android:windowNoTitle">true</item>
-
+		
         <!-- You could change the scrollbar, checkbox style, anything! -->
     </style>
 

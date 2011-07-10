@@ -49,14 +49,14 @@ public class Farmers extends ListActivity {
 					break;
 				case 2:
 					Toast.makeText(Farmers.this, "You selected to Search by Location", Toast.LENGTH_SHORT).show();
-					//farmerSearchIntent.setClass(Farmers.this, FarmerView.class);
-					//startActivityForResult(farmerSearchIntent,LOCATION_SEARCH);
+					farmerSearchIntent.setClass(Farmers.this, LocationSearch.class);
+					startActivityForResult(farmerSearchIntent,LOCATION_SEARCH);
 					break;
 				case 3:
 					Toast.makeText(Farmers.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, FarmerView.class);
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
-					break;
+					break; 
 				default:
 					Toast.makeText(Farmers.this, "Error: The option you selected does not exist", Toast.LENGTH_SHORT).show();
 					break;

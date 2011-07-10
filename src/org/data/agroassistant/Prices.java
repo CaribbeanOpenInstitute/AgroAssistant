@@ -12,6 +12,8 @@ import android.widget.Toast;
 public class Prices extends ListActivity {
 	static final int CROP_SEARCH = 0;
 	static final int PARISH_SEARCH = 1;
+	static final int LOCATION_SEARCH = 2;
+	static final int DETAILED_SEARCH = 3;
 	
 	//private LayoutInflater mInflater;
 	//private Vector<RowData> data;
@@ -47,6 +49,8 @@ public class Prices extends ListActivity {
 					break;
 				case 2:
 					Toast.makeText(Prices.this, "You selected to Search by Location", Toast.LENGTH_SHORT).show();
+					farmerSearchIntent.setClass(Prices.this, LocationSearch.class);
+					startActivityForResult(farmerSearchIntent,LOCATION_SEARCH);
 					break;
 				case 3:
 					Toast.makeText(Prices.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();

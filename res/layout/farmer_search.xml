@@ -1,54 +1,33 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout
-android:id="@+id/fsearch_main"
-android:layout_width="fill_parent"
-android:layout_height="wrap_content"
-android:orientation="vertical"
-xmlns:android="http://schemas.android.com/apk/res/android"
-android:paddingLeft="15dp" android:paddingRight="15dp"
-> 
-<TextView 
-android:id="@+id/fname_search_title"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/fname_title"
-android:textSize="18sp" android:paddingTop="5dp" android:paddingBottom="10dp"
->
-</TextView>
-<EditText
-android:id="@+id/fsearch_input"
-android:layout_width="fill_parent"
-android:layout_height="wrap_content"
-android:text="Enter farmer name or ID"
-android:textSize="12sp"
->
-</EditText>
-<RadioGroup
-android:id="@+id/rdgrp_fsearch"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
->
-<RadioButton
-android:id="@+id/rdo_fname"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/rdo_fname"
->
-</RadioButton>
-<RadioButton
-android:id="@+id/rdo_fid"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/rdo_fid"
->
-</RadioButton>
-</RadioGroup>
-<Button
-android:id="@+id/btn_search"
-android:layout_width="wrap_content"
-android:layout_height="wrap_content"
-android:text="@string/btn_search"
-android:gravity="right" 
->
-</Button>
+<LinearLayout android:id="@+id/fsearch_main"
+	android:layout_width="200dp" android:layout_height="wrap_content"
+	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
+	android:paddingLeft="15dp" android:paddingRight="15dp">
+	<TextView android:id="@+id/fname_search_title"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="@string/fname_title" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<EditText android:id="@+id/fsearch_input"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:text="Enter farmer name or ID" android:textSize="12sp">
+	</EditText>
+	<RadioGroup android:id="@+id/rdgrp_fsearch"
+		android:layout_width="wrap_content" android:layout_height="wrap_content">
+		<RadioButton android:id="@+id/rdo_fname"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_fname">
+		</RadioButton>
+		<RadioButton android:id="@+id/rdo_fid"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_fid">
+		</RadioButton>
+	</RadioGroup>
+	<RelativeLayout android:layout_width="fill_parent"
+		android:layout_height="wrap_content">
+		<Button android:id="@+id/btn_farmer_search" android:layout_width="wrap_content"
+			android:layout_height="wrap_content" android:text="@string/btn_search"
+			android:layout_alignParentRight="true">
+		</Button>
+	</RelativeLayout>
 </LinearLayout>

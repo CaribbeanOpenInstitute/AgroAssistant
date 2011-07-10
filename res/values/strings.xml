@@ -25,6 +25,10 @@
 	    <string name="rdo_extension">Extension</string>
 	    <string name="rdo_district">District</string>
 	    <string name="btn_search">Search</string>
+	    
+	    <!-- Location Search -->
+	    <string name="mnu_location_bar">My Location</string>
+	    
     <!-- Prices Activity -->
     <string name="mnu_prices_bar">Prices</string>
     <!-- Prices Activity -->
@@ -59,5 +63,6 @@
 	        <item>Portland</item>
 	        <item>St.Thomas</item>
 	    </string-array>
+	    
 	    
 </resources>

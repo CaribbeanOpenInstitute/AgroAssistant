@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout android:id="@+id/area_search"
-	android:layout_width="fill_parent" android:layout_height="fill_parent"
+	android:layout_width="200dp" android:layout_height="fill_parent"
 	android:orientation="vertical" xmlns:android="http://schemas.android.com/apk/res/android"
 	android:paddingLeft="15dp" android:paddingRight="15dp">
 	<TextView android:id="@+id/parish_search_title"
@@ -9,7 +9,7 @@
 		android:paddingTop="5dp" android:paddingBottom="10dp">
 	</TextView>
 	<TextView android:id="@+id/area_search_input"
-		android:layout_width="fill_parent" android:layout_height="wrap_content" 
+		android:layout_width="wrap_content" android:layout_height="wrap_content" 
 		android:layout_marginTop="10dip"
         android:text="@string/parishes">
 	</TextView>
