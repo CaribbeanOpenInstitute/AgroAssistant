@@ -9,7 +9,7 @@
 	
 	<com.google.android.maps.MapView
 		android:id="@+id/mapview" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:clickable="false"
+		android:layout_height="wrap_content" android:clickable="true"
 		android:layout_weight="1"
 		android:apiKey="0ZkZPvKeygzGn7YRCtaVrw5y-8fEQLuvNQE_5TA" />
 	  

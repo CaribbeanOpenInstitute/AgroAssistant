@@ -8,7 +8,7 @@
 		android:text="@string/fname_title" android:textSize="18sp"
 		android:paddingTop="5dp" android:paddingBottom="10dp">
 	</TextView>
-	<EditText android:id="@+id/fsearch_input"
+	<EditText android:id="@+id/edt_farmer_search"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
 		android:text="Enter farmer name or ID" android:textSize="12sp">
 	</EditText>
