@@ -24,6 +24,9 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	private MapView mapView;
 	private MapController mapController;
 	private LocationManager mgr;
+	private GeoPoint currentLoc;
+	private double lat;
+	private double lng;
 	String provider;
 	
 	@Override
@@ -40,27 +43,39 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	    
 	    //Create Access GPS and grab geolocation
 	    mgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-	    Criteria criteria = new Criteria();
-	    provider = mgr.getBestProvider(criteria, true);
+	    mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000L, 500.0f, this);
+	    //Criteria criteria = new Criteria();
+	    ///provider = mgr.getBestProvider(criteria, true);
 	    
 	    // Register the listener with the Location Manager to receive location updates
-	    mgr.getLastKnownLocation(provider);
+	    /*Location location = mgr.getLastKnownLocation(provider);
+	    if (location != null) {
+	    	lat = location.getLatitude();
+	    	lng = location.getLongitude();
+	    	currentLoc = new GeoPoint((int) lat * 1000000, (int) lng * 1000000);*/
+	    //}
+	    
 	    //mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
 	    
 	    
 	    //Add to overlay
-	    GeoPoint point = new GeoPoint(19240000,-99120000);
-	    OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
+	    //GeoPoint point = new GeoPoint(19240000,-99120000);
+	    /*OverlayItem overlayitem = new OverlayItem(currentLoc, "Hola, Mundo!", "I'm in Mexico City!");
 	    
 	    itemizedoverlay.addOverlay(overlayitem);
-	    mapOverlays.add(itemizedoverlay);
+	    mapOverlays.add(itemizedoverlay);*/
+	    mgr.removeUpdates(this);
 	}
 	
 	@Override
     public void onLocationChanged(Location location) {
     	// TODO Auto-generated method stub
     	//dumpLocation(location);
+		if (location != null) {
+			lat = location.getLatitude();
+			lng = location.getLongitude();
+		}
 		// Called when a new location is found by the network location provider.
 	    
 
