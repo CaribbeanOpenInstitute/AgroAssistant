@@ -8,12 +8,22 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
+import android.widget.ViewAnimator;
 
 public class Farmers extends ListActivity {
-	static final int FNAME_SEARCH = 0;
-	static final int PARISH_SEARCH = 1;
-	static final int LOCATION_SEARCH = 2;
-	static final int DETAILED_SEARCH = 3;
+	private static final int FNAME_SEARCH = 0;
+	private static final int PARISH_SEARCH = 1;
+	private static final int LOCATION_SEARCH = 2;
+	private static final int DETAILED_SEARCH = 3;
+	
+	private static String farmer_name = "";
+	private static String farmer_id = "";
+	private static ViewAnimator animator;
+	
+	private String mResponseError = "Unknown Error";
+	private boolean mInitialScreen = true;
+	
+	private String apiResponse;
 	
 	//private LayoutInflater mInflater;
 	//private Vector<RowData> data;
@@ -23,6 +33,9 @@ public class Farmers extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.farmers_main);
+		
+		
+		animator = (ViewAnimator)findViewById(R.id.anim);
 		
 		String[] farmerItems = getResources().getStringArray(R.array.ary_farmers_main);
 		this.setListAdapter(new AgroArrayAdapter(this, farmerItems));
@@ -68,6 +81,10 @@ public class Farmers extends ListActivity {
 
 	}
 	
+	protected void onPreExecute() {
+		animator.setDisplayedChild(1);
+	}
+	
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -75,14 +92,56 @@ public class Farmers extends ListActivity {
         if (requestCode == FNAME_SEARCH) {
         	if( resultCode == RESULT_OK) {
         		//Call function to pull data from query
+        		if (intent.getStringExtra("selection").equals("1")){
+        			farmer_name = intent.getStringExtra("value");
+        			Toast.makeText(Farmers.this, "Farmer Name: "+ farmer_name, Toast.LENGTH_SHORT).show();
+        		}else{
+        			farmer_id = intent.getStringExtra("value");
+        			Toast.makeText(Farmers.this, "Farmer ID: "+ farmer_id, Toast.LENGTH_SHORT).show();
+        		}
+        		apiResponse = fetchFarmerData(farmer_id);
+        		
+        		if((apiResponse == null) || !(apiResponse.contains("Farm"))){
+        			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+        			animator.setDisplayedChild(0);
+        		}else{
+        			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
+        			
+        			Intent farmerIntent = new Intent();
+        			Bundle b = new Bundle();
+        			b.putString("response", apiResponse); // add return xml to bundle for next activity
+        			farmerIntent.putExtras(b);
+        			farmerIntent.setClass(Farmers.this, FarmerView.class);
+        			
+        			startActivity(farmerIntent);
+        			//finish();
+        			//animator.setDisplayedChild(0);
+        		}
         	}
         	else if( resultCode == RESULT_CANCELED) {
         		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+        		
         		
         	}
         }
         
     }
-	
+	private final String fetchFarmerData(final String farmerId) {
+		final RESTServiceObj client = new RESTServiceObj(getString(R.string.CROPS_QUERY_URL));
+    	client.AddParam("FarmerID", farmerId);
+    	
+    	try {
+    	    client.Execute(RESTServiceObj.RequestMethod.GET);
+    	} catch (Exception e) {
+    	    e.printStackTrace();
+    	    mResponseError = client.getErrorMessage();
+    	    return null;
+    	}
+    	final String response = client.getResponse();
+    	if (response == null)
+    		mResponseError = client.getErrorMessage();
+    	
+		return response;
+    }
 	
 }
