@@ -28,6 +28,7 @@
 	    
 	    <!-- Location Search -->
 	    <string name="mnu_location_bar">My Location</string>
+	    <string name="btn_location_refresh_message">Fetching User Location</string>
 	    
     <!-- Prices Activity -->
     <string name="mnu_prices_bar">Prices</string>

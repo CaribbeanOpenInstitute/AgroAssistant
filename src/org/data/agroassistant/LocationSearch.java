@@ -5,11 +5,16 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 import android.content.Context;
+import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.view.View;
+import android.view.View.OnClickListener;
+import android.widget.Button;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -32,12 +37,11 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	private List<Overlay> mapOverlays;
 	private OverlayItem overlayitem;
 	Drawable drawable;
-	MapOverlay itemizedoverlay;
+	ItemizedOverlay itemizedoverlay;
 	
 	
 	private double lat;
 	private double lng;
-	private String provider;
 	private boolean gps_enabled = false;
 	private boolean network_enabled = false;
 	
@@ -54,24 +58,46 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.location_main);
 	    
-	    drawable = this.getResources().getDrawable(R.drawable.androidmarker);
 	    initMapView();
-	    
 	    getLocation();
-	    
-	    // Register the listener with the Location Manager to receive location updates
-	    //currentLoc = mgr.getLastKnownLocation(provider);
 	    updateMap();
 	    
+	    final Button btn_refresh = (Button) findViewById(R.id.btn_location_refresh);
+	    final Button btn_accept = (Button) findViewById(R.id.btn_location_accept);
 	    
-	    
+    	btn_refresh.setOnClickListener(new OnClickListener() {
+				@Override
+				public void onClick(View v) {
+					timer1.cancel();
+					Toast.makeText(LocationSearch.this, R.string.btn_location_refresh_message, Toast.LENGTH_SHORT).show();
+					getLocation();
+				}
+			});
+    	
+    	btn_accept.setOnClickListener(new OnClickListener() {
+			@Override
+			public void onClick(View v) {
+				timer1.cancel();
+				Intent returnIntent = new Intent();
+				
+				returnIntent.putExtra("latitude", currentLoc.getLatitude());
+				returnIntent.putExtra("longitude", currentLoc.getLongitude());
+				
+				//Toast.makeText(LocationSearch.this, "Latitude: " + Double.toString(currentLoc.getLatitude()) + "Longitude: " + Double.toString(currentLoc.getLongitude()) , Toast.LENGTH_SHORT).show();
+				
+				setResult(RESULT_OK,returnIntent);
+				finish();
+				
+			}
+		});
 	}
 	
 	@Override
 	protected void onResume() {
 		// TODO Auto-generated method stub
 		super.onResume();
-		mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TEN_MINUTES, TWOFIFTY_METRES, this);
+		getLocation();
+		//mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TEN_MINUTES, TWOFIFTY_METRES, this);
 	}
 	
 	@Override
@@ -111,10 +137,6 @@ public class LocationSearch extends MapActivity implements LocationListener {
         timer1=new Timer();
         timer1.schedule(new GetLastLocation(), FOUR_MINUTES);
 
-        //Old Code
-	    //mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, TEN_MINUTES, TWOFIFTY_METRES, this);
-	    //Criteria criteria = new Criteria();
-	    //provider = mgr.getBestProvider(criteria, true);
 	    return true;
 	}
 	
@@ -272,8 +294,11 @@ public class LocationSearch extends MapActivity implements LocationListener {
 		mapController.setZoom(16);
 	    mapView.setBuiltInZoomControls(true);
 	    
+	    drawable = this.getResources().getDrawable(R.drawable.androidmarker);
+	    
+	    //itemizedoverlay.onTap(index)
+	    
 	    mapOverlays = mapView.getOverlays();
-	    //itemizedoverlay = new MapOverlay(drawable);
 	}
 	
 	private void updateMap() {
@@ -291,7 +316,7 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	    	
 	    	//Initialize map overlay
 		    mapOverlays = mapView.getOverlays();
-		    itemizedoverlay = new MapOverlay(drawable);
+		    itemizedoverlay = new ItemizedOverlay(drawable, this);
 
 	    	//Add new overlay item
 	    	overlayitem = new OverlayItem(currentPoint, "You are here", "This is your current location");
