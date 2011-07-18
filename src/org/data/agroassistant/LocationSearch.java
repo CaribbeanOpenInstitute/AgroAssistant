@@ -23,10 +23,12 @@ import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
 
+
+
 //Utilized Google Developer tutorial -- http://developer.android.com/resources/tutorials/views/hello-mapview.html
 
 
-public class LocationSearch extends MapActivity implements LocationListener {
+public class LocationSearch extends MapActivity implements LocationListener{
 	private MapView mapView;
 	private MapController mapController;
 	private LocationManager mgr;
@@ -52,7 +54,6 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	Timer timer1;
 
 
-	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
@@ -66,7 +67,6 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	    final Button btn_accept = (Button) findViewById(R.id.btn_location_accept);
 	    
     	btn_refresh.setOnClickListener(new OnClickListener() {
-				@Override
 				public void onClick(View v) {
 					timer1.cancel();
 					Toast.makeText(LocationSearch.this, R.string.btn_location_refresh_message, Toast.LENGTH_SHORT).show();
@@ -75,9 +75,8 @@ public class LocationSearch extends MapActivity implements LocationListener {
 			});
     	
     	btn_accept.setOnClickListener(new OnClickListener() {
-			@Override
-			public void onClick(View v) {
-				timer1.cancel();
+    		public void onClick(View arg0) {
+    			timer1.cancel();
 				Intent returnIntent = new Intent();
 				
 				returnIntent.putExtra("latitude", currentLoc.getLatitude());
@@ -87,8 +86,7 @@ public class LocationSearch extends MapActivity implements LocationListener {
 				
 				setResult(RESULT_OK,returnIntent);
 				finish();
-				
-			}
+    		}
 		});
 	}
 	
@@ -157,9 +155,8 @@ public class LocationSearch extends MapActivity implements LocationListener {
     };
 
 	
-	@Override
-    public void onLocationChanged(Location newLoc) {
-    	// TODO Auto-generated method stub
+	public void onLocationChanged(Location newLoc) {
+		// TODO Auto-generated method stub
     	//dumpLocation(location);
 		if (newLoc != null) {
 			if (isBetterLocation(newLoc, currentLoc)) {
@@ -170,9 +167,7 @@ public class LocationSearch extends MapActivity implements LocationListener {
 			//lng = newLoc.getLongitude();
 		}
 		// Called when a new location is found by the network location provider.
-	    
-
-    }
+	};
 	
 	class GetLastLocation extends TimerTask {
         @Override
@@ -210,19 +205,18 @@ public class LocationSearch extends MapActivity implements LocationListener {
     }
 
 	
-	@Override
-    public void onProviderDisabled(String provider) {
+	public void onProviderDisabled(String provider) {
     	// TODO Auto-generated method stub
     	//log("\nProvider enabled: " + provider);
-    }
+	}
     
-    @Override
+    //@Override
     public void onProviderEnabled(String provider) {
     	// TODO Auto-generated method stub
     	//log("\nProvider enabled: " + provider);
     }
     
-    @Override
+    //@Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
     	// TODO Auto-generated method stub
     	//log("\nProvider status changed: " + provider + ", status=" + S[status] + ", extras=" + extras);

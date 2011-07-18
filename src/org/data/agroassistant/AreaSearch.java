@@ -1,11 +1,13 @@
 package org.data.agroassistant;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.Toast;
 
@@ -22,7 +24,7 @@ public class AreaSearch extends Activity {
 	    final Button btn_search = (Button) findViewById(R.id.btn_area_search);
 	    
 		btn_search.setOnClickListener(new OnClickListener() {
-			@Override
+			//@Override
 			public void onClick(View v) {
 				String userInput = "";
 				switch(rdg_area.getCheckedRadioButtonId()) {

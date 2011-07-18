@@ -21,20 +21,20 @@ public class FarmerView extends TabActivity{
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec("farmerInfo").setIndicator("Farmer",
-	                      res.getDrawable(R.drawable.ic_tab_farmer))
+	                      res.getDrawable(R.drawable.ic_menu_farmer))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
 	    // Do the same for the other tabs
 	    intent = new Intent().setClass(this, FarmInfo.class);
 	    spec = tabHost.newTabSpec("farmInfo").setIndicator("Farms",
-	                      res.getDrawable(R.drawable.ic_tab_farms))
+	                      res.getDrawable(R.drawable.ic_menu_farm))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 
 	    intent = new Intent().setClass(this, CropInfo.class);
 	    spec = tabHost.newTabSpec("cropInfo").setIndicator("Crops",
-	                      res.getDrawable(R.drawable.ic_tab_crops))
+	                      res.getDrawable(R.drawable.ic_menu_crop))
 	                  .setContent(intent);
 	    tabHost.addTab(spec);
 

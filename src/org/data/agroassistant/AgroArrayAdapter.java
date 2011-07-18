@@ -55,6 +55,8 @@ public class AgroArrayAdapter extends ArrayAdapter<String> {
 			holder.imageView.setImageResource(R.drawable.ic_menu_map);
 		} else if (s.startsWith("Parish")) {  
 			holder.imageView.setImageResource(R.drawable.ic_menu_pictures);
+		} else if (s.startsWith("Property")) {  
+			holder.imageView.setImageResource(R.drawable.ic_menu_pictures);
 		} else if (s.startsWith("Detailed")) {  
 			holder.imageView.setImageResource(R.drawable.ic_menu_search);
 		} else if (s.startsWith("Crop")) {  
