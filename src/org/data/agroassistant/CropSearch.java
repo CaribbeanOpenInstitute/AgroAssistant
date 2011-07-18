@@ -23,7 +23,7 @@ public class CropSearch extends Activity {
 	    final Button btn_search = (Button) findViewById(R.id.btn_crop_search);
 	    
 		btn_search.setOnClickListener(new OnClickListener() {
-			@Override
+			//@Override
 			public void onClick(View v) {
 				String userInput = "";
 				switch(rdg_crop.getCheckedRadioButtonId()) {

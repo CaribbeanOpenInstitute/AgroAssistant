@@ -24,10 +24,14 @@ public class agroAssistant extends Activity {
 
     public void onFarmClick(View v) {
         Toast.makeText(this, "Clicked Farms", Toast.LENGTH_SHORT).show();
+        Intent myIntent = new Intent(agroAssistant.this, Farms.class);
+        agroAssistant.this.startActivity(myIntent);
     }
 
     public void onCropClick(View v) {
         Toast.makeText(this, "Clicked Crops", Toast.LENGTH_SHORT).show();
+        Intent myIntent = new Intent(agroAssistant.this, Crops.class);
+        agroAssistant.this.startActivity(myIntent);
     }
 
     public void onPriceClick(View v) {

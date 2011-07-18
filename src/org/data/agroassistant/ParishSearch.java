@@ -36,7 +36,8 @@ public class ParishSearch extends Activity{
               parent.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG).show();
         }
 
-        public void onNothingSelected(AdapterView parent) {
+        @SuppressWarnings("rawtypes")
+		public void onNothingSelected(AdapterView parent) {
           // Do nothing.
         }
     }

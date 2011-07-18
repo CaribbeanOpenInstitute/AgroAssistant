@@ -15,8 +15,24 @@
         <item>My location</item>
         <item>Detailed Search</item>
     </string-array>
+    <string-array name="ary_farms_main">
+        <item>Farmer name / ID</item>
+        <item>Parish, Extension or District</item>
+        <item>Property ID</item>
+        <item>My location</item>
+        <item>Detailed Search</item>
+    </string-array>
+    <string-array name="ary_crops_main">
+    	<item>Crop Group / Type</item>
+    	<item>Parish, Extension or District</item>
+        <item>Farmer name / ID</item>
+        <item>Property ID</item>
+        <item>My location</item>
+        <item>Detailed Search</item>
+    </string-array>
 	    <!-- Farmers Search Activity -->
 	    <string name="fname_title">Farmer name/ID</string>
+	    <string name="pid_title">Property ID</string>
 	    <string name="farmerHint">Enter farmer name or farmer ID</string>
 	    <string name="rdo_fname">Farmer name</string>
 	    <string name="rdo_fid">Farmer ID</string>
@@ -62,7 +78,9 @@
 	        <item>St.Mary</item>
 	        <item>Portland</item>
 	        <item>St.Thomas</item>
-	    </string-array>
-	    
+	</string-array>
+	<string name="FARMS_QUERY_URL">http://www.data.org.jm/api/farms.xml</string>
+    <string name="CROPS_QUERY_URL">http://www.data.org.jm/api/crops.xml</string>
+    <string name="PRICES_QUERY_URL">http://www.data.org.jm/api/prices.xml</string>    
 	    
 </resources>

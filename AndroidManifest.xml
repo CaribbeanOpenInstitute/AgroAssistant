@@ -6,8 +6,6 @@
 	
 	<!-- Application Requested Permissions -->
 	<uses-permission android:name="android.permission.INTERNET" />
-	<uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-	<uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
 	<application android:icon="@drawable/icon" android:label="@string/app_name"
 		android:theme="@android:style/Theme.NoTitleBar">
@@ -18,13 +16,15 @@
 			</intent-filter> 
 		</activity>
 		<uses-library android:name="com.google.android.maps" /> 
-
+	
+		<activity android:name=".Farms"/>
 		<activity android:name=".Farmers" />
 		<activity android:name=".Prices" />
+		<activity android:name=".Crops" />
 		<!-- Farmers search sub-activities --> 
 		<activity android:name=".FarmerSearch" android:theme="@style/DialogTheme"></activity>
 		<activity android:name=".AreaSearch" android:theme="@style/DialogTheme"></activity>
-		
+		<activity android:name=".PIDSearch" android:theme="@style/DialogTheme"></activity>
 		<!-- Prices search sub-activities -->
 		<activity android:name=".CropSearch" android:theme="@style/DialogTheme"></activity>
 		<activity android:name=".ParishSearch" android:theme="@style/DialogTheme"></activity>

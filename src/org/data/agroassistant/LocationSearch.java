@@ -24,9 +24,6 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	private MapView mapView;
 	private MapController mapController;
 	private LocationManager mgr;
-	private GeoPoint currentLoc;
-	private double lat;
-	private double lng;
 	String provider;
 	
 	@Override
@@ -37,63 +34,51 @@ public class LocationSearch extends MapActivity implements LocationListener {
 	    initMapView();
 	    
 	    List<Overlay> mapOverlays = mapView.getOverlays();
-	    Drawable drawable = this.getResources().getDrawable(R.drawable.androidmarker);
-	    MapOverlay itemizedoverlay = new MapOverlay(drawable);
+	    //Drawable drawable = this.getResources().getDrawable(R.drawable.androidmarker);
+	    //MapOverlay itemizedoverlay = new MapOverlay(drawable);
 	    
 	    
 	    //Create Access GPS and grab geolocation
 	    mgr = (LocationManager) this.getSystemService(Context.LOCATION_SERVICE);
-	    mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 1000L, 500.0f, this);
-	    //Criteria criteria = new Criteria();
-	    ///provider = mgr.getBestProvider(criteria, true);
+	    Criteria criteria = new Criteria();
+	    provider = mgr.getBestProvider(criteria, true);
 	    
 	    // Register the listener with the Location Manager to receive location updates
-	    /*Location location = mgr.getLastKnownLocation(provider);
-	    if (location != null) {
-	    	lat = location.getLatitude();
-	    	lng = location.getLongitude();
-	    	currentLoc = new GeoPoint((int) lat * 1000000, (int) lng * 1000000);*/
-	    //}
-	    
+	    mgr.getLastKnownLocation(provider);
 	    //mgr.requestLocationUpdates(LocationManager.NETWORK_PROVIDER, 0, 0, this);
 
 	    
 	    
 	    //Add to overlay
-	    //GeoPoint point = new GeoPoint(19240000,-99120000);
-	    /*OverlayItem overlayitem = new OverlayItem(currentLoc, "Hola, Mundo!", "I'm in Mexico City!");
+	    GeoPoint point = new GeoPoint(19240000,-99120000);
+	    OverlayItem overlayitem = new OverlayItem(point, "Hola, Mundo!", "I'm in Mexico City!");
 	    
-	    itemizedoverlay.addOverlay(overlayitem);
-	    mapOverlays.add(itemizedoverlay);*/
-	    mgr.removeUpdates(this);
+	    //itemizedoverlay.addOverlay(overlayitem);
+	    //mapOverlays.add(itemizedoverlay);
 	}
 	
-	@Override
+	//@Override
     public void onLocationChanged(Location location) {
     	// TODO Auto-generated method stub
     	//dumpLocation(location);
-		if (location != null) {
-			lat = location.getLatitude();
-			lng = location.getLongitude();
-		}
 		// Called when a new location is found by the network location provider.
 	    
 
     }
 	
-	@Override
+	//@Override
     public void onProviderDisabled(String provider) {
     	// TODO Auto-generated method stub
     	//log("\nProvider enabled: " + provider);
     }
     
-    @Override
+    //@Override
     public void onProviderEnabled(String provider) {
     	// TODO Auto-generated method stub
     	//log("\nProvider enabled: " + provider);
     }
     
-    @Override
+    //@Override
     public void onStatusChanged(String provider, int status, Bundle extras) {
     	// TODO Auto-generated method stub
     	//log("\nProvider status changed: " + provider + ", status=" + S[status] + ", extras=" + extras);
