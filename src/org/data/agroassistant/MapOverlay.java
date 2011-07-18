@@ -52,7 +52,7 @@ public class MapOverlay extends ItemizedOverlay  {
 	  return true;
 	}
 	
-	@Override
+	/*@Override
     public boolean onTouchEvent(MotionEvent event, MapView mapView) 
     {   
         //---when user lifts his finger---
@@ -63,9 +63,9 @@ public class MapOverlay extends ItemizedOverlay  {
                 /*Toast.makeText(getBaseContext(), 
                     p.getLatitudeE6() / 1E6 + "," + 
                     p.getLongitudeE6() /1E6 , 
-                    Toast.LENGTH_SHORT).show();*/
+                    Toast.LENGTH_SHORT).show();
         }                            
         return false;
-    }        
+    }        */
 }
 

@@ -12,7 +12,7 @@ import android.widget.ViewAnimator;
 
 public class Farmers extends ListActivity {
 	private static final int FNAME_SEARCH = 0;
-	private static final int PARISH_SEARCH = 1;
+	private static final int AREA_SEARCH = 1;
 	private static final int LOCATION_SEARCH = 2;
 	private static final int DETAILED_SEARCH = 3;
 	
@@ -35,7 +35,7 @@ public class Farmers extends ListActivity {
 		setContentView(R.layout.farmers_main);
 		
 		
-		animator = (ViewAnimator)findViewById(R.id.anim);
+		//animator = (ViewAnimator)findViewById(R.id.anim);
 		
 		String[] farmerItems = getResources().getStringArray(R.array.ary_farmers_main);
 		this.setListAdapter(new AgroArrayAdapter(this, farmerItems));
@@ -58,7 +58,7 @@ public class Farmers extends ListActivity {
 				case 1:
 					Toast.makeText(Farmers.this, "You selected to Search by Parish", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, AreaSearch.class);
-					startActivityForResult(farmerSearchIntent,PARISH_SEARCH);
+					startActivityForResult(farmerSearchIntent,AREA_SEARCH);
 					break;
 				case 2:
 					Toast.makeText(Farmers.this, "You selected to Search by Location", Toast.LENGTH_SHORT).show();
@@ -99,7 +99,7 @@ public class Farmers extends ListActivity {
         			farmer_id = intent.getStringExtra("value");
         			Toast.makeText(Farmers.this, "Farmer ID: "+ farmer_id, Toast.LENGTH_SHORT).show();
         		}
-        		apiResponse = fetchFarmerData(farmer_id);
+        		//apiResponse = fetchFarmerData(farmer_id);
         		
         		if((apiResponse == null) || !(apiResponse.contains("Farm"))){
         			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
@@ -126,7 +126,7 @@ public class Farmers extends ListActivity {
         }
         
     }
-	private final String fetchFarmerData(final String farmerId) {
+	/*private final String fetchFarmerData(final String farmerId) {
 		final RESTServiceObj client = new RESTServiceObj(getString(R.string.CROPS_QUERY_URL));
     	client.AddParam("FarmerID", farmerId);
     	
@@ -142,6 +142,6 @@ public class Farmers extends ListActivity {
     		mResponseError = client.getErrorMessage();
     	
 		return response;
-    }
+    }*/
 	
 }
