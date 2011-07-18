@@ -35,7 +35,7 @@ public class Farmers extends ListActivity {
 		setContentView(R.layout.farmers_main);
 		
 		
-		animator = (ViewAnimator)findViewById(R.id.anim);
+		//animator = (ViewAnimator)findViewById(R.id.anim);
 		
 		String[] farmerItems = getResources().getStringArray(R.array.ary_farmers_main);
 		this.setListAdapter(new AgroArrayAdapter(this, farmerItems));
@@ -99,7 +99,7 @@ public class Farmers extends ListActivity {
         			farmer_id = intent.getStringExtra("value");
         			Toast.makeText(Farmers.this, "Farmer ID: "+ farmer_id, Toast.LENGTH_SHORT).show();
         		}
-        		apiResponse = fetchFarmerData(farmer_id);
+        		//apiResponse = fetchFarmerData(farmer_id);
         		
         		if((apiResponse == null) || !(apiResponse.contains("Farm"))){
         			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
@@ -126,7 +126,7 @@ public class Farmers extends ListActivity {
         }
         
     }
-	private final String fetchFarmerData(final String farmerId) {
+	/*private final String fetchFarmerData(final String farmerId) {
 		final RESTServiceObj client = new RESTServiceObj(getString(R.string.CROPS_QUERY_URL));
     	client.AddParam("FarmerID", farmerId);
     	
@@ -142,6 +142,6 @@ public class Farmers extends ListActivity {
     		mResponseError = client.getErrorMessage();
     	
 		return response;
-    }
+    }*/
 	
 }
