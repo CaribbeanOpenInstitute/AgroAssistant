@@ -44,39 +44,53 @@ public class DetailSearch extends Activity {
 				
 				//ensure that user filled in at least one of the fields
 				if (fname.equals("") && area.equals("") && crop.equals("")){
-					Toast.makeText(DetailSearch.this, "Please Enter Search Info in at\n" +
-													  "least one (1) field provided and\n" +
-													  "select the corresponding type where\n applicable", Toast.LENGTH_LONG).show();
+					Toast.makeText(DetailSearch.this, "Please Enter Search Information in\n" +
+													  "at least onesome (1) field provided and\n" +
+													  "select the corresponding type\nwhere applicable", Toast.LENGTH_LONG).show();
 				}else {
-					if (fname.equals("") && (area.length() > 1) && crop.equals("")){
-				
+					if (fname.equals("") && (area.length() > 1) && crop.equals(""))
+					{
+						returnIntent.putExtra("selection", "2");
 						getArea();
 					
-					}else if ((fname.length() > 1) && area.equals("") && crop.equals("")){
+					}else if ((fname.length() > 1) && area.equals("") && crop.equals(""))
+					{					
+						Toast.makeText(DetailSearch.this, "Farmer Name: " + fname, Toast.LENGTH_SHORT).show();
+						returnIntent.putExtra("selection", "1");
+						returnIntent.putExtra("Farmer", fname );
 					
+					}else if (fname.equals("") && area.equals("") && (crop.length() > 1))
+					{					
+						returnIntent.putExtra("selection", "3");
+						getCrop();
+					
+					}else if ((fname.length() > 1) && (area.length() > 1) && crop.equals(""))
+					{
+						returnIntent.putExtra("selection", "4");
+						getArea();
+						returnIntent.putExtra("Farmer", fname );
+						Toast.makeText(DetailSearch.this, "Farmer Name: " + fname, Toast.LENGTH_SHORT).show();
+										
+					}else if (fname.equals("") && (area.length() > 1) && (crop.length() > 1))
+					{
+						returnIntent.putExtra("selection", "5");
+						getArea();
+						getCrop();
+										
+					}else if ((fname.length() > 1) && area.equals("")  && (crop.length() > 1))
+					{
+						returnIntent.putExtra("selection", "6");
+						returnIntent.putExtra("Farmer", fname );
+						getCrop();
 						Toast.makeText(DetailSearch.this, "Farmer Name: " + fname, Toast.LENGTH_SHORT).show();
 						
-						returnIntent.putExtra("Farmer", fname );
-					
-					}else if ((fname.length() > 1) && (area.length() > 1) && crop.equals("")){
-					
-						getArea();
-						returnIntent.putExtra("Farmer", fname );
-										
-					}else if (fname.equals("") && (area.length() > 1) && (crop.length() > 1)){
-					
-						getArea();
-						getCrop();
-										
-					}else if ((fname.length() > 1) && (area.length() > 1) && crop.equals("")){
-					
-						returnIntent.putExtra("Farmer", fname );
-						getCrop();
-										
-					}else{
+					}else
+					{
+						returnIntent.putExtra("selection", "7");
 						returnIntent.putExtra("Farmer", fname );
 						getArea();
 						getCrop();
+						Toast.makeText(DetailSearch.this, "Farmer Name: " + fname, Toast.LENGTH_SHORT).show();
 					}
 					
 					setResult(RESULT_OK,returnIntent);    	
@@ -90,17 +104,19 @@ public class DetailSearch extends Activity {
 				case R.id.rdo_parish:
 					
 					Toast.makeText(DetailSearch.this, "Parish: " + area, Toast.LENGTH_SHORT).show();
-					
+					returnIntent.putExtra("AreaCol","Parish");
 					returnIntent.putExtra("Parish", area );
 					
 					break;
 				case R.id.rdo_extension:
 					Toast.makeText(DetailSearch.this, "Extension: " + area, Toast.LENGTH_SHORT).show();
+					returnIntent.putExtra("AreaCol","Extension");
 					returnIntent.putExtra("Extension", area );
 					
 					break;
 				case R.id.rdo_district:
 					Toast.makeText(DetailSearch.this, "District: " + area, Toast.LENGTH_SHORT).show();
+					returnIntent.putExtra("AreaCol","District");
 					returnIntent.putExtra("District", area );
 					
 					break;
@@ -115,14 +131,14 @@ public class DetailSearch extends Activity {
 				case R.id.rdo_cropType:
 					
 					Toast.makeText(DetailSearch.this, "Crop Type: " + crop, Toast.LENGTH_SHORT).show();
-					
+					returnIntent.putExtra("CropCol","Crop Type");
 					returnIntent.putExtra("Crop Type", crop );
 					
 					break;
 				case R.id.rdo_cropGroup:
 					Toast.makeText(DetailSearch.this, "Crop Group: " + crop, Toast.LENGTH_SHORT).show();
-					
-					returnIntent.putExtra("CropGroup", crop );
+					returnIntent.putExtra("CropCol","Crop Group");
+					returnIntent.putExtra("Crop Group", crop );
 					
 					break;
 				case -1:
