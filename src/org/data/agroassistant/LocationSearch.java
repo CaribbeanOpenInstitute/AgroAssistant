@@ -51,7 +51,7 @@ public class LocationSearch extends MapActivity implements LocationListener{
 	private static final int FOUR_MINUTES = 1000 * 60 * 4;
 	private static final int ONE_MINUTES = 1000 * 60 * 1;
 	private static final int TWOFIFTY_METRES = 25;
-	Timer timer1;
+	private Timer timer1;
 
 
 	@Override
@@ -124,8 +124,8 @@ public class LocationSearch extends MapActivity implements LocationListener{
             return false;
         
         if(gps_enabled) {
-            mgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, TEN_MINUTES, TWOFIFTY_METRES, this);
-        	//mgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
+            //mgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, TEN_MINUTES, TWOFIFTY_METRES, this);
+        	mgr.requestLocationUpdates(LocationManager.GPS_PROVIDER, 0, 0, this);
         }
         if(network_enabled) {
         	currentLoc = mgr.getLastKnownLocation(LocationManager.NETWORK_PROVIDER);
