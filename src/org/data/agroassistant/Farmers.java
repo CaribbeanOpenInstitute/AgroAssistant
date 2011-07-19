@@ -24,12 +24,14 @@ public class Farmers extends ListActivity {
 	
 	private static String farmer_name = "", parish = "", extension = "", district = "";
 	private static String farmer_id = "", latitude = "", longitude = "";
+	private String apiResponse;
+	
 	private static ViewAnimator animator;
 	
 	private String mResponseError = "Unknown Error";
 	private boolean mInitialScreen = true;
 	
-	private String apiResponse;
+	
 	
 	//private LayoutInflater mInflater;
 	//private Vector<RowData> data;
@@ -73,7 +75,7 @@ public class Farmers extends ListActivity {
 					break;
 				case 3:
 					Toast.makeText(Farmers.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
-					farmerSearchIntent.setClass(Farmers.this, FarmerView.class);
+					farmerSearchIntent.setClass(Farmers.this, DetailSearch.class);
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
 					break; 
 				default:
@@ -166,7 +168,7 @@ public class Farmers extends ListActivity {
     			
     			if((apiResponse == null) || !(apiResponse.contains("Parish"))){
         			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
-        			animator.setDisplayedChild(0);
+        			//animator.setDisplayedChild(0);
         		}else{
         			
         			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
@@ -193,7 +195,7 @@ public class Farmers extends ListActivity {
         
     }
 //*****************************************************************************************************************************************
-	private final String fetchFarmerData(final String column, final int selection) {
+	private final String fetchFarmerData(String column, final int selection) {
 		
 		final RESTServiceObj client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
     	
@@ -204,7 +206,21 @@ public class Farmers extends ListActivity {
         		client.AddParam("FarmerID", column);
         	}else{
         		
-        		client.AddParam("FarmerID", column);
+        		String fname, lname;
+        		column = column.trim();
+        		
+        		int space = column.indexOf(' ');
+        		if(space < 1){
+        			client.AddParam("lastname", column);
+        		}else{
+        			
+        			fname = column.substring(0, space);
+        			lname= column.substring(space, column.length());
+        			lname = lname.trim();
+        			
+        			client.AddParam("firstname", fname);
+        			client.AddParam("lastname", lname);
+        		}
         	}
     		break;
     	case 1:
