@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:id="@+id/dtlSearch"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:paddingLeft="15dp"
+  android:paddingRight="15dp" android:weightSum="1">
+  
+  <TextView android:id="@+id/dtl_search_title"
+		android:layout_width="wrap_content"
+		android:layout_height="wrap_content"
+		android:text="Detailed Search" 
+		android:textSize="18sp"
+		android:paddingTop="5dp"
+		android:paddingBottom="10dp">
+	</TextView>
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp"
+		android:background="#90909090" />
+	<TextView android:id="@+id/farmer_dtl_search"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="Farmer Name" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<EditText android:id="@+id/edt_dtl_search"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:hint="Enter farmer name" android:textSize="12sp">
+	</EditText>
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+		android:background="#90909090" />
+	<EditText android:id="@+id/area_dtl_search"
+		android:layout_width="fill_parent" android:layout_height="wrap_content"
+		android:hint="Enter area name" android:textSize="12sp">
+	</EditText>
+	<RadioGroup android:id="@+id/rdgrp_dtlsearch"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:orientation="horizontal">
+		<RadioButton android:id="@+id/rdo_parish"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_parish">
+		</RadioButton>
+		<RadioButton android:id="@+id/rdo_extension"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_extension">
+		</RadioButton>
+		<RadioButton android:id="@+id/rdo_district"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_district">
+		</RadioButton>
+	</RadioGroup>
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+		android:background="#90909090" />
+	<EditText android:id="@+id/dtl_crop_search" android:layout_width="fill_parent"
+		android:layout_height="wrap_content" android:hint="@string/cropHint"
+		android:textSize="12sp">
+	</EditText>
+	<RadioGroup android:id="@+id/rdgrp_dtl_csearch"
+		android:layout_width="wrap_content" android:layout_height="wrap_content" android:orientation="horizontal">
+		<RadioButton android:id="@+id/rdo_cropType"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_cropType">
+		</RadioButton>
+		<RadioButton android:id="@+id/rdo_cropGroup"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="@string/rdo_cropGroup">
+		</RadioButton>
+	</RadioGroup>
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+		android:background="#90909090" android:id="@+id/cropview"/>
+	<Button android:layout_height="wrap_content" android:layout_gravity="center"
+	 	android:text="  Search  " android:id="@+id/btn_dtl_search" android:layout_weight="0.46" android:layout_width="106dp">
+	</Button>
+    
+</LinearLayout>

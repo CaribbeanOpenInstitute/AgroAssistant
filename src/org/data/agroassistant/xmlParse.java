@@ -23,13 +23,15 @@ import org.xml.sax.SAXException;
 public class xmlParse {
 
 	private static Document dom;
-	private static List<CropObj>   cropList; 
+	private static ArrayList<CropObj>   cropList; 
 	private static ArrayList<FarmObj>   farmList ;
 	private static ArrayList<FarmerObj> farmerList; 
 		
 	
 	public xmlParse(String xmlString) {
 		farmerList = new ArrayList<FarmerObj>();
+		farmList   = new ArrayList<FarmObj>();
+		cropList   = new ArrayList<CropObj>();
 		try {
 		
 			dom = loadXMLFromString( xmlString);
@@ -65,11 +67,11 @@ public class xmlParse {
 	}
 	
 	
-	public List<CropObj> getCropList(){
+	public ArrayList<CropObj> getCropList(){
 		return cropList;
 	}
 	
-	public List<FarmObj> getFarmList(){
+	public ArrayList<FarmObj> getFarmList(){
 		return farmList;
 	}
 	public ArrayList<FarmerObj> getFarmerList(){
@@ -85,15 +87,15 @@ public class xmlParse {
 		Element docEle = dom.getDocumentElement();
 
 
-		/* get a nodelist of elements
+		//get a nodelist of elements
 		String tag; 
 		if (objType.equals("Farmer")){
 			tag = "Farm";
 		}else{
 			tag = objType;
-		}*/
+		}
 			
-		NodeList nl = docEle.getElementsByTagName("Farm");
+		NodeList nl = docEle.getElementsByTagName(tag);
 		if (nl != null && nl.getLength() > 0) {
 			for (int i = 0; i < nl.getLength(); i++) {
 

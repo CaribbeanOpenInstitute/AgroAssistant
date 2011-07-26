@@ -24,12 +24,14 @@ public class Farmers extends ListActivity {
 	
 	private static String farmer_name = "", parish = "", extension = "", district = "";
 	private static String farmer_id = "", latitude = "", longitude = "";
+	private String apiResponse;
+	private int dtlSelection;
 	private static ViewAnimator animator;
 	
 	private String mResponseError = "Unknown Error";
 	private boolean mInitialScreen = true;
 	
-	private String apiResponse;
+	
 	
 	//private LayoutInflater mInflater;
 	//private Vector<RowData> data;
@@ -167,7 +169,7 @@ public class Farmers extends ListActivity {
     			
     			if((apiResponse == null) || !(apiResponse.contains("Parish"))){
         			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
-        			animator.setDisplayedChild(0);
+        			//animator.setDisplayedChild(0);
         		}else{
         			
         			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
@@ -187,14 +189,69 @@ public class Farmers extends ListActivity {
 	    	}
         	
         }if (requestCode == LOCATION_SEARCH) {
-        	
+        	if( resultCode == RESULT_OK) {
+        		//Call function to pull data from query
+        		//for farmer search by location
+	        }else if( resultCode == RESULT_CANCELED) {
+	    		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+	    		
+	    		
+	    	}
         }if (requestCode == DETAILED_SEARCH) {
         	
+        	if( resultCode == RESULT_OK) {
+        		//Call function to pull data from query
+        		//for farmer detail search
+        		String selectionStr = intent.getStringExtra("selection");
+        		dtlSelection = Integer.parseInt(selectionStr);
+        		
+        		switch(dtlSelection){
+        		
+        		case 1:
+        			farmer_name = intent.getStringExtra("Farmer");
+        			
+        			break;
+        		case 2:        			
+        			getAreaData(intent);
+        			
+        			break;
+        		case 3:
+        			
+        			getAreaData(intent);
+        			farmer_name = intent.getStringExtra("Farmer");
+        			
+    				break;
+        		default:
+        			Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
+        		}
+        		
+        		apiResponse = fetchFarmerData("", DETAILED_SEARCH);
+        		
+        		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+        			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+        			//animator.setDisplayedChild(0);
+        		}else{
+        			
+        			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
+        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        			//just to test the parsing here
+        			farmerResponse = parseResponse(apiResponse);
+        			
+        			//Toast.makeText(Farmers.this, ""+ farmer_list.get(0).toString(), Toast.LENGTH_SHORT).show();
+        			Toast.makeText(Farmers.this, "test" +"|"+ farmerResponse.get(0).toString() +"|"+ farmerResponse.size(), Toast.LENGTH_SHORT).show();
+        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        			
+        		}
+	        }else if( resultCode == RESULT_CANCELED) {
+	    		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+	    		
+	    		
+	    	}
         }
         
     }
 //*****************************************************************************************************************************************
-	private final String fetchFarmerData(final String column, final int selection) {
+	private final String fetchFarmerData(String column, final int selection) {
 		
 		final RESTServiceObj client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
     	
@@ -205,25 +262,40 @@ public class Farmers extends ListActivity {
         		client.AddParam("FarmerID", column);
         	}else{
         		
-        		client.AddParam("FarmerID", column);
+        		addNames(column, client);
         	}
     		break;
     	case 1:
-    		if(parish.equals(column)){
-    			client.AddParam("Parish", column);
-    			
-    		}else if(extension.equals(column)){
-    			client.AddParam("Extension", column);
-    			
-    		}else{
-    			client.AddParam("District", column);
-    		}
+    		addAreaParam(column, client);
     		break;
     		
-    	//case 2:
+    	case 2:
     		//perform location search
-    	//case 3:
-    		// get values from detailed search
+    		break;
+    	case 3:
+    		// get values from detail search
+    		switch(dtlSelection){
+    		
+    		case 1:
+    			addNames(farmer_name, client);
+    			
+    			break;
+    		case 2:        			
+    			addAreaParam("", client);
+    			
+    			break;
+    		case 3:
+    			
+    			addAreaParam("", client);
+    			addNames(farmer_name, client);
+    			
+				break;
+    		
+    		default:
+    			Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
+    		}
+    		
+    		break;
     	default:
     		Toast.makeText(Farmers.this, "Something went Totally Wrong ", Toast.LENGTH_SHORT).show();
     		
@@ -246,7 +318,7 @@ public class Farmers extends ListActivity {
 	private List<FarmerObj> parseResponse(String responseStr){
 		
 		xmlParse parser = new xmlParse(responseStr);
-		String excptn = "";
+		//String excptn = "";
 		ArrayList<FarmerObj> list = new ArrayList<FarmerObj>();
 		
 		parser.parseXML("Farmer");
@@ -256,10 +328,59 @@ public class Farmers extends ListActivity {
 			list = parser.getFarmerList();
 			
 		}catch(Exception e){
-			excptn = e.toString();
+			//excptn = e.toString();
 		}
 		
 		return list;
+	}
+	private void addNames(String fullName, RESTServiceObj client){
+		String fname, lname;
+		fullName = fullName.trim();
+		
+		int space = fullName.indexOf(' ');
+		if(space < 1){
+			client.AddParam("lastname", fullName);
+		}else{
+			
+			fname = fullName.substring(0, space);
+			lname= fullName.substring(space, fullName.length());
+			lname = lname.trim();
+			
+			client.AddParam("firstname", fname);
+			client.AddParam("lastname", lname);
+		}
+	}
+	
+	private void addAreaParam(String value, RESTServiceObj client){
+		
+		if(district.equals("") && extension.equals("")){
+			client.AddParam("Parish", parish);
+			
+		}else if(parish.equals("") && district.equals("")){
+			client.AddParam("Extension", extension);
+			
+		}else{
+			client.AddParam("District", district);
+		}
+	}
+	
+	
+	private void getAreaData(Intent intent){
+		if(intent.getStringExtra("AreaCol").equals("Parish")){
+			
+			parish = intent.getStringExtra("Parish");
+			Toast.makeText(Farmers.this, "Parish: "+ parish, Toast.LENGTH_SHORT).show();
+			
+		}else if(intent.getStringExtra("AreaCol").equals("Extension")) {
+			
+			extension = intent.getStringExtra("Extension");
+			Toast.makeText(Farmers.this, "Extension "+ extension, Toast.LENGTH_SHORT).show();
+			
+		}else{
+			
+			district = intent.getStringExtra("District");
+			Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
+		}
 	}
 	
 }
