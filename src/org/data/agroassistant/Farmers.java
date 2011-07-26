@@ -73,7 +73,8 @@ public class Farmers extends ListActivity {
 					break;
 				case 3:
 					Toast.makeText(Farmers.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
-					farmerSearchIntent.setClass(Farmers.this, FarmerView.class);
+					//farmerSearchIntent.setClass(Farmers.this, FarmerView.class);
+					farmerSearchIntent.setClass(Farmers.this, FarmView.class);
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
 					break; 
 				default:
