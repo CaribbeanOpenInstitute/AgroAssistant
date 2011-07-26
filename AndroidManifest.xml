@@ -34,6 +34,12 @@
 		<!-- Location Search  -->
 		<activity android:name=".LocationSearch" />
 		
+		<!-- Farm activities -->
+		<activity android:name=".FarmDetails" android:label="@string/app_name"
+          android:theme="@android:style/Theme.NoTitleBar"/>
+        <activity android:name=".FarmView" android:label="@string/app_name"
+          android:theme="@android:style/Theme.NoTitleBar"/>
+          
 		<!-- Farmer view -->
 		<activity android:name=".FarmerView" android:label="@string/app_name"
           android:theme="@android:style/Theme.NoTitleBar"/>
