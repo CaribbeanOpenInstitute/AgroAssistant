@@ -4,7 +4,15 @@ import android.provider.BaseColumns;
 
 public interface Constants extends BaseColumns {
 	
-	public static final String DATABASE_NAME = "agroassistant";
+	public static final int FARMER_SEARCH = 0;
+	public static final int FARM_SEARCH = 1;
+	public static final int CROP_SEARCH = 2;
+	public static final int PRICE_SEARCH = 3;
+	
+	/*====DATABASE CONSTANTS======================
+	 * Constants used by the database adapter class
+	 */
+	public static final String DATABASE_NAME = "agroassistant.db";
 	public static final String QUERY_TABLE= "queries";
 	public static final String FARMERS_TABLE= "farmers";
 	public static final String FARMS_TABLE= "farms";
@@ -14,6 +22,8 @@ public interface Constants extends BaseColumns {
 	//Columns in the Query table
 	public static final String QUERY_DATE = "date";
 	public static final String QUERY_URL = "url";
+	public static final String QUERY_COUNT = "count";
+	public static final String QUERY_PAGE = "page";
 	
 	//Columns in the Farmers table
 	public static final String FARMER_ID = "farmerid";
@@ -41,5 +51,11 @@ public interface Constants extends BaseColumns {
 	public static final String CROPS_DATE = "cropdate";
 	public static final String CROP_LAT = "xcoord";
 	public static final String CROP_LONG = "ycoord";
+	
+	public static final String[] FROM_FARMERS = {_ID, FARMER_ID, FARMER_FNAME, FARMER_LNAME, FARMER_SIZE};
+	public static final String[] FROM_FARMS = {_ID, FARM_ID, FARM_FARMER_ID, FARM_SIZE, FARM_PARISH, FARM_EXTENSION, FARM_DISTRICT, FARM_LAT, FARM_LONG};
+	
+	public static final String FROM_S_FARMERS = _ID + ", " + FARMER_ID + ", " + FARMER_FNAME + ", " + FARMER_LNAME + ", " + FARMER_SIZE;
+	public static final String FROM_S_FARMS = _ID + ", " + FARM_ID + ", " + FARM_FARMER_ID + ", " + FARM_SIZE + ", " + FARM_PARISH + ", " + FARM_EXTENSION + ", " + FARM_DISTRICT + ", " + FARM_LAT + ", " + FARM_LONG;
 	
 }
