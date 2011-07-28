@@ -109,7 +109,7 @@ public class xmlParse {
 				
 				if (objType.equals("Farm")){
 					FarmObj farm = getFarm(el);
-					farmList.add(i,farm);
+					farmList.add(farm);
 					
 				}else if(objType.equals("Farmer")){
 					FarmerObj farmer = getFarmer(el);

@@ -4,7 +4,6 @@ import static android.provider.BaseColumns._ID;
 import static org.data.agroassistant.Constants.DATABASE_NAME;
 import static org.data.agroassistant.Constants.FARMERS_TABLE;
 import static org.data.agroassistant.Constants.FARMER_FNAME;
-import static org.data.agroassistant.Constants.FROM_FARMERS;
 import static org.data.agroassistant.Constants.FARMER_ID;
 import static org.data.agroassistant.Constants.FARMER_LNAME;
 import static org.data.agroassistant.Constants.FARMER_SIZE;
@@ -17,9 +16,8 @@ import static org.data.agroassistant.Constants.FARM_LAT;
 import static org.data.agroassistant.Constants.FARM_LONG;
 import static org.data.agroassistant.Constants.FARM_PARISH;
 import static org.data.agroassistant.Constants.FARM_SIZE;
-
-import java.util.Arrays;
-
+import static org.data.agroassistant.Constants.FROM_FARMERS;
+import static org.data.agroassistant.Constants.FROM_FARMS;
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -47,7 +45,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		+ FARM_LAT + " long not null, "
 		+ FARM_LONG + " long not null);"; 
 		
-	private static final int DATABASE_VERSION = 4;
+	private static final int DATABASE_VERSION = 6;
 	
 	private SQLiteDatabase db;
 	
@@ -60,8 +58,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		try {
 			db.execSQL(CREATE_TABLE_FARMERS);
 			Log.d("AgroAssistant", "Create Farmers table: " + CREATE_TABLE_FARMERS);
-			//db.execSQL(CREATE_TABLE_FARMS);
-			//Log.d("AgroAssistant", "Create Farms table: " + CREATE_TABLE_FARMS);
+			db.execSQL(CREATE_TABLE_FARMS);
+			Log.d("AgroAssistant", "Create Farms table: " + CREATE_TABLE_FARMS);
 		} catch (RuntimeException e) {
 			Log.d("AgroAssistant", "Unable to create tables: " + CREATE_TABLE_FARMERS);
 		}
@@ -74,7 +72,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		Log.w("AgroAssistant", "Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
 		db.execSQL("DROP TABLE IF EXISTS " + FARMERS_TABLE);
-		//db.execSQL("DROP TABLE IF EXISTS " + FARMS_TABLE);
+		db.execSQL("DROP TABLE IF EXISTS " + FARMS_TABLE);
 		Log.d("AgroAssistant", "Upgrade step: " + "DROP TABLE IF EXISTS " + FARMERS_TABLE);
 		onCreate(db);
 	}
@@ -84,6 +82,14 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	 */
 	
 	public Cursor rawQuery(String tableName, String tableColumns, String queryParams) {
+		db = this.getReadableDatabase();
+		Log.d("AgroAssistant", "Raw Query: SELECT " + tableColumns + " FROM " + tableName +" WHERE " + queryParams);
+		Cursor cursor = db.rawQuery("SELECT "+ tableColumns + " FROM " + tableName +" WHERE " + queryParams, null);
+		Log.d("AgroAssistant", "Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		return cursor;
+	}
+	
+	public Cursor farmerRawQuery(String tableName, String tableColumns, String queryParams) {
 		db = this.getReadableDatabase();
 		Log.d("AgroAssistant", "Raw Query: SELECT " + tableColumns + " FROM " + tableName +" WHERE " + queryParams);
 		Cursor cursor = db.rawQuery("SELECT "+ tableColumns + " FROM " + tableName +" WHERE " + queryParams, null);
@@ -103,22 +109,27 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	
 	public boolean insertFarmer(int id, String firstname, String lastname, String farmersize) {
 		db = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(FARMER_ID, id);
-		values.put(FARMER_FNAME, firstname);
-		values.put(FARMER_LNAME, lastname);
-		values.put(FARMER_SIZE, farmersize);
-		try {
-			db.insertOrThrow(FARMERS_TABLE, null, values);
-			Log.d("AgroAssistant", "Insert Farmer: " + id + " " + firstname + " " + lastname + " " + farmersize);
-			db.close();
-			return true;
+		//Checks if farmer already exists in the database
+		if ((db.query(FARMERS_TABLE, FROM_FARMERS, FARMER_ID + "=" + id, null, null, null, null)).getCount() == 1) {
+			Log.d("AgroAssistant", "insertFarmer: Farmer " + firstname + " " + lastname + " already exist in table");
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(FARMER_ID, id);
+			values.put(FARMER_FNAME, firstname);
+			values.put(FARMER_LNAME, lastname);
+			values.put(FARMER_SIZE, farmersize);
+			try {
+				db.insertOrThrow(FARMERS_TABLE, null, values);
+				Log.d("AgroAssistant", "Insert Farmer: " + id + " " + firstname + " " + lastname + " " + farmersize);
+				db.close();
+			}
+			catch (RuntimeException e) {
+				db.close();
+				Log.e("AgroAssistant","Farmer Insertion Exception: "+e.toString());
+				return false;
+			}
 		}
-		catch (RuntimeException e) {
-			db.close();
-			Log.e("AgroAssistant","Farmer Insertion Exception: "+e.toString());
-			return false;
-		}
+		return true;
 	}
 	
 	public boolean deleteFarmer(SQLiteDatabase db, Long farmerId) {
@@ -131,30 +142,35 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			return false;
 		}
 	}
-	/*
+	
 	public boolean insertFarm(SQLiteDatabase db, int fid, int pid, int p_size, int latitude, int longtitude, String p_parish, String p_extension, String p_district) {
 		db = this.getWritableDatabase();
-		ContentValues values = new ContentValues();
-		values.put(FARM_ID, pid);
-		values.put(FARM_FARMER_ID, fid);
-		values.put(FARM_SIZE, p_size);
-		values.put(FARM_LAT, latitude);
-		values.put(FARM_LONG, longtitude);
-		values.put(FARM_PARISH, p_parish);
-		values.put(FARM_EXTENSION, p_extension);
-		values.put(FARM_DISTRICT, p_district);
-		
-		try {
-			db.insertOrThrow(FARMS_TABLE, null, values);
-			Log.d("AgroAssistant", "Insert Farm: " + fid + " " + pid + " " + p_size + " " + latitude + " " + longtitude + " " + p_extension + " " + p_district);
-			db.close();
-			return true;
+		//Checks if farm already exists in the database
+		if ((db.query(FARMS_TABLE, FROM_FARMS, FARM_ID + "=" + pid, null, null, null, null)).getCount() == 1) {
+			Log.d("AgroAssistant", "insertFarm: Farm " + pid + " already exist in table");
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(FARM_ID, pid);
+			values.put(FARM_FARMER_ID, fid);
+			values.put(FARM_SIZE, p_size);
+			values.put(FARM_LAT, latitude);
+			values.put(FARM_LONG, longtitude);
+			values.put(FARM_PARISH, p_parish);
+			values.put(FARM_EXTENSION, p_extension);
+			values.put(FARM_DISTRICT, p_district);
+			
+			try {
+				db.insertOrThrow(FARMS_TABLE, null, values);
+				Log.d("AgroAssistant", "Insert Farm: " + fid + " " + pid + " " + p_size + " " + latitude + " " + longtitude + " " + p_extension + " " + p_district);
+				db.close();
+			}
+			catch (RuntimeException e) {
+				db.close();
+				Log.e("AgroAssistant","Farm Insertion Exception: "+e.toString());
+				return false;
+			}
 		}
-		catch (RuntimeException e) {
-			db.close();
-			Log.e("AgroAssistant","Farm Insertion Exception: "+e.toString());
-			return false;
-		}
+		return true;
 	}
 	
 	public Cursor getFarms(SQLiteDatabase db) {
@@ -173,5 +189,4 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			return false;
 		}
 	}
-	*/
 }
