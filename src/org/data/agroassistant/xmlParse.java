@@ -148,7 +148,7 @@ public class xmlParse {
 		
 		//Create a new farm with the value read from the xml nodes
 		FarmObj farm = new FarmObj(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
-		//agroDB.insertFarm(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
+		agroDB.insertFarm(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
 
 		return farm;
 
@@ -186,7 +186,7 @@ public class xmlParse {
 		
 		//Create a new crop with the value read from the xml nodes
 		CropObj crop = new CropObj(farmid, group, type, area, count, date);
-
+		agroDB.insertCrop(farmid, group, type, area, count, date.toString());
 		return crop;
 		
 	}

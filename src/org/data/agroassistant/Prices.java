@@ -15,6 +15,8 @@ public class Prices extends ListActivity {
 	static final int LOCATION_SEARCH = 2;
 	static final int DETAILED_SEARCH = 3;
 	
+	private String queryParams;
+	
 	//private LayoutInflater mInflater;
 	//private Vector<RowData> data;
 	//RowData rd;

@@ -1,6 +1,8 @@
 package org.data.agroassistant;
 
 import static android.provider.BaseColumns._ID;
+import static org.data.agroassistant.Constants.CROPS_TABLE;
+import static org.data.agroassistant.Constants.CROP_ID;
 import static org.data.agroassistant.Constants.DATABASE_NAME;
 import static org.data.agroassistant.Constants.FARMERS_TABLE;
 import static org.data.agroassistant.Constants.FARMER_FNAME;
@@ -16,11 +18,16 @@ import static org.data.agroassistant.Constants.FARM_LAT;
 import static org.data.agroassistant.Constants.FARM_LONG;
 import static org.data.agroassistant.Constants.FARM_PARISH;
 import static org.data.agroassistant.Constants.FARM_SIZE;
+import static org.data.agroassistant.Constants.FROM_CROPS;
 import static org.data.agroassistant.Constants.FROM_FARMERS;
-import static org.data.agroassistant.Constants.FROM_FARMS;
+import static org.data.agroassistant.Constants.*;
+
+import java.util.Date;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
+import android.database.SQLException;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.util.Log;
@@ -43,9 +50,18 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		+ FARM_EXTENSION + " text not null, "
 		+ FARM_DISTRICT + " text not null, "
 		+ FARM_LAT + " long not null, "
-		+ FARM_LONG + " long not null);"; 
+		+ FARM_LONG + " long not null);";
+	
+	private static final String CREATE_TABLE_CROPS = "create table " + CROPS_TABLE + " ( " 
+	+ _ID + " integer primary key autoincrement, "
+	+ CROP_FARM_ID + " integer not null, " 
+	+ CROP_GROUP + " text not null, "
+	+ CROP_TYPE + " text not null, "
+	+ CROP_AREA + " integer not null, "
+	+ CROP_COUNT + " integer not null, "
+	+ CROP_DATE + " text not null);"; 
 		
-	private static final int DATABASE_VERSION = 6;
+	private static final int DATABASE_VERSION = 8;
 	
 	private SQLiteDatabase db;
 	
@@ -60,6 +76,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			Log.d("AgroAssistant", "Create Farmers table: " + CREATE_TABLE_FARMERS);
 			db.execSQL(CREATE_TABLE_FARMS);
 			Log.d("AgroAssistant", "Create Farms table: " + CREATE_TABLE_FARMS);
+			db.execSQL(CREATE_TABLE_CROPS);
+			Log.d("AgroAssistant", "Create Farms table: " + CREATE_TABLE_CROPS);
 		} catch (RuntimeException e) {
 			Log.d("AgroAssistant", "Unable to create tables: " + CREATE_TABLE_FARMERS);
 		}
@@ -80,12 +98,16 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	/*
 	 * Userdefined function used to run rawQueries again specific tables
 	 */
-	
 	public Cursor rawQuery(String tableName, String tableColumns, String queryParams) {
 		db = this.getReadableDatabase();
+		Cursor cursor = null;
 		Log.d("AgroAssistant", "Raw Query: SELECT " + tableColumns + " FROM " + tableName +" WHERE " + queryParams);
-		Cursor cursor = db.rawQuery("SELECT "+ tableColumns + " FROM " + tableName +" WHERE " + queryParams, null);
-		Log.d("AgroAssistant", "Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		try {
+			cursor = db.rawQuery("SELECT "+ tableColumns + " FROM " + tableName +" WHERE " + queryParams, null);
+			Log.d("AgroAssistant", "Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		} catch (SQLException e) {
+			Log.e("AgroAssistant", "Raw Query Exception: " + e.toString());
+		}
 		return cursor;
 	}
 	
@@ -134,7 +156,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	
 	public boolean deleteFarmer(SQLiteDatabase db, Long farmerId) {
 		db = this.getWritableDatabase();
-		if (db.delete(FARMERS_TABLE, _ID + '=' + farmerId.toString(), null) > 0) {
+		if (db.delete(FARMERS_TABLE, FARMER_ID + '=' + farmerId.toString(), null) > 0) {
 			db.close();
 			return true;
 		} else {
@@ -143,7 +165,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		}
 	}
 	
-	public boolean insertFarm(SQLiteDatabase db, int fid, int pid, int p_size, int latitude, int longtitude, String p_parish, String p_extension, String p_district) {
+	public boolean insertFarm(int fid, int pid, int p_size, int latitude, int longtitude, String p_parish, String p_extension, String p_district) {
 		db = this.getWritableDatabase();
 		//Checks if farm already exists in the database
 		if ((db.query(FARMS_TABLE, FROM_FARMS, FARM_ID + "=" + pid, null, null, null, null)).getCount() == 1) {
@@ -173,15 +195,60 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		return true;
 	}
 	
-	public Cursor getFarms(SQLiteDatabase db) {
+	public Cursor getFarms() {
 		db = this.getReadableDatabase();
 		Cursor cursor = db.query(FARMS_TABLE, FROM_FARMS, null, null, null, null, null);
 		return cursor;
 	}
 	
-	public boolean deleteFarm(SQLiteDatabase db, Long farmId) {
+	public boolean deleteFarm(Long farmId) {
 		db = this.getWritableDatabase();
-		if (db.delete(FARMS_TABLE, _ID + '=' + farmId.toString(), null) > 0) {
+		if (db.delete(FARMS_TABLE, FARM_ID + '=' + farmId.toString(), null) > 0) {
+			db.close();
+			return true;
+		} else {
+			db.close();
+			return false;
+		}
+	}
+	
+	public boolean insertCrop(int pid, String group, String type, int area, int count, String date) {
+		db = this.getWritableDatabase();
+		//Checks if farm already exists in the database
+		if ((db.query(CROPS_TABLE, FROM_CROPS, CROP_FARM_ID + "=" + pid, null, null, null, null)).getCount() == 1) {
+			Log.d("AgroAssistant", "insertCrop: Crop " + pid + " already exist in table");
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(CROP_FARM_ID, pid);
+			values.put(CROP_GROUP, group);
+			values.put(CROP_TYPE, type);
+			values.put(CROP_AREA, area);
+			values.put(CROP_COUNT, count);
+			values.put(CROP_DATE, date);
+			
+			try {
+				db.insertOrThrow(CROPS_TABLE, null, values);
+				Log.d("AgroAssistant", "Insert Crop: " + pid + " " + " " + type + " " + area + " " + count + " " + date);
+				db.close();
+			}
+			catch (RuntimeException e) {
+				db.close();
+				Log.e("AgroAssistant","Crop Insertion Exception: "+e.toString());
+				return false;
+			}
+		}
+		return true;
+	}
+	
+	public Cursor getCrops() {
+		db = this.getReadableDatabase();
+		Cursor cursor = db.query(CROPS_TABLE, FROM_CROPS, null, null, null, null, null);
+		return cursor;
+	}
+	
+	public boolean deleteCrop(Long cropId) {
+		db = this.getWritableDatabase();
+		if (db.delete(CROPS_TABLE, _ID + '=' + cropId.toString(), null) > 0) {
 			db.close();
 			return true;
 		} else {

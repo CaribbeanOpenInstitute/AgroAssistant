@@ -42,20 +42,25 @@ public interface Constants extends BaseColumns {
 	public static final String FARM_LONG = "ycoord";
 	
 	//Columns in the Crops table
-	public static final String CROPS_ID = "cropid";
-	public static final String CROPS_PROPERTY_ID = "propertyid";
-	public static final String CROPS_GROUP = "cropgroup";
-	public static final String CROPS_TYPE = "croptype";
-	public static final String CROPS_AREA = "croparea";
-	public static final String CROPS_COUNT = "cropcount";
-	public static final String CROPS_DATE = "cropdate";
+	public static final String CROP_ID = "cropid";
+	public static final String CROP_FARM_ID = "propertyid";
+	public static final String CROP_GROUP = "cropgroup";
+	public static final String CROP_TYPE = "croptype";
+	public static final String CROP_AREA = "croparea";
+	public static final String CROP_COUNT = "cropcount";
+	public static final String CROP_DATE = "cropdate";
 	public static final String CROP_LAT = "xcoord";
 	public static final String CROP_LONG = "ycoord";
 	
+	//Columns in the Prices table
+	
+	
 	public static final String[] FROM_FARMERS = {_ID, FARMER_ID, FARMER_FNAME, FARMER_LNAME, FARMER_SIZE};
 	public static final String[] FROM_FARMS = {_ID, FARM_ID, FARM_FARMER_ID, FARM_SIZE, FARM_PARISH, FARM_EXTENSION, FARM_DISTRICT, FARM_LAT, FARM_LONG};
+	public static final String[] FROM_CROPS = {_ID, CROP_ID, CROP_FARM_ID, CROP_GROUP, CROP_TYPE, CROP_AREA, CROP_COUNT, CROP_DATE, CROP_LAT, CROP_LONG};
 	
 	public static final String FROM_S_FARMERS = _ID + ", " + FARMER_ID + ", " + FARMER_FNAME + ", " + FARMER_LNAME + ", " + FARMER_SIZE;
 	public static final String FROM_S_FARMS = _ID + ", " + FARM_ID + ", " + FARM_FARMER_ID + ", " + FARM_SIZE + ", " + FARM_PARISH + ", " + FARM_EXTENSION + ", " + FARM_DISTRICT + ", " + FARM_LAT + ", " + FARM_LONG;
+	public static final String FROM_S_CROPS = _ID + ", " + CROP_ID + ", " + CROP_FARM_ID + ", " + CROP_GROUP + ", " + CROP_TYPE + ", " + CROP_AREA + ", " + CROP_COUNT + ", " + CROP_DATE + ", " + CROP_LAT + ", " + CROP_LONG;
 	
 }

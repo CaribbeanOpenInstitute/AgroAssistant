@@ -75,8 +75,7 @@ public class Farmers extends ListActivity {
 					break;
 				case 3:
 					Toast.makeText(Farmers.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
-					//farmerSearchIntent.setClass(Farmers.this, FarmerView.class);
-					farmerSearchIntent.setClass(Farmers.this, FarmView.class);
+					farmerSearchIntent.setClass(Farmers.this, FarmerDetailSearch.class);
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
 					break; 
 				default:
@@ -87,7 +86,6 @@ public class Farmers extends ListActivity {
 		      
 		    }
 		  });
-
 	}
 	
 	protected void onPreExecute() {
@@ -105,13 +103,10 @@ public class Farmers extends ListActivity {
 			if (requestCode == FNAME_SEARCH) {
         		//Call function to pull data by ID or name 
         		if(intent.getStringExtra("column").equals("Farmer Name")){
-        			
         			farmer_name = intent.getStringExtra("value");
-        			Toast.makeText(Farmers.this, "Farmer Name: "+ farmer_name, Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmerData(farmer_name, FNAME_SEARCH);
         		}else{
         			farmer_id = intent.getStringExtra("value");
-        			Toast.makeText(Farmers.this, "Farmer ID: "+ farmer_id, Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmerData(farmer_id, FNAME_SEARCH);
         		}
         	} else if (requestCode == AREA_SEARCH) {
@@ -166,17 +161,8 @@ public class Farmers extends ListActivity {
 			//Checks if API for data and acts accordingly
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
     			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
-    			animator.setDisplayedChild(0);
     		}else{
-    			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
-    			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    			//just to test the parsing here
     			farmerResponse = parseResponse(apiResponse);
-    			
-    			//Toast.makeText(Farmers.this, ""+ farmer_list.get(0).toString(), Toast.LENGTH_SHORT).show();
-    			Toast.makeText(Farmers.this, "test" +"|"+ farmerResponse.get(0).toString() +"|"+ farmerResponse.size(), Toast.LENGTH_SHORT).show();
-    			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-    			
     			/*
     			 *Call & pass necessary information to ResultView activity 
     			 *finish Farmer search activity 
@@ -219,30 +205,29 @@ public class Farmers extends ListActivity {
     	case DETAILED_SEARCH:
     		// get values from detail search
     		switch(dtlSelection){
-    		
-    		case 1:
-    			addNames(farmer_name, client);
-    			
-    			break;
-    		case 2:        			
-    			addAreaParam("", client);
-    			
-    			break;
-    		case 3:
-    			
-    			addAreaParam("", client);
-    			addNames(farmer_name, client);
-    			
-				break;
-    		
-    		default:
-    			Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
-    		}
-    		
+	    		case 1:
+	    			addNames(farmer_name, client);
+	    			
+	    			break;
+	    		case 2:        			
+	    			addAreaParam("", client);
+	    			
+	    			break;
+	    		case 3:
+	    			
+	    			addAreaParam("", client);
+	    			addNames(farmer_name, client);
+	    			
+					break;
+	    		
+	    		default:
+	    			Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
+	    			break;
+	    		}
     		break;
     	default:
     		Toast.makeText(Farmers.this, "Something went Totally Wrong ", Toast.LENGTH_SHORT).show();
-    		
+    		break;
     	}
 		//if (db.queryExists(client.toString) {
 		//pull from DB

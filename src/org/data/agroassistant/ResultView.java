@@ -85,7 +85,7 @@ public class ResultView extends ListActivity {
 
 	private void showResults(Cursor cursor){
 		SimpleCursorAdapter results = null;
-		Log.d("AgroAssistant", "showResults: Cusor contains " + cursor.getCount() + " record(s)");
+		//Log.d("AgroAssistant", "showResults: Cusor contains " + cursor.getCount() + " record(s)");
 
 		switch(searchType) {
         case(FARMER_SEARCH): 
@@ -108,26 +108,6 @@ public class ResultView extends ListActivity {
 		setListAdapter(results);
 	}
 	
-	/*
-	public Cursor getFarmers() {
-		SQLiteDatabase db = agroDB.getReadableDatabase();
-		//Cursor cursor = db.query(FARMERS_TABLE, FROM_FARMERS, null, null, null, null, null);
-		//Cursor cursor = db.query(FARMERS_TABLE, new String[] {"*"}, null, null, null, null, null);
-		Cursor cursor = db.rawQuery("SELECT _id, farmerid, firstname, lastname, farmersize FROM farmers", null);
-		startManagingCursor(cursor);
-		
-		Log.d("AgroAssistant", "getFarmers: Cusor contains " + cursor.getCount() + " record(s)");
-    	Log.d("AgroAssistant", "getFarmers: Cusor contains " + cursor.getColumnCount() + " column(s)");
-    	Log.d("AgroAssistant", "getFarmers: Cusor contains " + Arrays.toString(cursor.getColumnNames()));
-		//Log.d("AgroAssistant", "ID " + cursor.getString(cursor.getColumnIndex("_id")));
-    	//Log.d("AgroAssistant", "FID " + cursor.getString(cursor.getColumnIndex("farmerid")));
-    	//Log.d("AgroAssistant", "FNAME " + cursor.getString(2));
-    	//Log.d("AgroAssistant", "LNAME " + cursor.getString(cursor.getColumnIndex(FARMER_LNAME)));
-		
-		return cursor;
-	}
-	*/
-	
 	@Override
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
@@ -143,6 +123,7 @@ public class ResultView extends ListActivity {
         i.putExtra("feed_id", cursor.getString(cursor.getColumnIndex(_ID)));
         i.putExtra("title", cursor.getString(cursor.getColumnIndex(FEED_TITLE)));
         i.putExtra("url", cursor.getString(cursor.getColumnIndex(FEED_URL)));        
-        startActivityForResult(i, ACTIVITY_VIEW);*/
+        startActivityForResult(i, ACTIVITY_VIEW);
+        */
     }
 }
