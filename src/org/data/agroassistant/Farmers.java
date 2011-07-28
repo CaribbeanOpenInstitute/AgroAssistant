@@ -62,8 +62,6 @@ public class Farmers extends ListActivity {
 					Toast.makeText(Farmers.this, "You selected to Search by Farmer name", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, FarmerSearch.class);
 					startActivityForResult(farmerSearchIntent,FNAME_SEARCH);
-					//Intent farmerIntent = new Intent(Farmers.this, FarmerNameSearch.class);
-					//startActivity(farmerIntent);
 					break;
 				case 1:
 					Toast.makeText(Farmers.this, "You selected to Search by Parish", Toast.LENGTH_SHORT).show();
@@ -96,7 +94,6 @@ public class Farmers extends ListActivity {
 		animator.setDisplayedChild(1);
 	}
 	
-	
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
@@ -104,10 +101,8 @@ public class Farmers extends ListActivity {
         Intent searchResultIntent = new Intent();
 		Bundle searchResultBundle = new Bundle();
         
-        //TODO: Receive query from search functions
-        if (requestCode == FNAME_SEARCH) {
-        	if( resultCode == RESULT_OK) {
-
+		if( resultCode == RESULT_OK) {
+			if (requestCode == FNAME_SEARCH) {
         		//Call function to pull data by ID or name 
         		if(intent.getStringExtra("column").equals("Farmer Name")){
         			
@@ -119,41 +114,7 @@ public class Farmers extends ListActivity {
         			Toast.makeText(Farmers.this, "Farmer ID: "+ farmer_id, Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmerData(farmer_id, FNAME_SEARCH);
         		}
-        		
-        		//Checks if API for data and acts accordingly
-        		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-        			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
-        			animator.setDisplayedChild(0);
-        		}else{
-        			
-        			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
-        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			//just to test the parsing here
-        			farmerResponse = parseResponse(apiResponse);
-        			
-        			//Toast.makeText(Farmers.this, ""+ farmer_list.get(0).toString(), Toast.LENGTH_SHORT).show();
-        			Toast.makeText(Farmers.this, "test" +"|"+ farmerResponse.get(0).toString() +"|"+ farmerResponse.size(), Toast.LENGTH_SHORT).show();
-        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			
-        			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-        			searchResultBundle.putInt("searchType", FARMER_SEARCH);
-        			searchResultBundle.putString("searchParams", queryParams);
-        			searchResultIntent.putExtras(searchResultBundle);
-        			
-        			searchResultIntent.setClass(Farmers.this, ResultView.class);
-        			startActivity(searchResultIntent);
-        			finish();
-        			//*///animator.setDisplayedChild(0);
-        		}
-        	}else if( resultCode == RESULT_CANCELED) {
-        		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
-        		
-        		
-        	}
-        }else if (requestCode == AREA_SEARCH) {
-        	if( resultCode == RESULT_OK) {
-        		//Call function to pull data from query
-        		//for farmer search by parish Extension or District
+        	} else if (requestCode == AREA_SEARCH) {
     			if(intent.getStringExtra("column").equals("Parish")){
         			
         			parish = intent.getStringExtra("value");
@@ -167,46 +128,14 @@ public class Farmers extends ListActivity {
         			apiResponse = fetchFarmerData(extension, AREA_SEARCH);
         			
         		}else if(intent.getStringExtra("column").equals("District")) {
-        			
         			district = intent.getStringExtra("value");
         			Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmerData(district, AREA_SEARCH);
-        			
         		}
-    			
-    			if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-        			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
-        			//animator.setDisplayedChild(0);
-        		}else{
-        			
-        			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
-        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			//just to test the parsing here
-        			farmerResponse = parseResponse(apiResponse);
-        			
-        			//Toast.makeText(Farmers.this, ""+ farmer_list.get(0).toString(), Toast.LENGTH_SHORT).show();
-        			Toast.makeText(Farmers.this, "test" +"|"+ farmerResponse.get(0).toString() +"|"+ farmerResponse.size(), Toast.LENGTH_SHORT).show();
-        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			
-        		}
-	        }else if( resultCode == RESULT_CANCELED) {
-	    		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
-	    		
-	    		
-	    	}
-        	
-        }else if (requestCode == LOCATION_SEARCH) {
-        	if( resultCode == RESULT_OK) {
+	    	} else if (requestCode == LOCATION_SEARCH) {
         		//Call function to pull data from query
         		//for farmer search by location
-	        }else if( resultCode == RESULT_CANCELED) {
-	    		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
-	    		
-	    		
-	    	}
-        }else if (requestCode == DETAILED_SEARCH) {
-        	
-        	if( resultCode == RESULT_OK) {
+	    	} else if (requestCode == DETAILED_SEARCH) {
         		//Call function to pull data from query
         		//for farmer detail search
         		String selectionStr = intent.getStringExtra("selection");
@@ -231,30 +160,39 @@ public class Farmers extends ListActivity {
         		default:
         			Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
         		}
-        		
         		apiResponse = fetchFarmerData("", DETAILED_SEARCH);
-        		
-        		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-        			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
-        			//animator.setDisplayedChild(0);
-        		}else{
-        			
-        			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
-        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			//just to test the parsing here
-        			farmerResponse = parseResponse(apiResponse);
-        			
-        			//Toast.makeText(Farmers.this, ""+ farmer_list.get(0).toString(), Toast.LENGTH_SHORT).show();
-        			Toast.makeText(Farmers.this, "test" +"|"+ farmerResponse.get(0).toString() +"|"+ farmerResponse.size(), Toast.LENGTH_SHORT).show();
-        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			
-        		}
-	        }else if( resultCode == RESULT_CANCELED) {
-	    		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
-	    		
-	    	}
-        }
-        
+        	}
+			
+			//Checks if API for data and acts accordingly
+    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+    			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    			animator.setDisplayedChild(0);
+    		}else{
+    			Toast.makeText(Farmers.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
+    			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    			//just to test the parsing here
+    			farmerResponse = parseResponse(apiResponse);
+    			
+    			//Toast.makeText(Farmers.this, ""+ farmer_list.get(0).toString(), Toast.LENGTH_SHORT).show();
+    			Toast.makeText(Farmers.this, "test" +"|"+ farmerResponse.get(0).toString() +"|"+ farmerResponse.size(), Toast.LENGTH_SHORT).show();
+    			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+    			
+    			/*
+    			 *Call & pass necessary information to ResultView activity 
+    			 *finish Farmer search activity 
+    			 */
+    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
+    			searchResultBundle.putInt("searchType", FARMER_SEARCH);
+    			searchResultBundle.putString("searchParams", queryParams);
+    			searchResultIntent.putExtras(searchResultBundle);
+    			
+    			searchResultIntent.setClass(Farmers.this, ResultView.class);
+    			startActivity(searchResultIntent);
+    			finish();
+    		}
+    	} else if( resultCode == RESULT_CANCELED) {
+        		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+    	} 
     }
 //*****************************************************************************************************************************************
 	private final String fetchFarmerData(String column, final int selection) {
