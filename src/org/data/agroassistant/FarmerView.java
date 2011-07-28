@@ -1,6 +1,6 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.FARMER_SEARCH;
+import static org.data.agroassistant.Constants.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,7 +40,7 @@ public class FarmerView extends TabActivity{
 	    
 	    farmintent = new Intent();
 	    searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-		searchResultBundle.putInt("searchType", FARMER_SEARCH);
+		searchResultBundle.putInt("searchType", FARMER_FARM_SEARCH);
 		searchResultBundle.putString("searchParams", queryParams);
 		farmintent.putExtras(searchResultBundle);
 

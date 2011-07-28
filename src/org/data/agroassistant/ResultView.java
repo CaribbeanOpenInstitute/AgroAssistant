@@ -101,8 +101,8 @@ public class ResultView extends ListActivity {
         	//results = new SimpleCursorAdapter(this, R.layout.farm_row, cursor, new String[] {FEED_TITLE}, TO);
         	break;
         case (FARMER_FARM_SEARCH):
-        	RelativeLayout bar = (RelativeLayout) findViewById(R.id.home_menu_bar);
-    		bar.setVisibility(8);
+        	//RelativeLayout bar = (RelativeLayout) findViewById(R.id.home_menu_bar);
+    		//bar.setVisibility(8);
     		results = new SimpleCursorAdapter(this, R.layout.dtl_farm_row, cursor, DTL_FARM_FROM, DTL_FARM_TO);
         	break;
         case (CROP_SEARCH):
