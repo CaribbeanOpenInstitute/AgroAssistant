@@ -111,6 +111,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		db = this.getWritableDatabase();
 		//Checks if farmer already exists in the database
 		if ((db.query(FARMERS_TABLE, FROM_FARMERS, FARMER_ID + "=" + id, null, null, null, null)).getCount() == 1) {
+			Log.d("AgroAssistant", "insertFarmer: Farmer " + firstname + " " + lastname + " already exist in table");
+		} else {
 			ContentValues values = new ContentValues();
 			values.put(FARMER_ID, id);
 			values.put(FARMER_FNAME, firstname);
@@ -126,8 +128,6 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 				Log.e("AgroAssistant","Farmer Insertion Exception: "+e.toString());
 				return false;
 			}
-		} else {
-			Log.d("AgroAssistant", "insertFarmer: Farmer " + firstname + " " + lastname + " already exist in table");
 		}
 		return true;
 	}
@@ -147,6 +147,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		db = this.getWritableDatabase();
 		//Checks if farm already exists in the database
 		if ((db.query(FARMS_TABLE, FROM_FARMS, FARM_ID + "=" + pid, null, null, null, null)).getCount() == 1) {
+			Log.d("AgroAssistant", "insertFarm: Farm " + pid + " already exist in table");
+		} else {
 			ContentValues values = new ContentValues();
 			values.put(FARM_ID, pid);
 			values.put(FARM_FARMER_ID, fid);
@@ -167,8 +169,6 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 				Log.e("AgroAssistant","Farm Insertion Exception: "+e.toString());
 				return false;
 			}
-		} else {
-			Log.d("AgroAssistant", "insertFarm: Farm " + pid + " already exist in table");
 		}
 		return true;
 	}
