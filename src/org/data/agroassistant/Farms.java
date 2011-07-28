@@ -402,7 +402,7 @@ public class Farms extends ListActivity{
 	
 	private List<FarmObj> parseResponse(String responseStr){
 		
-		xmlParse parser = new xmlParse(responseStr);
+		xmlParse parser = new xmlParse(Farms.this, responseStr);
 		String excptn = "";
 		ArrayList<FarmObj> list = new ArrayList<FarmObj>();
 		

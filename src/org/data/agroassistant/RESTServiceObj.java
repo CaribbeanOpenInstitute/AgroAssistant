@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 
@@ -39,6 +40,32 @@ public class RESTServiceObj {
  
     public String getErrorMessage() {
         return message;
+    }
+    
+    @Override
+    public String toString() {
+    	String combinedParams = "";
+    	if(!params.isEmpty()){
+            for(NameValuePair p : params)
+            {
+            	String paramValue = "";
+            	try {
+					paramValue = URLEncoder.encode(p.getValue(),"UTF-8");
+				} catch (UnsupportedEncodingException e) {
+					e.printStackTrace();
+				}
+                String paramString = p.getName() + "=" + "'" +paramValue + "'";
+                if(combinedParams.length() > 1)
+                {
+                    combinedParams  +=  " AND " + paramString;
+                }
+                else
+                {
+                    combinedParams += paramString;
+                }
+            }
+        }
+    	return combinedParams.toLowerCase();
     }
  
     public int getResponseCode() {

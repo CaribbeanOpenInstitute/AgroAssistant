@@ -6,7 +6,6 @@ import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 import java.util.Locale;
 
 import javax.xml.parsers.DocumentBuilder;
@@ -19,16 +18,22 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import android.content.Context;
+
 
 public class xmlParse {
 
 	private static Document dom;
 	private static ArrayList<CropObj>   cropList; 
 	private static ArrayList<FarmObj>   farmList ;
-	private static ArrayList<FarmerObj> farmerList; 
+	private static ArrayList<FarmerObj> farmerList;
+	
+	private AgroAssistantDB agroDB;
 		
 	
-	public xmlParse(String xmlString) {
+	public xmlParse(Context context, String xmlString) {
+		agroDB = new AgroAssistantDB(context);
+		
 		farmerList = new ArrayList<FarmerObj>();
 		farmList   = new ArrayList<FarmObj>();
 		cropList   = new ArrayList<CropObj>();
@@ -124,6 +129,7 @@ public class xmlParse {
 				
 			}
 		}
+		agroDB.close();
 		return nl.getLength();
 	}
 	
@@ -142,6 +148,7 @@ public class xmlParse {
 		
 		//Create a new farm with the value read from the xml nodes
 		FarmObj farm = new FarmObj(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
+		//agroDB.insertFarm(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
 
 		return farm;
 
@@ -157,6 +164,7 @@ public class xmlParse {
 		//Create a new farmer with the value read from the xml nodes
 		//FarmerObj farmer = new FarmerObj(201001261, "Gebre", "Wallace", "SMALL");
 		FarmerObj farmer = new FarmerObj(farmerid, fName, lName,fSize);
+		agroDB.insertFarmer(farmerid, fName.toLowerCase(), lName.toLowerCase(),fSize.toLowerCase());
 		return farmer;
 	}
 

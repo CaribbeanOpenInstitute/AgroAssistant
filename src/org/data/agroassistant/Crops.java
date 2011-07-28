@@ -452,7 +452,7 @@ public class Crops extends ListActivity{
 	
 	private List<CropObj> parseResponse(String responseStr){
 		
-		xmlParse parser = new xmlParse(responseStr);
+		xmlParse parser = new xmlParse(Crops.this, responseStr);
 		String excptn = "";
 		ArrayList<CropObj> list = new ArrayList<CropObj>();
 		
