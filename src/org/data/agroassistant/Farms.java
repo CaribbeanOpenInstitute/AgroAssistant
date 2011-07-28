@@ -33,13 +33,14 @@ public class Farms extends ListActivity{
 	
 	private static List<FarmObj> farmResponse;
 	
-	private static String farmer_name = "", parish = "", extension = "", district = "";
+	private static String farmer_name = "", parish = "", extension = "", district = "", crop_type = "", crop_group = "";
 	private static String farmer_id = "", property_id = "", latitude = "", longitude = "";
 	private String apiResponse;
 	
 	private String mResponseError = "Unknown Error";
 	private boolean mInitialScreen = true;
 	
+	private int dtlSelection;
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
@@ -84,7 +85,7 @@ public class Farms extends ListActivity{
 					break;
 				case 4:
 					Toast.makeText(Farms.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
-					farmSearchIntent.setClass(Farms.this, FarmerView.class);
+					farmSearchIntent.setClass(Farms.this, DetailSearch.class);
 					startActivityForResult(farmSearchIntent,DETAILED_SEARCH);
 					break; 
 				default:
@@ -221,14 +222,83 @@ public class Farms extends ListActivity{
         }if (requestCode == LOCATION_SEARCH) {
         	
         }if (requestCode == DETAILED_SEARCH) {
-        	
+        	if( resultCode == RESULT_OK) {
+        		//Call function to pull data from query
+        		//for farmer detail search
+        		String selectionStr = intent.getStringExtra("selection");
+        		dtlSelection = Integer.parseInt(selectionStr);
+        		
+        		switch(dtlSelection){
+        		
+        		case 1:
+        			farmer_name = intent.getStringExtra("Farmer");
+        			
+        			break;
+        		case 2:        			
+        			getAreaData(intent);
+        			
+        			break;
+        		case 3:
+        			getCropData(intent);
+    				break;
+        		case 4:
+        			getAreaData(intent);
+        			farmer_name = intent.getStringExtra("Farmer");
+        			
+    				break;
+        		case 5:
+        			getAreaData(intent);
+        			getCropData(intent);
+        			
+        			break;
+        		case 6:
+        			farmer_name = intent.getStringExtra("Farmer");
+        			getCropData(intent);
+    				break;
+        		case 7:
+        			getAreaData(intent);
+        			getCropData(intent);
+        			farmer_name = intent.getStringExtra("Farmer");
+        			
+        			break;
+        		default:
+        			Toast.makeText(Farms.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
+        		}
+        		
+        		apiResponse = fetchFarmData("", DETAILED_SEARCH);
+        		
+        		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+        			Toast.makeText(Farms.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+        			//animator.setDisplayedChild(0);
+        		}else{
+        			
+        			Toast.makeText(Farms.this, ""+ apiResponse, Toast.LENGTH_SHORT).show();
+        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        			//just to test the parsing here
+        			farmResponse = parseResponse(apiResponse);
+        			
+        			//Toast.makeText(Farmers.this, ""+ farmer_list.get(0).toString(), Toast.LENGTH_SHORT).show();
+        			Toast.makeText(Farms.this, "test" +"|"+ farmResponse.get(0).toString() +"|"+ farmResponse.size(), Toast.LENGTH_SHORT).show();
+        			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+        			
+        		}
+	        }else if( resultCode == RESULT_CANCELED) {
+	    		Toast.makeText(Farms.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+	    		
+	    		
+	    	}
         }
         
     }
 //*****************************************************************************************************************************************
 	private final String fetchFarmData(String column, final int selection) {
 		
-		final RESTServiceObj client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
+		 RESTServiceObj client;
+		 if (selection == 4){
+			 client = new RESTServiceObj(getString(R.string.CROPS_QUERY_URL));
+		 }else{
+			 client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
+		 }
     	
 		switch(selection){
     	
@@ -268,10 +338,49 @@ public class Farms extends ListActivity{
     	case 2:
     		client.AddParam("PropertyID", column);
     		break;
-    	//case 3:
+    	case 3:
     		//perform location search
-    	//case 4:
+    		break;
+    	case 4:
     		// get values from detailed search
+    		// get values from detail search
+    		switch(dtlSelection){
+    		
+    		case 1:
+    			addNames(farmer_name, client);
+    			
+    			break;
+    		case 2:        			
+    			addAreaParam("", client);
+    			
+    			break;
+    		case 3:
+    			addCropParam(client);
+				break;
+    		case 4:
+    			addAreaParam("", client);
+    			addNames(farmer_name, client);
+    			
+				break;
+    		case 5:
+    			addAreaParam("", client);
+    			addCropParam(client);
+    			
+    			break;
+    		case 6:
+    			addNames(farmer_name, client);
+    			addCropParam(client);
+				break;
+    		case 7:
+    			addAreaParam("", client);
+    			addCropParam(client);
+    			addNames(farmer_name, client);
+    			
+    			break;
+    		default:
+    			Toast.makeText(Farms.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
+    		}
+    		break;
     	default:
     		Toast.makeText(Farms.this, "Something went Totally Wrong ", Toast.LENGTH_SHORT).show();
     		
@@ -308,6 +417,75 @@ public class Farms extends ListActivity{
 		}
 		
 		return list;
+	}
+	private void addNames(String name, RESTServiceObj client){
+		String fname, lname;
+		farmer_name = farmer_name.trim();
+		
+		int space = farmer_name.indexOf(' ');
+		if(space < 1){
+			client.AddParam("lastname", farmer_name);
+		}else{
+			
+			fname = farmer_name.substring(0, space);
+			lname= farmer_name.substring(space, farmer_name.length());
+			lname = lname.trim();
+			
+			client.AddParam("firstname", fname);
+			client.AddParam("lastname", lname);
+		}
+	}
+	
+	private void addAreaParam(String value, RESTServiceObj client){
+		
+		if(district.equals("") && extension.equals("")){
+			client.AddParam("Parish", parish);
+			
+		}else if(parish.equals("") && district.equals("")){
+			client.AddParam("Extension", extension);
+			
+		}else{
+			client.AddParam("District", district);
+		}
+	}
+	
+	private void addCropParam(RESTServiceObj client){
+		if(!crop_type.equals("")){
+			client.AddParam("CropType", crop_type);
+			
+		}else{
+			client.AddParam("CropGroup", crop_group);
+		}
+	}
+	private void getAreaData(Intent intent){
+		if(intent.getStringExtra("AreaCol").equals("Parish")){
+			
+			parish = intent.getStringExtra("Parish");
+			Toast.makeText(Farms.this, "Parish: "+ parish, Toast.LENGTH_SHORT).show();
+			
+		}else if(intent.getStringExtra("AreaCol").equals("Extension")) {
+			
+			extension = intent.getStringExtra("Extension");
+			Toast.makeText(Farms.this, "Extension "+ extension, Toast.LENGTH_SHORT).show();
+			
+		}else{
+			
+			district = intent.getStringExtra("District");
+			Toast.makeText(Farms.this, "district "+ district, Toast.LENGTH_SHORT).show();
+		}
+	}
+	
+	private void getCropData(Intent intent){
+		if(intent.getStringExtra("CropCol").equals("Crop Type")){
+			
+			crop_type = intent.getStringExtra("Crop Type");
+			Toast.makeText(Farms.this, "Crop Type: "+ crop_type, Toast.LENGTH_SHORT).show();
+			
+		}else{
+			crop_group = intent.getStringExtra("Crop Group");
+			Toast.makeText(Farms.this, "Crop Group: "+ crop_group, Toast.LENGTH_SHORT).show();
+			
+		}
 	}
 
 }

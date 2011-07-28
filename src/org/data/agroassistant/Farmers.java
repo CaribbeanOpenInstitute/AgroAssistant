@@ -23,13 +23,15 @@ public class Farmers extends ListActivity {
 	
 	
 	private static String farmer_name = "", parish = "", extension = "", district = "";
-	private static String farmer_id = "", latitude = "", longitude = "";
+	private static String farmer_id = "";// latitude = "", longitude = "";
 	private String apiResponse;
 	private int dtlSelection;
 	private static ViewAnimator animator;
 	
 	private String mResponseError = "Unknown Error";
 	private boolean mInitialScreen = true;
+	
+	//private String[][] farmerResponseArray;
 	
 	
 	
@@ -105,6 +107,7 @@ public class Farmers extends ListActivity {
         	if( resultCode == RESULT_OK) {
         		//Call function to pull data from query
         		//for farmer search by ID or Name
+        		animator.setDisplayedChild(0);
         		if(intent.getStringExtra("column").equals("Farmer Name")){
         			
         			farmer_name = intent.getStringExtra("value");
@@ -128,7 +131,9 @@ public class Farmers extends ListActivity {
         			//Toast.makeText(Farmers.this, ""+ farmer_list.get(0).toString(), Toast.LENGTH_SHORT).show();
         			Toast.makeText(Farmers.this, "test" +"|"+ farmerResponse.get(0).toString() +"|"+ farmerResponse.size(), Toast.LENGTH_SHORT).show();
         			//~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
-        			/*Intent farmerIntent = new Intent();
+        			
+        			
+        			Intent farmerIntent = new Intent();
         			Bundle b = new Bundle();
         			b.putString("response", apiResponse); // add return xml to bundle for next activity
         			farmerIntent.putExtras(b);
@@ -382,5 +387,20 @@ public class Farmers extends ListActivity {
 			Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
 		}
 	}
+	
+	/*private String[][] toStringArray(List<FarmerObj> list){
+		
+		String[][] returnArray = new String[list.size()][4];
+		int count = 0;
+		for(count = 0; count < list.size(); count++){
+			
+			returnArray[count][0] = list.get(count).getFarmerFName();
+			returnArray[count][1] = list.get(count).getFarmerLName();
+			returnArray[count][2] = "" + list.get(count).getFarmerID();
+			returnArray[count][3] = list.get(count).getFarmerSize();
+									
+		}
+		return returnArray;
+	}*/
 	
 }
