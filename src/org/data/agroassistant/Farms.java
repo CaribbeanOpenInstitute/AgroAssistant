@@ -38,7 +38,7 @@ public class Farms extends ListActivity{
 	private String apiResponse;
 	
 	private String mResponseError = "Unknown Error";
-	private boolean mInitialScreen = true;
+	//private boolean mInitialScreen = true;
 	
 	private int dtlSelection;
 	

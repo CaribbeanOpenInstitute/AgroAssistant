@@ -106,7 +106,7 @@ public class Farmers extends ListActivity {
         Intent searchResultIntent = new Intent();
 		Bundle searchResultBundle = new Bundle();
 
-		animator.setDisplayedChild(0);
+		//animator.setDisplayedChild(0);
 
         //TODO: Receive query from search functions
         if (requestCode == FNAME_SEARCH) {

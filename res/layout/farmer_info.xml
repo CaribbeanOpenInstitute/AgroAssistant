@@ -1,0 +1,53 @@
+
+    <LinearLayout android:id="@+id/farmerinfo" 
+    android:layout_width="fill_parent" 
+    android:layout_height="fill_parent"
+    android:orientation="vertical"
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:paddingLeft="15dp"
+  	android:paddingRight="15dp"
+  	android:weightSum="1">
+    
+    <TextView android:id="@+id/info_nameStr"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="Farmer Name" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<TextView android:id="@+id/info_farmername"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="name" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+		android:background="#90909090" />
+		
+	<TextView android:id="@+id/info_idStr"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="ID" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<TextView android:id="@+id/info_farmerid"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="id" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+		android:background="#90909090" />
+	
+	<TextView android:id="@+id/info_sizeStr"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="Farmer Size" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<TextView android:id="@+id/info_farmersize"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="size" android:textSize="18sp"
+		android:paddingTop="5dp" android:paddingBottom="10dp">
+	</TextView>
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+		android:background="#90909090" />
+    </LinearLayout>
+    
