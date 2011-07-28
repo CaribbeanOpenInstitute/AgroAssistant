@@ -1,23 +1,14 @@
 package org.data.agroassistant;
 
-import static android.provider.BaseColumns._ID;
 import static org.data.agroassistant.Constants.*;
-import static org.data.agroassistant.Constants.FARMER_FNAME;
-import static org.data.agroassistant.Constants.FARMER_ID;
-import static org.data.agroassistant.Constants.FARMER_LNAME;
-import static org.data.agroassistant.Constants.FARMER_SEARCH;
-import static org.data.agroassistant.Constants.FARM_SEARCH;
-import static org.data.agroassistant.Constants.PRICE_SEARCH;
-
-import java.util.Arrays;
-
 import android.app.ListActivity;
+import android.content.Intent;
 import android.database.Cursor;
-import android.database.sqlite.SQLiteDatabase;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
 import android.widget.ListView;
+import android.widget.RelativeLayout;
 import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
@@ -28,7 +19,12 @@ public class ResultView extends ListActivity {
 	private int searchType;
 	private String searchParams;
 	
-	private static final int[] FARMER_TO = {android.R.id.text1, R.id.text2, android.R.id.text2};
+	private static final int[] FARMER_TO    = {android.R.id.text1, R.id.text2, android.R.id.text2};
+	
+	private static final int[] DTL_FARM_TO      = {R.id.dtl_result_propertyid, R.id.dtl_result_district, R.id.dtl_result_extension, R.id.dtl_result_parish};
+	
+	private static final String[] DTL_FARM_FROM = {FARM_ID, FARM_DISTRICT, FARM_EXTENSION, FARM_PARISH};
+	
 	
 	/*
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -46,6 +42,7 @@ public class ResultView extends ListActivity {
         searchType = searchResultBundle.getInt("searchType");
         //final String searchResponse = searchResultBundle.getString("searchResponse");
         final String searchParams = searchResultBundle.getString("searchParams");
+        
 		
 		
         
@@ -64,13 +61,20 @@ public class ResultView extends ListActivity {
 	        	resultsCursor = agroDB.rawQuery(FARMERS_TABLE, FROM_S_FARMERS, searchParams);
 	    		break;
 	        case (FARM_SEARCH):
-	        	//resultsCursor = agroDB.rawQuery(agroDB, FARMS_TABLE, FROM_S_FARMS, searchParams);
+	        	resultsCursor = agroDB.rawQuery( FARMS_TABLE, FROM_S_FARMS, searchParams);
+	        	break;
+	        case (FARMER_FARM_SEARCH):
+	        	
+	        	resultsCursor = agroDB.rawQuery( FARMS_TABLE, FROM_S_FARMS, searchParams);
 	        	break;
 	        case (CROP_SEARCH):
-	        	//resultsCursor = agroDB.rawQuery(agroDB, CROPS_TABLE, "FROM_S_CROPS", searchParams);
+	        	resultsCursor = agroDB.rawQuery( CROPS_TABLE, "FROM_S_CROPS", searchParams);
+	        	break;
+	        case (FARM_CROP_SEARCH):
+	        	resultsCursor = agroDB.rawQuery(CROPS_TABLE, "FROM_S_CROPS", searchParams);
 	        	break;
 	        case (PRICE_SEARCH):
-	        	//resultsCursor = agroDB.rawQuery(PRICES_TABLE, "FROM_PRICES", searchParams);
+	        	resultsCursor = agroDB.rawQuery(PRICES_TABLE, "FROM_PRICES", searchParams);
 	        	break;
 	        default:
 	        	break;
@@ -96,6 +100,11 @@ public class ResultView extends ListActivity {
         case (FARM_SEARCH):
         	//results = new SimpleCursorAdapter(this, R.layout.farm_row, cursor, new String[] {FEED_TITLE}, TO);
         	break;
+        case (FARMER_FARM_SEARCH):
+        	//RelativeLayout bar = (RelativeLayout) findViewById(R.id.home_menu_bar);
+    		//bar.setVisibility(8);
+    		results = new SimpleCursorAdapter(this, R.layout.dtl_farm_row, cursor, DTL_FARM_FROM, DTL_FARM_TO);
+        	break;
         case (CROP_SEARCH):
         	//results = new SimpleCursorAdapter(this, R.layout.crop_row, cursor, new String[] {FEED_TITLE}, TO);
         	break;
@@ -112,12 +121,29 @@ public class ResultView extends ListActivity {
     protected void onListItemClick(ListView l, View v, int position, long id) {
         super.onListItemClick(l, v, position, id);
         
-        Cursor cursor = (Cursor) getListAdapter().getItem(position);
-        String fid = cursor.getString(cursor.getColumnIndex(_ID));
-        String fname = cursor.getString(cursor.getColumnIndex(FARMER_FNAME));
-        String lname = cursor.getString(cursor.getColumnIndex(FARMER_LNAME));
-
+        Cursor cursor   = (Cursor) getListAdapter().getItem(position);
+        //String fid      = cursor.getString(cursor.getColumnIndex(_ID));
+        String fname    = cursor.getString(cursor.getColumnIndex(FARMER_FNAME));
+        String lname    = cursor.getString(cursor.getColumnIndex(FARMER_LNAME));
+        String size     = cursor.getString(cursor.getColumnIndex(FARMER_SIZE ));
+        String farmerid = cursor.getString(cursor.getColumnIndex(FARMER_ID   ));
+        
 		Toast.makeText(this, "You selected: " + fname + " " + lname, Toast.LENGTH_SHORT).show();
+		
+		Intent farmerintent = new Intent();
+		Bundle farmerdata   = new Bundle();
+		
+		farmerdata.putString("firstname", fname    );
+		farmerdata.putString("lastname" , lname    );
+		farmerdata.putString("farmerid" , farmerid );
+		farmerdata.putString("size"     , size     );
+		
+		farmerintent.putExtras(farmerdata);
+		
+		farmerintent.setClass(this, FarmerView.class);
+		startActivity(farmerintent);
+		finish();
+		
 		/*
         Intent i = new Intent(this, ArticlesList.class);
         i.putExtra("feed_id", cursor.getString(cursor.getColumnIndex(_ID)));

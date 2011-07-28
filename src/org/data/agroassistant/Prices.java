@@ -56,6 +56,9 @@ public class Prices extends ListActivity {
 					break;
 				case 3:
 					Toast.makeText(Prices.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
+					farmerSearchIntent.setClass(Prices.this, DetailSearch.class);
+					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
+					
 					break;
 				default:
 					Toast.makeText(Prices.this, "Error: The option you selected does not exist", Toast.LENGTH_SHORT).show();

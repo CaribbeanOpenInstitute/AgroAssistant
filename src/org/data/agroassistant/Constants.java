@@ -1,13 +1,16 @@
 package org.data.agroassistant;
 
+
 import android.provider.BaseColumns;
 
 public interface Constants extends BaseColumns {
 	
 	public static final int FARMER_SEARCH = 0;
 	public static final int FARM_SEARCH = 1;
-	public static final int CROP_SEARCH = 2;
-	public static final int PRICE_SEARCH = 3;
+	public static final int FARMER_FARM_SEARCH = 2;
+	public static final int CROP_SEARCH = 3;
+	public static final int FARM_CROP_SEARCH = 4;
+	public static final int PRICE_SEARCH = 5;
 	
 	/*====DATABASE CONSTANTS======================
 	 * Constants used by the database adapter class
@@ -58,6 +61,7 @@ public interface Constants extends BaseColumns {
 	public static final String[] FROM_FARMERS = {_ID, FARMER_ID, FARMER_FNAME, FARMER_LNAME, FARMER_SIZE};
 	public static final String[] FROM_FARMS = {_ID, FARM_ID, FARM_FARMER_ID, FARM_SIZE, FARM_PARISH, FARM_EXTENSION, FARM_DISTRICT, FARM_LAT, FARM_LONG};
 	public static final String[] FROM_CROPS = {_ID, CROP_ID, CROP_FARM_ID, CROP_GROUP, CROP_TYPE, CROP_AREA, CROP_COUNT, CROP_DATE, CROP_LAT, CROP_LONG};
+	
 	
 	public static final String FROM_S_FARMERS = _ID + ", " + FARMER_ID + ", " + FARMER_FNAME + ", " + FARMER_LNAME + ", " + FARMER_SIZE;
 	public static final String FROM_S_FARMS = _ID + ", " + FARM_ID + ", " + FARM_FARMER_ID + ", " + FARM_SIZE + ", " + FARM_PARISH + ", " + FARM_EXTENSION + ", " + FARM_DISTRICT + ", " + FARM_LAT + ", " + FARM_LONG;
