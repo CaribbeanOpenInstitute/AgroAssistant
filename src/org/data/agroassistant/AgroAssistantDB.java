@@ -22,6 +22,7 @@ import static org.data.agroassistant.Constants.FROM_CROPS;
 import static org.data.agroassistant.Constants.FROM_FARMERS;
 import static org.data.agroassistant.Constants.*;
 
+import java.util.Arrays;
 import java.util.Date;
 
 import android.content.ContentValues;
@@ -61,7 +62,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	+ CROP_COUNT + " integer not null, "
 	+ CROP_DATE + " text not null);"; 
 		
-	private static final int DATABASE_VERSION = 11;
+	private static final int DATABASE_VERSION = 14;
 	
 	private SQLiteDatabase db;
 	
@@ -116,9 +117,12 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	
 	public Cursor farmerRawQuery(String tableName, String tableColumns, String queryParams) {
 		db = this.getReadableDatabase();
-		Log.d("AgroAssistant", "Raw Query: SELECT " + tableColumns + " FROM " + tableName +" WHERE " + queryParams);
-		Cursor cursor = db.rawQuery("SELECT "+ tableColumns + " FROM " + tableName +" WHERE " + queryParams, null);
+		Log.d("AgroAssistant", "Raw Query: SELECT "+ tableColumns + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " WHERE " + queryParams + " GROUP BY " + FARMERS_TABLE +"."+FARMER_ID);
+		//Cursor cursor = db.rawQuery("SELECT "+ "*" + " FROM " + FARMERS_TABLE + " INNER JOIN " + FARMS_TABLE + " ON " + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID + " WHERE " + queryParams, null);
+		Cursor cursor = db.rawQuery("SELECT "+ tableColumns + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " WHERE " + queryParams, null);
+		
 		Log.d("AgroAssistant", "Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d("AgroAssistant", "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
 		return cursor;
 	}
 	
@@ -140,9 +144,9 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		} else {
 			ContentValues values = new ContentValues();
 			values.put(FARMER_ID, id);
-			values.put(FARMER_FNAME, firstname);
-			values.put(FARMER_LNAME, lastname);
-			values.put(FARMER_SIZE, farmersize);
+			values.put(FARMER_FNAME, firstname.toLowerCase());
+			values.put(FARMER_LNAME, lastname.toLowerCase());
+			values.put(FARMER_SIZE, farmersize.toLowerCase());
 			try {
 				db.insertOrThrow(FARMERS_TABLE, null, values);
 				Log.d("AgroAssistant", "Insert Farmer: " + id + " " + firstname + " " + lastname + " " + farmersize);
@@ -180,9 +184,9 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			values.put(FARM_SIZE, p_size);
 			values.put(FARM_LAT, latitude);
 			values.put(FARM_LONG, longtitude);
-			values.put(FARM_PARISH, p_parish);
-			values.put(FARM_EXTENSION, p_extension);
-			values.put(FARM_DISTRICT, p_district);
+			values.put(FARM_PARISH, p_parish.toLowerCase());
+			values.put(FARM_EXTENSION, p_extension.toLowerCase());
+			values.put(FARM_DISTRICT, p_district.toLowerCase());
 			
 			try {
 				db.insertOrThrow(FARMS_TABLE, null, values);
@@ -223,11 +227,11 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		} else {
 			ContentValues values = new ContentValues();
 			values.put(CROP_FARM_ID, pid);
-			values.put(CROP_GROUP, group);
-			values.put(CROP_TYPE, type);
+			values.put(CROP_GROUP, group.toLowerCase());
+			values.put(CROP_TYPE, type.toLowerCase());
 			values.put(CROP_AREA, area);
 			values.put(CROP_COUNT, count);
-			values.put(CROP_DATE, date);
+			values.put(CROP_DATE, date.toLowerCase());
 			
 			try {
 				db.insertOrThrow(CROPS_TABLE, null, values);

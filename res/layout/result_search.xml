@@ -3,7 +3,7 @@
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:layout_weight="1"
 	>
-	<include android:id="@+id/menu_bar" layout="@layout/farmers_bar"
+	<include android:id="@+id/menu_bar" layout="@layout/result_bar"
 		android:layout_weight="1" />
 	<ListView android:id="@+id/android:list" android:layout_width="fill_parent"
 		android:drawSelectorOnTop="false" android:layout_height="wrap_content"

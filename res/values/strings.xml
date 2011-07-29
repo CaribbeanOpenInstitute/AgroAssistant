@@ -84,5 +84,6 @@
 	<string name="FARMS_QUERY_URL">http://www.data.org.jm/api/farms.xml</string>
     <string name="CROPS_QUERY_URL">http://www.data.org.jm/api/crops.xml</string>
     <string name="PRICES_QUERY_URL">http://www.data.org.jm/api/prices.xml</string>    
-	    
+	
+	<string name="mnu_result_bar">Result Search</string>	    
 </resources>

@@ -60,11 +60,14 @@ public interface Constants extends BaseColumns {
 	
 	public static final String[] FROM_FARMERS = {_ID, FARMER_ID, FARMER_FNAME, FARMER_LNAME, FARMER_SIZE};
 	public static final String[] FROM_FARMS = {_ID, FARM_ID, FARM_FARMER_ID, FARM_SIZE, FARM_PARISH, FARM_EXTENSION, FARM_DISTRICT, FARM_LAT, FARM_LONG};
+	public static final String[] FROM_FARMERS_FARMS = {_ID, FARMER_ID, FARMER_FNAME, FARMER_LNAME, FARMER_SIZE, FARM_ID, FARM_FARMER_ID, FARM_SIZE, FARM_PARISH, FARM_EXTENSION, FARM_DISTRICT, FARM_LAT, FARM_LONG};
 	public static final String[] FROM_CROPS = {_ID, CROP_ID, CROP_FARM_ID, CROP_GROUP, CROP_TYPE, CROP_AREA, CROP_COUNT, CROP_DATE, CROP_LAT, CROP_LONG};
 	
 	
 	public static final String FROM_S_FARMERS = _ID + ", " + FARMER_ID + ", " + FARMER_FNAME + ", " + FARMER_LNAME + ", " + FARMER_SIZE;
 	public static final String FROM_S_FARMS = _ID + ", " + FARM_ID + ", " + FARM_FARMER_ID + ", " + FARM_SIZE + ", " + FARM_PARISH + ", " + FARM_EXTENSION + ", " + FARM_DISTRICT + ", " + FARM_LAT + ", " + FARM_LONG;
+	public static final String FROM_S_FARMERS_FARMS = FARMERS_TABLE+"."+_ID + ", " + FARMERS_TABLE+"."+FARMER_ID + ", " + FARMER_FNAME + ", " + FARMER_LNAME + ", " + FARMER_SIZE + ", " + FARM_PARISH + ", " + FARM_EXTENSION + ", " + FARM_DISTRICT;
+	public static final String FROM_S_FARMS_FARMERS = FARMS_TABLE+"."+_ID + ", " + FARMERS_TABLE+"."+FARMER_ID + ", " + FARMER_FNAME + ", " + FARMER_LNAME + ", " + FARMER_SIZE + ", " + FARM_ID + ", " + FARM_SIZE + ", " + FARM_PARISH + ", " + FARM_EXTENSION + ", " + FARM_DISTRICT + ", " + FARM_LAT + ", " + FARM_LONG;
 	public static final String FROM_S_CROPS = _ID + ", " + CROP_ID + ", " + CROP_FARM_ID + ", " + CROP_GROUP + ", " + CROP_TYPE + ", " + CROP_AREA + ", " + CROP_COUNT + ", " + CROP_DATE + ", " + CROP_LAT + ", " + CROP_LONG;
 	
 }

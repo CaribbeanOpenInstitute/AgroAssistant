@@ -1,0 +1,22 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+	android:id="@+id/home_menu_bar" android:layout_width="fill_parent"
+	android:layout_height="wrap_content" android:background="@drawable/bg_menu_bar">
+	
+	<ImageView android:id="@+id/ic_result_bar" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_alignParentLeft="true"
+		android:background="@drawable/ic_menu_farmer"
+	/>
+	<TextView android:id="@+id/title" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:text="@string/mnu_result_bar"
+		android:layout_toRightOf="@id/ic_result_bar"
+		android:layout_centerVertical="true"
+		android:textSize="25sp" android:paddingLeft="5dp" />
+
+	<View android:layout_height="30sp" android:layout_width="2px"
+		android:layout_alignLeft="@+id/search" android:layout_centerVertical="true"
+		android:background="#90909090" />
+
+	<ImageButton android:id="@+id/result_search" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_alignParentRight="true"
+		android:background="@drawable/ic_menu_search" android:paddingLeft="15dp" />
+</RelativeLayout>
