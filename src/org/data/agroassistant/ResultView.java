@@ -22,8 +22,11 @@ public class ResultView extends ListActivity {
 	private static final int[] FARMER_TO    = {android.R.id.text1, R.id.text2, android.R.id.text2};
 	
 	private static final int[] DTL_FARM_TO      = {R.id.dtl_result_propertyid, R.id.dtl_result_district, R.id.dtl_result_extension, R.id.dtl_result_parish};
+	private static final int[] FARM_TO      = {R.id.farm_result_farmerFname, R.id.farm_result_farmerLname, R.id.farm_result_propertyid, R.id.farm_result_district, R.id.farm_result_extension, R.id.farm_result_parish};
+	
 	
 	private static final String[] DTL_FARM_FROM = {FARM_ID, FARM_DISTRICT, FARM_EXTENSION, FARM_PARISH};
+	private static final String[] FARM_FROM = {FARMER_FNAME, FARMER_LNAME, FARM_ID, FARM_DISTRICT, FARM_EXTENSION, FARM_PARISH};
 	
 	
 	/*
@@ -98,11 +101,11 @@ public class ResultView extends ListActivity {
         	//results = new SimpleCursorAdapter(this, R.layout.farmer_row, cursor, new String[] {_ID, FARMER_ID, FARMER_FNAME, FARMER_LNAME, FARMER_SIZE}, new int[] {R.id.txt_row_id, R.id.txt_farmer_id, R.id.txt_farmer_fname, R.id.txt_farmer_lname, R.id.txt_farmer_size});
     		break;
         case (FARM_SEARCH):
-        	//results = new SimpleCursorAdapter(this, R.layout.farm_row, cursor, new String[] {FEED_TITLE}, TO);
+        	results = new SimpleCursorAdapter(this, R.layout.result_farm_row, cursor, FARM_FROM, FARM_TO);
         	break;
         case (FARMER_FARM_SEARCH):
-        	//RelativeLayout bar = (RelativeLayout) findViewById(R.id.home_menu_bar);
-    		//bar.setVisibility(8);
+        	RelativeLayout bar = (RelativeLayout) findViewById(R.id.menu_bar);
+    		bar.setVisibility(8);
     		results = new SimpleCursorAdapter(this, R.layout.dtl_farm_row, cursor, DTL_FARM_FROM, DTL_FARM_TO);
         	break;
         case (CROP_SEARCH):

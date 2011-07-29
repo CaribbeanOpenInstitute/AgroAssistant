@@ -8,34 +8,46 @@ android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/ap
 	android:mode="twoLine">
 
 	<TextView android:textAppearance="?android:attr/textAppearanceLarge"
-		android:id="@+id/farm_result_farmername" android:layout_width="wrap_content"
+		android:id="@+id/farm_result_farmerFname" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginLeft="2dip"
-		android:layout_marginTop="6dip" android:text="John Brown">
+		android:layout_marginTop="6dip" android:text="John"
+		android:textColor="#0F0F0F">
+	</TextView>
+	<TextView android:textAppearance="?android:attr/textAppearanceLarge"
+		android:id="@+id/farm_result_farmerLname" android:layout_width="wrap_content"
+		android:layout_height="wrap_content" android:layout_marginLeft="10dip"
+		android:layout_marginTop="6dip" android:text="Brown"
+		android:textColor="#0F0F0F" android:layout_toRightOf="@id/farm_result_farmerFname">
 	</TextView>
 	<TextView android:textAppearance="?android:attr/textAppearanceLarge"
 		android:id="@+id/farm_result_propertyid" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginLeft="2dip"
 		android:layout_marginTop="6dip" android:text="10100011"
-		android:layout_toRightOf="@id/farm_result_farmername">
+		android:layout_toRightOf="@id/farm_result_farmerLname"
+		android:textColor="#0F0F0F">
 	</TextView>
 	<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 		android:id="@+id/farm_result_district" android:layout_width="wrap_content"
-		android:layout_height="wrap_content" android:layout_below="@id/farm_result_farmername"
-		android:layout_marginLeft="2dip" android:text="district" android:layout_marginTop="6dip">
+		android:layout_height="wrap_content" android:layout_below="@id/farm_result_farmerFname"
+		android:layout_marginLeft="2dip" android:text="district" android:layout_marginTop="6dip"
+		android:textColor="#5E5E5E">
 	</TextView>
 	<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 		android:id="@+id/farm_result_extension" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginLeft="10dip"
 		android:layout_marginTop="6dip" android:text="extension"
 		android:layout_toRightOf="@id/farm_result_district" 
-		android:layout_below="@id/farm_result_farmername">
+		android:layout_below="@id/farm_result_farmerFname"
+		android:textColor="#5E5E5E">
 	</TextView>
+	
 	
 	<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 		android:id="@+id/farm_result_parish" android:layout_width="fill_parent"
-		android:layout_height="wrap_content" android:layout_below="@id/farm_result_farmername"
+		android:layout_height="wrap_content" android:layout_below="@id/farm_result_farmerFname"
 		android:text="parish" android:layout_toRightOf="@id/farm_result_extension"
-		android:layout_marginTop="6dip" android:layout_marginLeft="10dip" >
+		android:layout_marginTop="6dip" android:layout_marginLeft="10dip" 
+		android:textColor="#5E5E5E">
 	</TextView>
 
 

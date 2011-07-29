@@ -26,7 +26,7 @@
 		<activity android:name=".Crops" />
 		<!-- Search Activities  -->
 		<activity android:name=".DetailSearch" android:theme="@style/DialogTheme"></activity>
-		
+		<activity android:name=".DetailPriceSearch" android:theme="@style/DialogTheme"></activity>
 		<!-- Farmers search sub-activities --> 
 		<activity android:name=".FarmerDetailSearch" android:theme="@style/DialogTheme"></activity>
 		<activity android:name=".FarmerSearch" android:theme="@style/DialogTheme"></activity>

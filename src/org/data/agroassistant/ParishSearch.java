@@ -1,6 +1,7 @@
 package org.data.agroassistant;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
@@ -10,7 +11,7 @@ import android.widget.Spinner;
 import android.widget.Toast;
 
 public class ParishSearch extends Activity{
-	
+	private String parish;
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -32,8 +33,15 @@ public class ParishSearch extends Activity{
 
         public void onItemSelected(AdapterView<?> parent,
             View view, int pos, long id) {
+        	parish = parent.getItemAtPosition(pos).toString();
           Toast.makeText(parent.getContext(), "The parish is " +
-              parent.getItemAtPosition(pos).toString(), Toast.LENGTH_LONG).show();
+              parish, Toast.LENGTH_LONG).show();
+          Intent returnIntent = new Intent();
+          
+          returnIntent.putExtra("Parish", parish);
+          setResult(RESULT_OK,returnIntent);    	
+          finish();
+          
         }
 
         @SuppressWarnings("rawtypes")

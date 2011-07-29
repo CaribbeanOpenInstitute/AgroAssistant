@@ -171,11 +171,14 @@ public class Farmers extends ListActivity {
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
     			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
     		}else{
+    			Toast.makeText(Farmers.this, apiResponse, Toast.LENGTH_SHORT).show();
     			farmerResponse = parseResponse(apiResponse);
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
     			 */
+    			Toast.makeText(Farmers.this, ""+farmerResponse.get(0) + "|" + farmerResponse.size()+ "|" + queryParams, Toast.LENGTH_SHORT).show();
+    			
     			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
     			searchResultBundle.putInt("searchType", FARMER_SEARCH);
     			searchResultBundle.putString("searchParams", queryParams);

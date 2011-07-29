@@ -27,6 +27,7 @@ public class xmlParse {
 	private static ArrayList<CropObj>   cropList; 
 	private static ArrayList<FarmObj>   farmList ;
 	private static ArrayList<FarmerObj> farmerList;
+	private static ArrayList<PriceObj>  priceList;
 	
 	private AgroAssistantDB agroDB;
 		
@@ -37,6 +38,8 @@ public class xmlParse {
 		farmerList = new ArrayList<FarmerObj>();
 		farmList   = new ArrayList<FarmObj>();
 		cropList   = new ArrayList<CropObj>();
+		priceList  = new ArrayList<PriceObj>();
+		
 		try {
 		
 			dom = loadXMLFromString( xmlString);
@@ -82,6 +85,9 @@ public class xmlParse {
 	public ArrayList<FarmerObj> getFarmerList(){
 		return farmerList;
 	}
+	public ArrayList<PriceObj> getPriceList(){
+		return priceList;
+	}
 	
 	public String getDom(){
 		return dom.toString();
@@ -121,9 +127,12 @@ public class xmlParse {
 					cropList.add(crop);
 					
 				}else if(objType.equals("Price")){
+					PriceObj price = getPrice(el);
 					
+					priceList.add(price);
 				}else{
-					
+					// return error message 
+					// log error
 				}
 				
 				
@@ -188,6 +197,35 @@ public class xmlParse {
 		CropObj crop = new CropObj(farmid, group, type, area, count, date);
 		agroDB.insertCrop(farmid, group, type, area, count, date.toString());
 		return crop;
+		
+	}
+	
+	private PriceObj getPrice(Element PriceE){
+		Date date;
+		
+		//get the attributes of each object from the xml tags
+		String parish   = getTextValue ( PriceE , "Parish"   ) ;
+		String type 	= getTextValue ( PriceE , "CropType" ) ;
+		
+		
+		int uprice   = getIntValue  ( PriceE , "UpperPrice"  ) ;
+		int lprice   = getIntValue  ( PriceE , "LowerPrice"  ) ;
+		int fprice   = getIntValue  ( PriceE , "FreqPrice"   ) ;
+				
+		String supply    = getTextValue ( PriceE , "SupplyStatus" ) ;
+		String quality   = getTextValue ( PriceE , "Quality    "  ) ;
+		
+		String dateStr = getTextValue (PriceE, "PriceMonth");
+		try {
+			 date = new SimpleDateFormat("yyyy-MM-dd", Locale.ENGLISH).parse(dateStr);
+		}catch(ParseException e){
+			date = new Date(0,0,0);
+		}
+		
+		//Create a new crop with the value read from the xml nodes
+		PriceObj price = new PriceObj(parish, type, lprice, uprice, fprice, supply, quality, date);
+		//agroDB.insertPrice(parish, type, lprice, uprice, fprice, supply, quality, date.toString());
+		return price;
 		
 	}
 	

@@ -1,0 +1,133 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<LinearLayout
+  xmlns:android="http://schemas.android.com/apk/res/android"
+  android:orientation="vertical"
+  android:id="@+id/PricedtlSearch"
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:paddingLeft="15dp"
+  android:paddingRight="15dp" android:weightSum="1">
+  <ScrollView
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:id="@+id/price_dtl_scroll"
+  > 
+  <LinearLayout 
+  android:layout_width="fill_parent"
+  android:layout_height="wrap_content"
+  android:orientation="vertical"
+  >
+	  <TextView android:id="@+id/price_dtl_search_title"
+	  		android:textAppearance="?android:attr/textAppearanceLarge"
+			android:layout_width="wrap_content"
+			android:layout_height="wrap_content"
+			android:text="Detailed Search" 
+			android:textSize="18sp"
+			android:paddingTop="5dp"
+			android:paddingBottom="10dp">
+		</TextView>
+		<View android:layout_height="2px" android:layout_width="fill_parent"
+			android:layout_marginTop="5dp"
+			android:background="#90909090" />
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<TextView android:id="@+id/price_dtl_search_parishStr"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Parish" android:textSize="18sp"
+			android:paddingTop="5dp" android:paddingBottom="10dp">
+		</TextView>
+		<EditText android:id="@+id/price_dtl_search_parish"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:hint="Enter Parish" android:textSize="12sp">
+		</EditText>
+		<View android:layout_height="2px" android:layout_width="fill_parent"
+			android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+			android:background="#90909090" />
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<TextView android:id="@+id/price_dtl_search_cropStr"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Crop Type" android:textSize="18sp"
+			android:paddingTop="5dp" android:paddingBottom="10dp">
+		</TextView>
+		<EditText android:id="@+id/price_dtl_search_crop"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:hint="Enter Crop Type" android:textSize="12sp">
+		</EditText>
+		<View android:layout_height="2px" android:layout_width="fill_parent"
+			android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+			android:background="#90909090" />
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<TextView android:id="@+id/dtl_price_searchStr"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Crop Price" android:textSize="18sp"
+			android:paddingTop="5dp" android:paddingBottom="10dp">
+		</TextView>
+		<EditText android:id="@+id/dtl_price_search"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:hint="Enter Crop Price" android:textSize="12sp">
+		</EditText>
+		<RadioGroup android:id="@+id/rdgrp_price_dtlsearch"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:orientation="horizontal">
+			<RadioButton android:id="@+id/rdo_lower"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:text="Lower">
+			</RadioButton>
+			<RadioButton android:id="@+id/rdo_upper"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:text="Upper">
+			</RadioButton>
+			<RadioButton android:id="@+id/rdo_freq"
+				android:layout_width="wrap_content" android:layout_height="wrap_content"
+				android:text="Frequent">
+			</RadioButton>
+		</RadioGroup>
+		<View android:layout_height="2px" android:layout_width="fill_parent"
+			android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+			android:background="#90909090" />
+			
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<TextView android:id="@+id/price_dtl_search_suppStr"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Supply Status" android:textSize="18sp"
+			android:paddingTop="5dp" android:paddingBottom="10dp">
+		</TextView>
+		<EditText android:id="@+id/price_dtl_search_supp"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:hint="Enter Supply Status" android:textSize="12sp">
+		</EditText>
+		<View android:layout_height="2px" android:layout_width="fill_parent"
+			android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+			android:background="#90909090" />
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<TextView android:id="@+id/price_dtl_search_qualityStr"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Quality" android:textSize="18sp"
+			android:paddingTop="5dp" android:paddingBottom="10dp">
+		</TextView>
+		<EditText android:id="@+id/price_dtl_search_quality"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:hint="Enter Crop Quality" android:textSize="12sp">
+		</EditText>
+		<View android:layout_height="2px" android:layout_width="fill_parent"
+			android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+			android:background="#90909090" />
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<TextView android:id="@+id/price_dtl_search_PriceMStr"
+			android:layout_width="wrap_content" android:layout_height="wrap_content"
+			android:text="Price Month" android:textSize="18sp"
+			android:paddingTop="5dp" android:paddingBottom="10dp">
+		</TextView>
+		<EditText android:id="@+id/price_dtl_search_pricem"
+			android:layout_width="fill_parent" android:layout_height="wrap_content"
+			android:hint="YYYY-MM-DD" android:textSize="12sp">
+		</EditText>	
+		<View android:layout_height="2px" android:layout_width="fill_parent"
+			android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
+			android:background="#90909090" android:id="@+id/cropview"/>
+	<!-- ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~ -->
+		<Button android:layout_height="wrap_content" android:layout_gravity="center"
+		 	android:text="  Search Prices " android:id="@+id/btn_dtl_price_search" android:layout_weight="0.46" android:layout_width="106dp">
+		</Button>
+	</LinearLayout>
+	</ScrollView>
+  </LinearLayout>
