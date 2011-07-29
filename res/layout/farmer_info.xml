@@ -11,12 +11,15 @@
     <TextView android:id="@+id/info_nameStr"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="Farmer Name" android:textSize="18sp"
-		android:paddingTop="5dp" android:paddingBottom="10dp">
+		android:paddingTop="5dp" android:paddingBottom="10dp"
+		android:textColor="#090909" >
 	</TextView>
 	<TextView android:id="@+id/info_farmername"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="name" android:textSize="18sp"
-		android:paddingTop="5dp" android:paddingBottom="10dp">
+		android:paddingTop="5dp" android:paddingBottom="10dp"
+		android:textColor="#5E5E5E"
+		android:textAppearance="?android:attr/textAppearanceLarge" >
 	</TextView>
 	<View android:layout_height="2px" android:layout_width="fill_parent"
 		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
@@ -25,12 +28,15 @@
 	<TextView android:id="@+id/info_idStr"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="ID" android:textSize="18sp"
-		android:paddingTop="5dp" android:paddingBottom="10dp">
+		android:paddingTop="5dp" android:paddingBottom="10dp"
+		android:textColor="#090909" >
 	</TextView>
 	<TextView android:id="@+id/info_farmerid"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="id" android:textSize="18sp"
-		android:paddingTop="5dp" android:paddingBottom="10dp">
+		android:paddingTop="5dp" android:paddingBottom="10dp"
+		android:textColor="#5E5E5E"
+		android:textAppearance="?android:attr/textAppearanceLarge" >
 	</TextView>
 	<View android:layout_height="2px" android:layout_width="fill_parent"
 		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"
@@ -39,12 +45,15 @@
 	<TextView android:id="@+id/info_sizeStr"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="Farmer Size" android:textSize="18sp"
-		android:paddingTop="5dp" android:paddingBottom="10dp">
+		android:paddingTop="5dp" android:paddingBottom="10dp"
+		android:textColor="#090909" >
 	</TextView>
 	<TextView android:id="@+id/info_farmersize"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="size" android:textSize="18sp"
-		android:paddingTop="5dp" android:paddingBottom="10dp">
+		android:paddingTop="5dp" android:paddingBottom="10dp"
+		android:textColor="#5E5E5E"
+		android:textAppearance="?android:attr/textAppearanceLarge" >
 	</TextView>
 	<View android:layout_height="2px" android:layout_width="fill_parent"
 		android:layout_marginTop="5dp" android:layout_marginBottom="10dp"

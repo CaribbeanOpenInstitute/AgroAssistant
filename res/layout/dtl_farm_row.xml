@@ -10,26 +10,30 @@ android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/ap
 	<TextView android:textAppearance="?android:attr/textAppearanceLarge"
 		android:id="@+id/dtl_result_propertyid" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginLeft="2dip"
-		android:layout_marginTop="6dip" android:text="10100011">
+		 android:text="10100011" android:textColor="#090909">
 	</TextView>
 	<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 		android:id="@+id/dtl_result_district" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_below="@id/dtl_result_propertyid"
-		android:layout_marginLeft="2dip" android:text="district" android:layout_marginTop="6dip">
+		android:layout_marginLeft="2dip" android:text="district" 
+		android:layout_marginBottom="6dip" android:layout_marginTop="6dip"
+		android:textColor="#101010">
 	</TextView>
 	<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 		android:id="@+id/dtl_result_extension" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginLeft="10dip"
 		android:layout_marginTop="6dip" android:text="extension"
 		android:layout_toRightOf="@id/dtl_result_district" 
-		android:layout_below="@id/dtl_result_propertyid">
+		android:layout_below="@id/dtl_result_propertyid"
+		android:layout_marginBottom="6dip"  android:textColor="#101010">
 	</TextView>
 	
 	<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 		android:id="@+id/dtl_result_parish" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_below="@id/dtl_result_propertyid"
 		android:text="parish" android:layout_toRightOf="@id/dtl_result_extension"
-		android:layout_marginTop="6dip" android:layout_marginLeft="10dip" >
+		android:layout_marginTop="6dip" android:layout_marginLeft="10dip" 
+		android:layout_marginBottom="6dip"  android:textColor="#101010">
 	</TextView>
 
 
