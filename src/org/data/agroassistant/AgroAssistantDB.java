@@ -61,7 +61,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	+ CROP_COUNT + " integer not null, "
 	+ CROP_DATE + " text not null);"; 
 		
-	private static final int DATABASE_VERSION = 8;
+	private static final int DATABASE_VERSION = 11;
 	
 	private SQLiteDatabase db;
 	
@@ -73,25 +73,28 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	public void onCreate(SQLiteDatabase db) {
 		try {
 			db.execSQL(CREATE_TABLE_FARMERS);
-			Log.d("AgroAssistant", "Create Farmers table: " + CREATE_TABLE_FARMERS);
+			Log.d("AgroAssistant", "Create FARMERS table: " + CREATE_TABLE_FARMERS);
 			db.execSQL(CREATE_TABLE_FARMS);
-			Log.d("AgroAssistant", "Create Farms table: " + CREATE_TABLE_FARMS);
+			Log.d("AgroAssistant", "Create FARMS table: " + CREATE_TABLE_FARMS);
 			db.execSQL(CREATE_TABLE_CROPS);
-			Log.d("AgroAssistant", "Create Farms table: " + CREATE_TABLE_CROPS);
+			Log.d("AgroAssistant", "Create CROPS table: " + CREATE_TABLE_CROPS);
 		} catch (RuntimeException e) {
 			Log.d("AgroAssistant", "Unable to create tables: " + CREATE_TABLE_FARMERS);
 		}
-		
-		
 	}
 	
 	@Override
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.w("AgroAssistant", "Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");
-		db.execSQL("DROP TABLE IF EXISTS " + FARMERS_TABLE);
-		db.execSQL("DROP TABLE IF EXISTS " + FARMS_TABLE);
-		Log.d("AgroAssistant", "Upgrade step: " + "DROP TABLE IF EXISTS " + FARMERS_TABLE);
+		try {
+			db.execSQL("DROP TABLE IF EXISTS " + FARMERS_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + FARMS_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + CROPS_TABLE);
+		} catch (SQLException e) {
+			Log.d("AgroAssistant", "Upgrade step: " + "Unable to DROP TABLES");
+		}
+		
 		onCreate(db);
 	}
 	

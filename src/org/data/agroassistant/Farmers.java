@@ -7,6 +7,7 @@ import static org.data.agroassistant.Constants.*;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -172,6 +173,7 @@ public class Farmers extends ListActivity {
     			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
     		}else{
     			farmerResponse = parseResponse(apiResponse);
+    			Log.d("AgroAssistant", "Number of records returned from the database: "+farmerResponse.size());
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
