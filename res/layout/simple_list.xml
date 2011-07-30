@@ -9,19 +9,19 @@ android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/ap
 	<TextView android:textAppearance="?android:attr/textAppearanceLarge"
 		android:id="@android:id/text1" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_marginLeft="27dip"
-		android:layout_marginTop="6dip">
+		android:layout_marginTop="6dip" android:textColor="#0F0F0F">
 	</TextView>
 	
 	<TextView android:textAppearance="?android:attr/textAppearanceLarge"
 		android:id="@+id/text2" android:layout_width="fill_parent" android:layout_toRightOf="@android:id/text1"
 		android:layout_height="wrap_content" android:layout_marginLeft="10dip"
-		android:layout_marginTop="6dip">
+		android:layout_marginTop="6dip" android:textColor="#0F0F0F">
 	</TextView>
 
 	<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 		android:id="@android:id/text2" android:layout_width="fill_parent"
 		android:layout_height="wrap_content" android:layout_below="@android:id/text1"
-		android:layout_alignLeft="@android:id/text1">
+		android:layout_alignLeft="@android:id/text1" android:textColor="#5E5E5E">
 	</TextView>
 
 </TwoLineListItem>

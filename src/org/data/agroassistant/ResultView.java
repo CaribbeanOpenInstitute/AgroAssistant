@@ -150,6 +150,9 @@ public class ResultView extends ListActivity {
         	detailViewIntent.setClass(this, FarmView.class);
         	break;
         case (FARMER_FARM_SEARCH):
+        	detailViewIntent.setClass(this, FarmView.class);
+        	break;
+        case (FARM_CROP_SEARCH):
         	break;
         case (CROP_SEARCH):
         	detailViewData.putString("farmid", cursor.getString(cursor.getColumnIndex(CROP_FARM_ID )));
