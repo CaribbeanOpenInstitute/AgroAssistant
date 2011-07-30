@@ -4,7 +4,7 @@
 	
 	<ImageView android:id="@+id/ic_result_bar" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_alignParentLeft="true"
-		android:background="@drawable/ic_menu_farmer"
+		android:background="@drawable/ic_menu_list"
 	/>
 	<TextView android:id="@+id/title" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:text="@string/mnu_result_bar"

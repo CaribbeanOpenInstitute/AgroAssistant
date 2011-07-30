@@ -97,7 +97,6 @@ public class Crops extends ListActivity{
 					Toast.makeText(Crops.this, "Error: The option you selected does not exist", Toast.LENGTH_SHORT).show();
 					break;
 				}
-		      
 		    }
 		  });
     }
@@ -110,9 +109,8 @@ public class Crops extends ListActivity{
 		Bundle searchResultBundle = new Bundle();
         
         //TODO: Receive query from search functions
-        if( resultCode == RESULT_OK) {
-        	if (requestCode == CROP_SEARCH) {
-        	
+		if( resultCode == RESULT_OK) {
+			if (requestCode == CROP_SEARCH) {
         		//Call function to pull data from query
         		//intent.
         		if(intent.getStringExtra("column").equals("Crop Type")){
@@ -239,7 +237,7 @@ public class Crops extends ListActivity{
     			 *finish Farmer search activity 
     			 */
     			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-    			searchResultBundle.putInt("searchType", FARM_SEARCH);
+    			searchResultBundle.putInt("searchType", CROP_SEARCH);
     			searchResultBundle.putString("searchParams", queryParams);
     			searchResultIntent.putExtras(searchResultBundle);
     			

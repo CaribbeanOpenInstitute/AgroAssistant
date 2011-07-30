@@ -174,7 +174,7 @@ public class Farmers extends ListActivity {
     		}else{
     			//Toast.makeText(Farmers.this, apiResponse, Toast.LENGTH_SHORT).show();
     			farmerResponse = parseResponse(apiResponse);
-    			Log.d("AgroAssistant", "Number of records returned from the database: "+farmerResponse.size());
+    			Log.d("AgroAssistant", "Number of records returned from the API: "+farmerResponse.size());
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
