@@ -1,7 +1,7 @@
 package org.data.agroassistant;
 
 //import android.app.Activity;
-import static org.data.agroassistant.Constants.FARM_SEARCH;
+import static org.data.agroassistant.Constants.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -11,6 +11,7 @@ import android.os.Bundle;
 import android.app.ListActivity;
 //import android.content.Intent;
 //import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -22,7 +23,7 @@ import android.widget.Toast;
  */
 public class Crops extends ListActivity{
 
-	static final int CROP_SEARCH = 0;
+	static final int CROP_TG_SEARCH = 0;
 	static final int AREA_SEARCH = 1;
 	static final int FNAME_SEARCH = 2;
 	static final int PROPERTY_SEARCH = 3;
@@ -35,7 +36,7 @@ public class Crops extends ListActivity{
 	private static String farmer_name = "", parish = "", extension = "", district = "", crop_type = "", crop_group = "";
 	private static String farmer_id = "", property_id = "", latitude = "", longitude = "";
 	private String apiResponse;
-	private String queryParams;
+	private String queryParams = "";
 	
 	private int dtlSelection;
 	private String mResponseError = "Unknown Error";
@@ -64,7 +65,7 @@ public class Crops extends ListActivity{
 		    	case 0:
 					Toast.makeText(Crops.this, "You selected to Search by Crop Type or Crop Group", Toast.LENGTH_SHORT).show();
 					cropSearchIntent.setClass(Crops.this, CropSearch.class);
-					startActivityForResult(cropSearchIntent,CROP_SEARCH);
+					startActivityForResult(cropSearchIntent,CROP_TG_SEARCH);
 					break;
 		    	case 1:
 					Toast.makeText(Crops.this, "You selected to Search by Parish", Toast.LENGTH_SHORT).show();
@@ -110,18 +111,18 @@ public class Crops extends ListActivity{
         
         //TODO: Receive query from search functions
 		if( resultCode == RESULT_OK) {
-			if (requestCode == CROP_SEARCH) {
+			if (requestCode == CROP_TG_SEARCH) {
         		//Call function to pull data from query
         		//intent.
         		if(intent.getStringExtra("column").equals("Crop Type")){
         			
         			crop_type = intent.getStringExtra("value");
         			Toast.makeText(Crops.this, "Crop Type: "+ crop_type, Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(crop_type, CROP_SEARCH);
+        			apiResponse = FetchCropData(crop_type, CROP_TG_SEARCH);
         		}else{
         			crop_group = intent.getStringExtra("value");
         			Toast.makeText(Crops.this, "Crop Group: "+ crop_group, Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(crop_group, CROP_SEARCH);
+        			apiResponse = FetchCropData(crop_group, CROP_TG_SEARCH);
         		}
         	} else if (requestCode == FNAME_SEARCH) {
         		//Call function to pull data from query
@@ -238,6 +239,7 @@ public class Crops extends ListActivity{
     			 */
     			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
     			searchResultBundle.putInt("searchType", CROP_SEARCH);
+    			Log.d("AgroAssistant", "Crop Search QueryParams: " + queryParams);
     			searchResultBundle.putString("searchParams", queryParams);
     			searchResultIntent.putExtras(searchResultBundle);
     			
@@ -361,6 +363,7 @@ public class Crops extends ListActivity{
     	if (response == null)
     		mResponseError = client.getErrorMessage();
     	
+    	queryParams = client.toString();
 		return response;
     }
 	

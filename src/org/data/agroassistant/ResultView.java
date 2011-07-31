@@ -23,10 +23,12 @@ public class ResultView extends ListActivity {
 	
 	private static final int[] DTL_FARM_TO      = {R.id.dtl_result_propertyid, R.id.dtl_result_district, R.id.dtl_result_extension, R.id.dtl_result_parish};
 	private static final int[] FARM_TO      = {R.id.farm_result_farmerFname, R.id.farm_result_farmerLname, R.id.farm_result_propertyid, R.id.farm_result_district, R.id.farm_result_extension, R.id.farm_result_parish};
+	private static final int[] CROP_TO      = {R.id.result_crop_group, R.id.result_crop_type, R.id.result_crop_propertyid, R.id.result_crop_area, R.id.result_crop_count, R.id.result_crop_date};
 	
 	
 	private static final String[] DTL_FARM_FROM = {FARM_ID, FARM_DISTRICT, FARM_EXTENSION, FARM_PARISH};
 	private static final String[] FARM_FROM = {FARMER_FNAME, FARMER_LNAME, FARM_ID, FARM_DISTRICT, FARM_EXTENSION, FARM_PARISH};
+	private static final String[] CROP_FROM = {CROP_GROUP, CROP_TYPE, CROP_FARM_ID, CROP_AREA, CROP_COUNT, CROP_DATE};
 	
 	
 	/*
@@ -109,7 +111,7 @@ public class ResultView extends ListActivity {
     		results = new SimpleCursorAdapter(this, R.layout.dtl_farm_row, cursor, DTL_FARM_FROM, DTL_FARM_TO);
         	break;
         case (CROP_SEARCH):
-        	//results = new SimpleCursorAdapter(this, R.layout.crop_row, cursor, new String[] {FEED_TITLE}, TO);
+        	results = new SimpleCursorAdapter(this, R.layout.result_crop_row, cursor, CROP_FROM, CROP_TO);
         	break;
         case (PRICE_SEARCH):
         	//results = new SimpleCursorAdapter(this, R.layout.price_row, cursor, new String[] {FEED_TITLE}, TO);

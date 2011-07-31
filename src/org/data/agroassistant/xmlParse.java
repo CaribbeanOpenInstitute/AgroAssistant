@@ -199,7 +199,7 @@ public class xmlParse {
 		
 		//Create a new crop with the value read from the xml nodes
 		CropObj crop = new CropObj(farmid, group, type, area, count, date);
-		agroDB.insertCrop(farmid, group, type, area, count, date.toString());
+		agroDB.insertCrop(farmid, group, type, area, count, dateStr);
 		return crop;
 		
 	}
