@@ -30,7 +30,7 @@ android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/ap
 		android:id="@+id/farm_result_district" android:layout_width="wrap_content"
 		android:layout_height="wrap_content" android:layout_below="@id/farm_result_farmerFname"
 		android:layout_marginLeft="2dip" android:text="district" android:layout_marginTop="6dip"
-		android:textColor="#5E5E5E">
+		android:textColor="#5E5E5E" android:layout_marginBottom="6dip">
 	</TextView>
 	<TextView android:textAppearance="?android:attr/textAppearanceSmall"
 		android:id="@+id/farm_result_extension" android:layout_width="wrap_content"
@@ -38,7 +38,7 @@ android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/ap
 		android:layout_marginTop="6dip" android:text="extension"
 		android:layout_toRightOf="@id/farm_result_district" 
 		android:layout_below="@id/farm_result_farmerFname"
-		android:textColor="#5E5E5E">
+		android:textColor="#5E5E5E" android:layout_marginBottom="6dip">
 	</TextView>
 	
 	
@@ -47,7 +47,7 @@ android:layout_height="fill_parent" xmlns:android="http://schemas.android.com/ap
 		android:layout_height="wrap_content" android:layout_below="@id/farm_result_farmerFname"
 		android:text="parish" android:layout_toRightOf="@id/farm_result_extension"
 		android:layout_marginTop="6dip" android:layout_marginLeft="10dip" 
-		android:textColor="#5E5E5E">
+		android:textColor="#5E5E5E" android:layout_marginBottom="6dip">
 	</TextView>
 
 
