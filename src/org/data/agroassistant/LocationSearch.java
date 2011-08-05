@@ -14,7 +14,6 @@ import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -69,7 +68,7 @@ public class LocationSearch extends MapActivity implements LocationListener{
     	btn_refresh.setOnClickListener(new OnClickListener() {
 				public void onClick(View v) {
 					timer1.cancel();
-					Toast.makeText(LocationSearch.this, R.string.btn_location_refresh_message, Toast.LENGTH_SHORT).show();
+					//Toast.makeText(LocationSearch.this, R.string.btn_location_refresh_message, //Toast.LENGTH_SHORT).show();
 					getLocation();
 				}
 			});
@@ -82,7 +81,7 @@ public class LocationSearch extends MapActivity implements LocationListener{
 				returnIntent.putExtra("latitude", currentLoc.getLatitude());
 				returnIntent.putExtra("longitude", currentLoc.getLongitude());
 				
-				//Toast.makeText(LocationSearch.this, "Latitude: " + Double.toString(currentLoc.getLatitude()) + "Longitude: " + Double.toString(currentLoc.getLongitude()) , Toast.LENGTH_SHORT).show();
+				////Toast.makeText(LocationSearch.this, "Latitude: " + Double.toString(currentLoc.getLatitude()) + "Longitude: " + Double.toString(currentLoc.getLongitude()) , //Toast.LENGTH_SHORT).show();
 				
 				setResult(RESULT_OK,returnIntent);
 				finish();

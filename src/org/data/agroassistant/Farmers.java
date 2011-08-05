@@ -7,6 +7,7 @@ import static org.data.agroassistant.Constants.*;
 import android.app.ListActivity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
@@ -61,27 +62,27 @@ public class Farmers extends ListActivity {
 		    	Intent farmerSearchIntent = new Intent();
 		    	switch (position) {
 				case 0:
-					Toast.makeText(Farmers.this, "You selected to Search by Farmer name", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Farmers.this, "You selected to Search by Farmer name", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, FarmerSearch.class);
 					startActivityForResult(farmerSearchIntent,FNAME_SEARCH);
 					break;
 				case 1:
-					Toast.makeText(Farmers.this, "You selected to Search by Parish", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Farmers.this, "You selected to Search by Parish", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, AreaSearch.class);
 					startActivityForResult(farmerSearchIntent,AREA_SEARCH);
 					break;
 				case 2:
-					Toast.makeText(Farmers.this, "You selected to Search by Location", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Farmers.this, "You selected to Search by Location", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, LocationSearch.class);
 					startActivityForResult(farmerSearchIntent,LOCATION_SEARCH);
 					break;
 				case 3:
-					Toast.makeText(Farmers.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Farmers.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, FarmerDetailSearch.class);
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
 					break;
 				default:
-					Toast.makeText(Farmers.this, "Error: The option you selected does not exist", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Farmers.this, "Error: The option you selected does not exist", Toast.LENGTH_SHORT).show();
 					break;
 				}
 		      // When clicked, show a toast with the TextView text
@@ -119,19 +120,19 @@ public class Farmers extends ListActivity {
     			if(intent.getStringExtra("column").equals("Parish")){
 
         			parish = intent.getStringExtra("value");
-        			Toast.makeText(Farmers.this, "Parish: "+ parish, Toast.LENGTH_SHORT).show();
+        			//Toast.makeText(Farmers.this, "Parish: "+ parish, Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmerData(parish, AREA_SEARCH);
 
         		}else if(intent.getStringExtra("column").equals("Extension")) {
 
         			extension = intent.getStringExtra("value");
-        			Toast.makeText(Farmers.this, "Extension "+ extension, Toast.LENGTH_SHORT).show();
+        			//Toast.makeText(Farmers.this, "Extension "+ extension, Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmerData(extension, AREA_SEARCH);
 
         		}else if(intent.getStringExtra("column").equals("District")) {
 
         			district = intent.getStringExtra("value");
-        			Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
+        			//Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmerData(district, AREA_SEARCH);
         		}
 	    	} else if (requestCode == LOCATION_SEARCH) {
@@ -161,7 +162,7 @@ public class Farmers extends ListActivity {
 
     				break;
         		default:
-        			Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
+        			//Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
         		}
 
         		apiResponse = fetchFarmerData("", DETAILED_SEARCH);
@@ -171,13 +172,14 @@ public class Farmers extends ListActivity {
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
     			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
     		}else{
-    			Toast.makeText(Farmers.this, apiResponse, Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(Farmers.this, apiResponse, Toast.LENGTH_SHORT).show();
     			farmerResponse = parseResponse(apiResponse);
+    			Log.d("AgroAssistant", "Number of records returned from the API: "+farmerResponse.size());
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
     			 */
-    			Toast.makeText(Farmers.this, ""+farmerResponse.get(0) + "|" + farmerResponse.size()+ "|" + queryParams, Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(Farmers.this, ""+farmerResponse.get(0) + "|" + farmerResponse.size()+ "|" + queryParams, Toast.LENGTH_SHORT).show();
     			
     			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
     			searchResultBundle.putInt("searchType", FARMER_SEARCH);
@@ -189,7 +191,7 @@ public class Farmers extends ListActivity {
     			finish();
     		}
     	} else if( resultCode == RESULT_CANCELED) {
-        		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+        		//Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
     	}
 
     }

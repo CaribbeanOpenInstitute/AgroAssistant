@@ -10,7 +10,7 @@
 	</TextView>
 	<EditText android:id="@+id/fsearch_input"
 		android:layout_width="fill_parent" android:layout_height="wrap_content"
-		android:text="Enter farmer name or ID" android:textSize="12sp">
+		android:hint="Enter farmer name or ID" android:textSize="12sp">
 	</EditText>
 	<RelativeLayout android:layout_width="fill_parent"
 		android:layout_height="wrap_content">

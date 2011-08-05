@@ -20,7 +20,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 /**
  *
  * @author Gebre
@@ -59,7 +58,7 @@ public class Farms extends ListActivity{
 
 		  lv.setOnItemClickListener(new OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		      // When clicked, show a toast with the TextView text
+		      // When clicked, show a //Toast with the TextView text
 		    	
 		    	Intent farmSearchIntent = new Intent();
 		    	
@@ -85,7 +84,7 @@ public class Farms extends ListActivity{
 					startActivityForResult(farmSearchIntent,DETAILED_SEARCH);
 					break; 
 				default:
-					Toast.makeText(Farms.this, "Error: The option you selected does not exist", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Farms.this, "Error: The option you selected does not exist", //Toast.LENGTH_SHORT).show();
 					break;
 				}
 		    }
@@ -117,7 +116,7 @@ public class Farms extends ListActivity{
         		//Call function to pull data from query
         		//for farm search by Property ID
         		property_id = intent.getStringExtra("value");
-    			Toast.makeText(Farms.this, "Property ID "+ property_id, Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(Farms.this, "Property ID "+ property_id, //Toast.LENGTH_SHORT).show();
     			apiResponse = fetchFarmData(property_id, PROPERTY_SEARCH);
         		
         	} else if (requestCode == AREA_SEARCH) {
@@ -125,16 +124,16 @@ public class Farms extends ListActivity{
         		//for farmer search by parish Extension or District
     			if(intent.getStringExtra("column").equals("Parish")){
         			parish = intent.getStringExtra("value");
-        			Toast.makeText(Farms.this, "Parish: "+ parish, Toast.LENGTH_SHORT).show();
+        			//Toast.makeText(Farms.this, "Parish: "+ parish, //Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmData(parish, AREA_SEARCH);
         		}else if(intent.getStringExtra("column").equals("Extension")) {
         			extension = intent.getStringExtra("value");
-        			Toast.makeText(Farms.this, "Extension "+ extension, Toast.LENGTH_SHORT).show();
+        			//Toast.makeText(Farms.this, "Extension "+ extension, //Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmData(extension, AREA_SEARCH);
         			
         		}else{
         			district = intent.getStringExtra("value");
-        			Toast.makeText(Farms.this, "district "+ district, Toast.LENGTH_SHORT).show();
+        			//Toast.makeText(Farms.this, "district "+ district, //Toast.LENGTH_SHORT).show();
         			apiResponse = fetchFarmData(district, AREA_SEARCH);
         		}
 	        } else if (requestCode == LOCATION_SEARCH) {
@@ -179,12 +178,12 @@ public class Farms extends ListActivity{
         			
         			break;
         		default:
-        			Toast.makeText(Farms.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
+        			//Toast.makeText(Farms.this, "Error: This Makes no Sense", //Toast.LENGTH_SHORT).show();
         		}
         	}	
         	//Checks if API for data and acts accordingly
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-    			Toast.makeText(Farms.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(Farms.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
     		}else{
     			farmResponse = parseResponse(apiResponse);
     			/*
@@ -201,7 +200,7 @@ public class Farms extends ListActivity{
     			finish();
     		}
     	}else if( resultCode == RESULT_CANCELED) {
-        		Toast.makeText(Farms.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+        		//Toast.makeText(Farms.this, "Error: There was a problem requesting search", //Toast.LENGTH_SHORT).show();
     	}
     }
 //*****************************************************************************************************************************************
@@ -292,11 +291,11 @@ public class Farms extends ListActivity{
     			
     			break;
     		default:
-    			Toast.makeText(Farms.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(Farms.this, "Error: This Makes no Sense", //Toast.LENGTH_SHORT).show();
     		}
     		break;
     	default:
-    		Toast.makeText(Farms.this, "Something went Totally Wrong ", Toast.LENGTH_SHORT).show();
+    		//Toast.makeText(Farms.this, "Something went Totally Wrong ", //Toast.LENGTH_SHORT).show();
     		
     	}
 		
@@ -376,17 +375,17 @@ public class Farms extends ListActivity{
 		if(intent.getStringExtra("AreaCol").equals("Parish")){
 			
 			parish = intent.getStringExtra("Parish");
-			Toast.makeText(Farms.this, "Parish: "+ parish, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(Farms.this, "Parish: "+ parish, //Toast.LENGTH_SHORT).show();
 			
 		}else if(intent.getStringExtra("AreaCol").equals("Extension")) {
 			
 			extension = intent.getStringExtra("Extension");
-			Toast.makeText(Farms.this, "Extension "+ extension, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(Farms.this, "Extension "+ extension, //Toast.LENGTH_SHORT).show();
 			
 		}else{
 			
 			district = intent.getStringExtra("District");
-			Toast.makeText(Farms.this, "district "+ district, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(Farms.this, "district "+ district, //Toast.LENGTH_SHORT).show();
 		}
 	}
 	
@@ -394,11 +393,11 @@ public class Farms extends ListActivity{
 		if(intent.getStringExtra("CropCol").equals("Crop Type")){
 			
 			crop_type = intent.getStringExtra("Crop Type");
-			Toast.makeText(Farms.this, "Crop Type: "+ crop_type, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(Farms.this, "Crop Type: "+ crop_type, //Toast.LENGTH_SHORT).show();
 			
 		}else{
 			crop_group = intent.getStringExtra("Crop Group");
-			Toast.makeText(Farms.this, "Crop Group: "+ crop_group, Toast.LENGTH_SHORT).show();
+			//Toast.makeText(Farms.this, "Crop Group: "+ crop_group, //Toast.LENGTH_SHORT).show();
 			
 		}
 	}

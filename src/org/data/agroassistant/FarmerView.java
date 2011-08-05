@@ -59,17 +59,9 @@ public class FarmerView extends TabActivity{
 	                  .setContent(farmintent);
 	    tabHost.addTab(spec);
 
-	    /*ntent = new Intent().setClass(this, CropInfo.class);
-	    spec = tabHost.newTabSpec("cropInfo").setIndicator("Crops",
-	                      res.getDrawable(R.drawable.ic_menu_crop))
-	                  .setContent(intent);
-	    tabHost.addTab(spec);*/
-
 	    tabHost.setCurrentTab(0);
-	    
-	    
-	    
 	}
+	
 	private final String fetchFarmData(String column) {
 		
 		 RESTServiceObj client;
@@ -91,7 +83,7 @@ public class FarmerView extends TabActivity{
    	
    	if (response == null)
    		mResponseError = client.getErrorMessage();
-   	
+   	 
    		queryParams = client.toString();
 		return response;
    }

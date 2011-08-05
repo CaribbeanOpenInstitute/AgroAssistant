@@ -8,7 +8,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 public class FarmerSearch extends Activity{
 
@@ -30,13 +29,13 @@ public class FarmerSearch extends Activity{
 			public void onClick(View v) {
 				String userInput = edt_farmer_search.getText().toString();
 				if ( userInput.equals("") || userInput.length() < 1 ){
-					Toast.makeText(FarmerSearch.this, "Please enter a Farmer ID or Name\nThen select farmer fame or farmer id", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(FarmerSearch.this, "Please enter a Farmer ID or Name\nThen select farmer fame or farmer id", //Toast.LENGTH_SHORT).show();
 				}else{
 					
 					switch(rdg_farmer.getCheckedRadioButtonId()) {
 						case R.id.rdo_fname:
 							userInput = edt_farmer_search.getText().toString();
-							Toast.makeText(FarmerSearch.this, "Farmer Name: " + userInput, Toast.LENGTH_SHORT).show();
+							//Toast.makeText(FarmerSearch.this, "Farmer Name: " + userInput, //Toast.LENGTH_SHORT).show();
 							returnIntent.putExtra("selection", "1");
 							returnIntent.putExtra("column", "Farmer Name");
 							returnIntent.putExtra("value", userInput );
@@ -44,7 +43,7 @@ public class FarmerSearch extends Activity{
 					    	finish();
 							break;
 						case R.id.rdo_fid:
-							Toast.makeText(FarmerSearch.this, "Farmer ID: " + userInput, Toast.LENGTH_SHORT).show();
+							//Toast.makeText(FarmerSearch.this, "Farmer ID: " + userInput, //Toast.LENGTH_SHORT).show();
 							returnIntent.putExtra("selection", "2");
 							returnIntent.putExtra("column", "Farmer ID");
 							returnIntent.putExtra("value", userInput );
@@ -52,7 +51,7 @@ public class FarmerSearch extends Activity{
 					    	finish();
 							break;
 						case -1:
-							Toast.makeText(FarmerSearch.this, "Please check farmer fame or farmer id " + userInput , Toast.LENGTH_SHORT).show();
+							//Toast.makeText(FarmerSearch.this, "Please check farmer fame or farmer id " + userInput , //Toast.LENGTH_SHORT).show();
 							break;
 					}
 				}

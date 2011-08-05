@@ -7,9 +7,7 @@ import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.RadioButton;
 import android.widget.RadioGroup;
-import android.widget.Toast;
 
 public class AreaSearch extends Activity {
 	
@@ -33,7 +31,7 @@ public class AreaSearch extends Activity {
 				switch(rdg_area.getCheckedRadioButtonId()) {
 					case R.id.rdo_parish:
 						
-						Toast.makeText(AreaSearch.this, "Parish: " + userInput, Toast.LENGTH_SHORT).show();
+						//Toast.makeText(AreaSearch.this, "Parish: " + userInput, //Toast.LENGTH_SHORT).show();
 						
 						returnIntent.putExtra("column", "Parish");
 						returnIntent.putExtra("value", userInput );
@@ -41,21 +39,21 @@ public class AreaSearch extends Activity {
 				    	finish();
 						break;
 					case R.id.rdo_extension:
-						Toast.makeText(AreaSearch.this, "Extension: " + userInput, Toast.LENGTH_SHORT).show();
+						//Toast.makeText(AreaSearch.this, "Extension: " + userInput, //Toast.LENGTH_SHORT).show();
 						returnIntent.putExtra("column", "Extension");
 						returnIntent.putExtra("value", userInput );
 						setResult(RESULT_OK,returnIntent);    	
 				    	finish();
 						break;
 					case R.id.rdo_district:
-						Toast.makeText(AreaSearch.this, "District: " + userInput, Toast.LENGTH_SHORT).show();
+						//Toast.makeText(AreaSearch.this, "District: " + userInput, //Toast.LENGTH_SHORT).show();
 						returnIntent.putExtra("column", "District");
 						returnIntent.putExtra("value", userInput );
 						setResult(RESULT_OK,returnIntent);    	
 				    	finish();
 						break;
 					case -1:
-						Toast.makeText(AreaSearch.this, "Please check area to search", Toast.LENGTH_SHORT).show();
+						//Toast.makeText(AreaSearch.this, "Please check area to search", //Toast.LENGTH_SHORT).show();
 						break;
 				}
 					

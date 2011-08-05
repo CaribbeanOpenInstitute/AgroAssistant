@@ -2,12 +2,14 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
 	android:orientation="vertical" android:layout_width="fill_parent"
 	android:layout_height="fill_parent" android:layout_weight="1"
+	android:background="@drawable/bg_main"
 	>
-	<include android:id="@+id/menu_bar" layout="@layout/farmers_bar"
+	<include android:id="@+id/menu_bar" layout="@layout/result_bar"
 		android:layout_weight="1" />
 	<ListView android:id="@+id/android:list" android:layout_width="fill_parent"
 		android:drawSelectorOnTop="false" android:layout_height="wrap_content"
-		android:layout_weight="1" />
+		android:layout_weight="1" android:background="#00000000"
+		android:cacheColorHint="#00000000"/>
 	<TextView android:id="@+id/android:empty"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="Your query returned no records" />

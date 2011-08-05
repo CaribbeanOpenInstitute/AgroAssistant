@@ -114,14 +114,18 @@ public class xmlParse {
 				Element el = (Element) nl.item(i);
 				
 				if (objType.equals("Farm")){
+					FarmerObj farmer = getFarmer(el);
 					FarmObj farm = getFarm(el);
 					farmList.add(farm);
 					
 				}else if(objType.equals("Farmer")){
 					FarmerObj farmer = getFarmer(el);
+					FarmObj farm = getFarm(el);
 					farmerList.add(farmer);
 					
 				}else if(objType.equals("Crop")){
+					FarmerObj farmer = getFarmer(el);
+					FarmObj farm = getFarm(el);
 					CropObj crop = getCrop(el);
 					
 					cropList.add(crop);
@@ -195,7 +199,7 @@ public class xmlParse {
 		
 		//Create a new crop with the value read from the xml nodes
 		CropObj crop = new CropObj(farmid, group, type, area, count, date);
-		agroDB.insertCrop(farmid, group, type, area, count, date.toString());
+		agroDB.insertCrop(farmid, group, type, area, count, dateStr);
 		return crop;
 		
 	}
