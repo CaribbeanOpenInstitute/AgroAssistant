@@ -73,7 +73,7 @@ public class ResultView extends ListActivity {
 	        	resultsCursor = agroDB.rawQuery( FARMS_TABLE, FROM_S_FARMS, searchParams);
 	        	break;
 	        case (CROP_SEARCH):
-	        	resultsCursor = agroDB.rawQuery( CROPS_TABLE, FROM_S_CROPS, searchParams);
+	        	resultsCursor = agroDB.cropRawQuery( CROPS_TABLE, FROM_S_CROPS, searchParams);
 	        	break;
 	        case (FARM_CROP_SEARCH):
 	        	resultsCursor = agroDB.rawQuery(CROPS_TABLE, FROM_S_CROPS, searchParams);

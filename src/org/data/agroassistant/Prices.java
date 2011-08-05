@@ -12,7 +12,6 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class Prices extends ListActivity {
 	static final int CROP_SEARCH = 0;
@@ -52,33 +51,33 @@ public class Prices extends ListActivity {
 		    	Intent farmerSearchIntent = new Intent();
 		    	switch (position) {
 				case 0:
-					Toast.makeText(Prices.this, "You selected to Search by Crop Type", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Prices.this, "You selected to Search by Crop Type", //Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Prices.this, CropSearch.class);
 					startActivityForResult(farmerSearchIntent,CROP_SEARCH);
 					//Intent farmerIntent = new Intent(Farmers.this, FarmerNameSearch.class);
 					//startActivity(farmerIntent);
 					break;
 				case 1:
-					Toast.makeText(Prices.this, "You selected to Search by Parish", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Prices.this, "You selected to Search by Parish", //Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Prices.this, ParishSearch.class);
 					startActivityForResult(farmerSearchIntent,PARISH_SEARCH);
 					break;
 				case 2:
-					Toast.makeText(Prices.this, "You selected to Search by Location", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Prices.this, "You selected to Search by Location", //Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Prices.this, LocationSearch.class);
 					startActivityForResult(farmerSearchIntent,LOCATION_SEARCH);
 					break;
 				case 3:
-					Toast.makeText(Prices.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Prices.this, "You selected to Search by Detailed search", //Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Prices.this, DetailPriceSearch.class);
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
 					
 					break;
 				default:
-					Toast.makeText(Prices.this, "Error: The option you selected does not exist", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Prices.this, "Error: The option you selected does not exist", //Toast.LENGTH_SHORT).show();
 					break;
 				}
-		      // When clicked, show a toast with the TextView text
+		      // When clicked, show a //Toast with the TextView text
 		      
 		    }
 		  });
@@ -100,7 +99,7 @@ public class Prices extends ListActivity {
 	        	//Call function to pull data from query
         		//intent.
         		crop_type = intent.getStringExtra("value");
-        		Toast.makeText(Prices.this, "Crop Type: "+ crop_type, Toast.LENGTH_SHORT).show();
+        		//Toast.makeText(Prices.this, "Crop Type: "+ crop_type, //Toast.LENGTH_SHORT).show();
         		apiResponse = FetchPriceData(crop_type, CROP_SEARCH);
         		
         		
@@ -140,16 +139,16 @@ public class Prices extends ListActivity {
 	        
 	      //Checks if API for data and acts accordingly
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-    			Toast.makeText(Prices.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(Prices.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
     		}else{
-    			Toast.makeText(Prices.this, apiResponse, Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(Prices.this, apiResponse, //Toast.LENGTH_SHORT).show();
     			
     			priceResponse = parseResponse(apiResponse);
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
     			 */
-    			Toast.makeText(Prices.this, ""+priceResponse.get(0) + "|" + priceResponse.size()+ "|" + queryParams, Toast.LENGTH_SHORT).show();
+    			//Toast.makeText(Prices.this, ""+priceResponse.get(0) + "|" + priceResponse.size()+ "|" + queryParams, //Toast.LENGTH_SHORT).show();
     			
     			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
     			searchResultBundle.putInt("searchType", FARMER_SEARCH);
@@ -162,7 +161,7 @@ public class Prices extends ListActivity {
     			//*/
     		}
         }else if( resultCode == RESULT_CANCELED) {
-    		Toast.makeText(Prices.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+    		//Toast.makeText(Prices.this, "Error: There was a problem requesting search", //Toast.LENGTH_SHORT).show();
     		
     	}
     }
@@ -188,7 +187,7 @@ public class Prices extends ListActivity {
     		break;
     	    		
     	default:
-    		Toast.makeText(Prices.this, "Something went Totally Wrong ", Toast.LENGTH_SHORT).show();
+    		//Toast.makeText(Prices.this, "Something went Totally Wrong ", //Toast.LENGTH_SHORT).show();
     		break;
     	}
 		

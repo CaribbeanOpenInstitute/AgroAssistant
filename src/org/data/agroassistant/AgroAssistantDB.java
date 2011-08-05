@@ -131,6 +131,22 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		return cursor;
 	}
 	
+	public Cursor cropRawQuery(String tableName, String tableColumns, String queryParams) {
+		db = this.getReadableDatabase();
+		Cursor cursor = null;
+		String query = "SELECT "+ "*" + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " JOIN " + CROPS_TABLE + " ON " +  "(" + FARMS_TABLE +"."+FARM_ID + "=" + CROPS_TABLE +"."+CROP_FARM_ID  + ")" + " WHERE " + queryParams;
+		try {
+			cursor = db.rawQuery(query, null);
+			Log.d("AgroAssistant", "Crops Raw Query: " + query);
+		} catch (SQLException e) {
+			Log.e("AgroAssistant", "Crops raw Query Exception: " + e.toString());
+		}
+		
+		Log.d("AgroAssistant", "Farmer Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d("AgroAssistant", "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		return cursor;
+	}
+	
 	public Cursor getFarmers() {
 		db = this.getReadableDatabase();
 		Cursor cursor = db.query(FARMERS_TABLE, FROM_FARMERS, null, null, null, null, null);
