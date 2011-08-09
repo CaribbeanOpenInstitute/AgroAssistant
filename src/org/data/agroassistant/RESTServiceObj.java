@@ -62,7 +62,7 @@ public class RESTServiceObj {
 				//Checks if the column variable is "farmerid". If so then it inserts the table name into param name. 
 				//This prevents database error in JOIN
 				Log.d("AgroAssistant", "RESTServiceObj: To string function. p.getName = " + p.getName());
-				if (p.getName().equals("FarmerID"))
+				if ((p.getName().toLowerCase()).equals("farmerid"))
 					paramString = FARMERS_TABLE + "." + p.getName() + "=" + "'" +paramValue + "'";
 				else
 					paramString = p.getName() + "=" + "'" +paramValue + "'";
