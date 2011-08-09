@@ -27,6 +27,7 @@ public class FarmDetails extends MapActivity{
 	private OverlayItem overlayitem;
 	Drawable drawable;
 	ItemizedOverlay itemizedoverlay;
+	private String firstname, lastname, farmid, farmsize, farmer_id, parishStr, ext, dist;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -35,7 +36,37 @@ public class FarmDetails extends MapActivity{
 		setContentView(R.layout.farm_details);
 		initMapView();
 		
-	}
+		
+		final TextView farmername     = (TextView) findViewById(R.id.dtl_farm_farmername);
+        final TextView farmerid       = (TextView) findViewById(R.id.dtl_farm_farmerid);
+        final TextView propertysize   = (TextView) findViewById(R.id.dtl_farm_size);
+        final TextView propertyid     = (TextView) findViewById(R.id.dtl_farm_id);
+        final TextView parish         = (TextView) findViewById(R.id.dtl_farm_parish);
+        final TextView extension      = (TextView) findViewById(R.id.dtl_farm_ext);
+        final TextView district       = (TextView) findViewById(R.id.dtl_farm_dist);
+        
+        Bundle farminfo = getIntent().getExtras();
+        
+        firstname   =  farminfo.getString("firstname"  );
+        lastname    =  farminfo.getString("lastname"   );
+        farmer_id   =  farminfo.getString("farmerid"   );
+        farmsize	=  farminfo.getString("size"       );
+		farmid		=  farminfo.getString("farmid"     );
+		parishStr 	=  farminfo.getString("parish"     );
+		ext			=  farminfo.getString("extension"  );
+		dist		=   farminfo.getString("district"  );
+		
+		
+		farmername.setText(firstname + " " + lastname);
+        farmerid.setText(farmer_id);
+        propertysize.setText(farmsize);
+        propertyid.setText(farmid);
+        parish.setText(parishStr);
+        extension.setText(ext);
+        district.setText(dist);
+        
+        
+	}	
 	
 	@Override
 	protected boolean isRouteDisplayed() {

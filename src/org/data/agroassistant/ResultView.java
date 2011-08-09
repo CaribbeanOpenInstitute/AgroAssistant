@@ -70,7 +70,7 @@ public class ResultView extends ListActivity {
 	        	resultsCursor = agroDB.farmerRawQuery( FARMS_TABLE, FROM_S_FARMS_FARMERS, searchParams);
 	        	break;
 	        case (FARMER_FARM_SEARCH):
-	        	resultsCursor = agroDB.rawQuery( FARMS_TABLE, FROM_S_FARMS, searchParams);
+	        	resultsCursor = agroDB.farmerRawQuery( FARMS_TABLE, FROM_S_FARMS_FARMERS, searchParams);
 	        	break;
 	        case (CROP_SEARCH):
 	        	resultsCursor = agroDB.cropRawQuery( CROPS_TABLE, FROM_S_CROPS, searchParams);
@@ -79,7 +79,7 @@ public class ResultView extends ListActivity {
 	        	resultsCursor = agroDB.rawQuery(CROPS_TABLE, FROM_S_CROPS, searchParams);
 	        	break;
 	        case (PRICE_SEARCH):
-	        	resultsCursor = agroDB.rawQuery(PRICES_TABLE, "FROM_PRICES", searchParams);
+	        	//resultsCursor = agroDB.rawQuery(PRICES_TABLE, FROM_S_PRICES, searchParams);
 	        	break;
 	        default:
 	        	break;
@@ -108,13 +108,17 @@ public class ResultView extends ListActivity {
         case (FARMER_FARM_SEARCH):
         	RelativeLayout bar = (RelativeLayout) findViewById(R.id.menu_bar);
     		bar.setVisibility(8);
-    		results = new SimpleCursorAdapter(this, R.layout.dtl_farm_row, cursor, DTL_FARM_FROM, DTL_FARM_TO);
+    		results = new SimpleCursorAdapter(this, R.layout.dtl_farm_row, cursor, FARM_FROM, FARM_TO);
         	break;
         case (CROP_SEARCH):
         	results = new SimpleCursorAdapter(this, R.layout.result_crop_row, cursor, CROP_FROM, CROP_TO);
         	break;
+        case(FARM_CROP_SEARCH):
+        	results = new SimpleCursorAdapter(this, R.layout.result_crop_row, cursor, CROP_FROM, CROP_TO);
+    		break;
+    	
         case (PRICE_SEARCH):
-        	//results = new SimpleCursorAdapter(this, R.layout.price_row, cursor, new String[] {FEED_TITLE}, TO);
+        	//results = new SimpleCursorAdapter(this, R.layout.result_price_row, cursor, PRICE_FROM, {PRICE_TO);
         	break;
         default:
         	break;
@@ -147,14 +151,32 @@ public class ResultView extends ListActivity {
 			detailViewData.putString("parish"     , cursor.getString(cursor.getColumnIndex(FARM_PARISH   )));
 			detailViewData.putString("extension"     , cursor.getString(cursor.getColumnIndex(FARM_EXTENSION   )));
 			detailViewData.putString("district" , cursor.getString(cursor.getColumnIndex(FARM_DISTRICT )));
+			detailViewData.putString("size" , cursor.getString(cursor.getColumnIndex(FARM_SIZE )));
 			detailViewData.putString("lat"     , cursor.getString(cursor.getColumnIndex(FARM_LAT   )));
 			detailViewData.putString("long"     , cursor.getString(cursor.getColumnIndex(FARM_LONG   )));
         	detailViewIntent.setClass(this, FarmView.class);
         	break;
         case (FARMER_FARM_SEARCH):
+        	detailViewData.putString("firstname", cursor.getString(cursor.getColumnIndex(FARMER_FNAME)));
+			detailViewData.putString("lastname" , cursor.getString(cursor.getColumnIndex(FARMER_LNAME)));
+			detailViewData.putString("farmerid" , cursor.getString(cursor.getColumnIndex(FARMER_ID )));
+			detailViewData.putString("farmid" , cursor.getString(cursor.getColumnIndex(FARM_ID )));
+			detailViewData.putString("parish"     , cursor.getString(cursor.getColumnIndex(FARM_PARISH   )));
+			detailViewData.putString("extension"     , cursor.getString(cursor.getColumnIndex(FARM_EXTENSION   )));
+			detailViewData.putString("district" , cursor.getString(cursor.getColumnIndex(FARM_DISTRICT )));
+			detailViewData.putString("size" , cursor.getString(cursor.getColumnIndex(FARM_SIZE )));
+			detailViewData.putString("lat"     , cursor.getString(cursor.getColumnIndex(FARM_LAT   )));
+			detailViewData.putString("long"     , cursor.getString(cursor.getColumnIndex(FARM_LONG   )));
         	detailViewIntent.setClass(this, FarmView.class);
         	break;
         case (FARM_CROP_SEARCH):
+        	detailViewData.putString("farmid", cursor.getString(cursor.getColumnIndex(CROP_FARM_ID )));
+	    	detailViewData.putString("cropgroup", cursor.getString(cursor.getColumnIndex(CROP_GROUP)));
+	    	detailViewData.putString("croptype", cursor.getString(cursor.getColumnIndex(CROP_TYPE)));
+	    	detailViewData.putString("croparea", cursor.getString(cursor.getColumnIndex(CROP_AREA)));
+			detailViewData.putString("cropcount", cursor.getString(cursor.getColumnIndex(CROP_COUNT)));
+			detailViewData.putString("cropdate", cursor.getString(cursor.getColumnIndex(CROP_DATE)));
+			detailViewIntent.setClass(this, FarmView.class);
         	break;
         case (CROP_SEARCH):
         	detailViewData.putString("farmid", cursor.getString(cursor.getColumnIndex(CROP_FARM_ID )));

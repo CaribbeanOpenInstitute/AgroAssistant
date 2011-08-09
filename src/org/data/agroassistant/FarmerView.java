@@ -22,7 +22,9 @@ public class FarmerView extends TabActivity{
 	    Resources res = getResources(); // Resource object to get Drawables
 	    TabHost tabHost = getTabHost();  // The activity TabHost
 	    TabHost.TabSpec spec;  // Resusable TabSpec for each tab
+	    
 	    Intent farmerintent, farmintent;  // Reusable Intent for each tab
+	    
 	    Intent farmerdata = getIntent(); //intent containing farmer data passed from the calling activity
 	    
 	    Bundle farmerbundle = farmerdata.getExtras();

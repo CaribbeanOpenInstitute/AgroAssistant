@@ -14,10 +14,10 @@
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:orientation="vertical" android:gravity="left"
 				android:layout_gravity="left" >
-				<TextView android:id="@+id/widget53" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_farmernameStr" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="Farmer Name" >
 				</TextView>
-				<TextView android:id="@+id/widget54" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_farmername" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="TextView">
 				</TextView>
 			</LinearLayout>
@@ -25,10 +25,10 @@
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:orientation="vertical" android:layout_gravity="center"
 				android:gravity="center">
-				<TextView android:id="@+id/widget55" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_farmeridStr" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="Farmer ID">
 				</TextView>
-				<TextView android:id="@+id/widget56" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_farmerid" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="TextView">
 				</TextView>
 			</LinearLayout>
@@ -41,20 +41,20 @@
 			<LinearLayout android:id="@+id/widget46"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:orientation="vertical">
-				<TextView android:id="@+id/widget55" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_sizeStr" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="Property Size">
 				</TextView>
-				<TextView android:id="@+id/widget56" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_size" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="TextView">
 				</TextView>
 			</LinearLayout>
 			<LinearLayout android:id="@+id/widget47"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:orientation="vertical">
-				<TextView android:id="@+id/widget55" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_idStr" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="Property ID">
 				</TextView>
-				<TextView android:id="@+id/widget56" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_id" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="TextView">
 				</TextView>
 			</LinearLayout>
@@ -67,30 +67,30 @@
 			<LinearLayout android:id="@+id/widget48"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:orientation="vertical">
-				<TextView android:id="@+id/widget55" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_parishStr" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="Parish">
 				</TextView>
-				<TextView android:id="@+id/widget56" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_parish" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="TextView">
 				</TextView>
 			</LinearLayout>
 			<LinearLayout android:id="@+id/widget49"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:orientation="vertical">
-				<TextView android:id="@+id/widget55" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_extStr" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="Extension">
 				</TextView>
-				<TextView android:id="@+id/widget56" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_ext" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="TextView">
 				</TextView>
 			</LinearLayout>
 			<LinearLayout android:id="@+id/widget52"
 				android:layout_width="wrap_content" android:layout_height="wrap_content"
 				android:orientation="vertical">
-				<TextView android:id="@+id/widget55" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_distStr" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="District">
 				</TextView>
-				<TextView android:id="@+id/widget56" android:layout_width="wrap_content"
+				<TextView android:id="@+id/dtl_farm_dist" android:layout_width="wrap_content"
 					android:layout_height="wrap_content" android:text="TextView">
 				</TextView>
 			</LinearLayout>

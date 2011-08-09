@@ -48,7 +48,7 @@ public class Farmers extends ListActivity {
 		setContentView(R.layout.farmers_main);
 
 
-		//animator = (ViewAnimator)findViewById(R.id.anim);
+		animator = (ViewAnimator)findViewById(R.id.anim);
 
 		String[] farmerItems = getResources().getStringArray(R.array.ary_farmers_main);
 		this.setListAdapter(new AgroArrayAdapter(this, farmerItems));
@@ -59,6 +59,7 @@ public class Farmers extends ListActivity {
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+		    	animator.setDisplayedChild(1);
 		    	Intent farmerSearchIntent = new Intent();
 		    	switch (position) {
 				case 0:
@@ -82,7 +83,8 @@ public class Farmers extends ListActivity {
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
 					break;
 				default:
-					//Toast.makeText(Farmers.this, "Error: The option you selected does not exist", Toast.LENGTH_SHORT).show();
+					Toast.makeText(Farmers.this, "No Selection made", Toast.LENGTH_SHORT).show();
+					animator.setDisplayedChild(0);
 					break;
 				}
 		      // When clicked, show a toast with the TextView text
@@ -90,18 +92,20 @@ public class Farmers extends ListActivity {
 		    }
 		  });
 	}
-
+	
 	protected void onPreExecute() {
 		animator.setDisplayedChild(1);
 	}
 
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
+		
         super.onActivityResult(requestCode, resultCode, intent);
         farmerResponse = new ArrayList<FarmerObj>();
         Intent searchResultIntent = new Intent();
 		Bundle searchResultBundle = new Bundle();
-
+		
+		
 
 		if( resultCode == RESULT_OK) {
 			if (requestCode == FNAME_SEARCH) {
@@ -170,6 +174,7 @@ public class Farmers extends ListActivity {
 
 			//Checks if API for data and acts accordingly
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+    			animator.setDisplayedChild(0);
     			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
     		}else{
     			//Toast.makeText(Farmers.this, apiResponse, Toast.LENGTH_SHORT).show();
@@ -192,6 +197,7 @@ public class Farmers extends ListActivity {
     		}
     	} else if( resultCode == RESULT_CANCELED) {
         		//Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+    		animator.setDisplayedChild(0);
     	}
 
     }
