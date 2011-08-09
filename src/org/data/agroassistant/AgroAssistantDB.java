@@ -154,6 +154,13 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		return cursor;
 	}
 	
+	public Cursor getFarmer(String farmerID) {
+		db = this.getReadableDatabase();
+		Cursor cursor = db.query(FARMERS_TABLE, FROM_FARMERS, FARMER_ID + "=" + farmerID, null, null, null, null);
+		Log.d("AgroAssistant", "getFarmers: Cusor contains " + cursor.getCount() + " record(s)");
+		return cursor;
+	}
+	
 	public boolean insertFarmer(int id, String firstname, String lastname, String farmersize) {
 		db = this.getWritableDatabase();
 		//Checks if farmer already exists in the database
@@ -220,9 +227,39 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		return true;
 	}
 	
+	/*
+	 * Returns all the farms in the database
+	 */
 	public Cursor getFarms() {
 		db = this.getReadableDatabase();
 		Cursor cursor = db.query(FARMS_TABLE, FROM_FARMS, null, null, null, null, null);
+		return cursor;
+	}
+	
+	//Returns farms that belong to a particular farmer
+	public Cursor getFarms(String farmerID) {
+		db = this.getReadableDatabase();
+		Cursor cursor = db.query(FARMS_TABLE, FROM_FARMS, null, null, null, null, null);
+		String query = "SELECT "+ "*" + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " WHERE " + FARMERS_TABLE + "." + FARMER_ID + "=" + farmerID;
+		try {
+			cursor = db.rawQuery(query, null);
+			Log.d("AgroAssistant", "getFarms: " + query);
+		} catch (SQLException e) {
+			Log.e("AgroAssistant", "getFarms Exception: " + e.toString());
+		}
+		
+		Log.d("AgroAssistant", "getFarms: Returned " + cursor.getCount() + " record(s)");
+		Log.d("AgroAssistant", "getFarms: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		return cursor;
+	}
+	
+	/*
+	 * Returns the information for a particular farm from the farms table only
+	 */
+	public Cursor getFarm(String propertyID) {
+		db = this.getReadableDatabase();
+		Cursor cursor = db.query(FARMS_TABLE, FROM_FARMS, FARM_ID + "=" + propertyID, null, null, null, null);
+		Log.d("AgroAssistant", "getFar: Cusor contains " + cursor.getCount() + " record(s)");
 		return cursor;
 	}
 	
@@ -237,12 +274,17 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		}
 	}
 	
+	/*
+	 * Desc:	Inserts crop into DB
+	 * TODO:	Insert duplication validation is not working
+	 */
 	public boolean insertCrop(int pid, String group, String type, int area, int count, String date) {
 		db = this.getWritableDatabase();
 		//Checks if crop already exists in the database
 		//String insertVal = CROP_FARM_ID + "=" + pid + " AND " + CROP_TYPE + "=" + "'" + type +"'" + " AND " + CROP_DATE + "=" + "'" + date + "'" + " AND " + CROP_COUNT + "=" + count;
 		String insertVal = CROP_FARM_ID + "=" + pid + " AND " + CROP_TYPE + "=" + "'" + type +"'";
-		if ((db.query(CROPS_TABLE, FROM_CROPS, insertVal, null, null, null, null)).getCount() == 1) {
+		Log.d("AgroAssistant", "insertCrop validation" + insertVal);
+		if ((db.query(CROPS_TABLE, FROM_CROPS, insertVal, null, null, null, null)).getCount() >= 1) {
 			Log.d("AgroAssistant", "insertCrop: Crop " + pid + " already exist in table");
 		} else {
 			ContentValues values = new ContentValues();
@@ -268,6 +310,12 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	}
 	
 	public Cursor getCrops() {
+		db = this.getReadableDatabase();
+		Cursor cursor = db.query(CROPS_TABLE, FROM_CROPS, null, null, null, null, null);
+		return cursor;
+	}
+	
+	public Cursor getCrops(String propertyID) {
 		db = this.getReadableDatabase();
 		Cursor cursor = db.query(CROPS_TABLE, FROM_CROPS, null, null, null, null, null);
 		return cursor;
