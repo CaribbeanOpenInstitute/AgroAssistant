@@ -7,6 +7,7 @@ import java.io.InputStreamReader;
 import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
+import static org.data.agroassistant.Constants.FARMERS_TABLE;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -20,6 +21,8 @@ import org.apache.http.client.methods.HttpUriRequest;
 import org.apache.http.impl.client.DefaultHttpClient;
 import org.apache.http.message.BasicNameValuePair;
 import org.apache.http.protocol.HTTP;
+
+import android.util.Log;
 
 public class RESTServiceObj {
 
@@ -45,6 +48,7 @@ public class RESTServiceObj {
     @Override
     public String toString() {
     	String combinedParams = "";
+    	String paramString = "";
     	if(!params.isEmpty()){
             for(NameValuePair p : params)
             {
@@ -54,7 +58,15 @@ public class RESTServiceObj {
 				} catch (UnsupportedEncodingException e) {
 					e.printStackTrace();
 				}
-                String paramString = p.getName() + "=" + "'" +paramValue + "'";
+				
+				//Checks if the column variable is "farmerid". If so then it inserts the table name into param name. 
+				//This prevents database error in JOIN
+				Log.d("AgroAssistant", "RESTServiceObj: To string function. p.getName = " + p.getName());
+				if ((p.getName().toLowerCase()).equals("farmerid"))
+					paramString = FARMERS_TABLE + "." + p.getName() + "=" + "'" +paramValue + "'";
+				else
+					paramString = p.getName() + "=" + "'" +paramValue + "'";
+				
                 if(combinedParams.length() > 1)
                 {
                     combinedParams  +=  " AND " + paramString;
