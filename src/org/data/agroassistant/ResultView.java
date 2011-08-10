@@ -122,7 +122,7 @@ public class ResultView extends ListActivity {
     		break;
     	
         case (PRICE_SEARCH):
-        	//results = new SimpleCursorAdapter(this, R.layout.result_price_row, cursor, PRICE_FROM, {PRICE_TO);
+        	//results = new SimpleCursorAdapter(this, R.layout.result_price_row, cursor, PRICE_FROM, PRICE_TO);
         	break;
         default:
         	break;

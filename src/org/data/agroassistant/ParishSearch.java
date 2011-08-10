@@ -8,6 +8,7 @@ import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemSelectedListener;
 import android.widget.ArrayAdapter;
 import android.widget.Spinner;
+import android.widget.Toast;
 
 public class ParishSearch extends Activity{
 	private String parish;
@@ -33,8 +34,7 @@ public class ParishSearch extends Activity{
         public void onItemSelected(AdapterView<?> parent,
             View view, int pos, long id) {
         	parish = parent.getItemAtPosition(pos).toString();
-          //Toast.makeText(parent.getContext(), "The parish is " +
-          //    parish, //Toast.LENGTH_LONG).show();
+          Toast.makeText(parent.getContext(), "The parish is " + parish, Toast.LENGTH_LONG).show();
           Intent returnIntent = new Intent();
           
           returnIntent.putExtra("Parish", parish);

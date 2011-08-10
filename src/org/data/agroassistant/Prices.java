@@ -1,6 +1,6 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.FARMER_SEARCH;
+import static org.data.agroassistant.Constants.PRICE_SEARCH;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -12,6 +12,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class Prices extends ListActivity {
 	static final int CROP_SEARCH = 0;
@@ -139,7 +140,7 @@ public class Prices extends ListActivity {
 	        
 	      //Checks if API for data and acts accordingly
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-    			//Toast.makeText(Prices.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
+    			Toast.makeText(Prices.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
     		}else{
     			//Toast.makeText(Prices.this, apiResponse, //Toast.LENGTH_SHORT).show();
     			
@@ -151,7 +152,7 @@ public class Prices extends ListActivity {
     			//Toast.makeText(Prices.this, ""+priceResponse.get(0) + "|" + priceResponse.size()+ "|" + queryParams, //Toast.LENGTH_SHORT).show();
     			
     			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-    			searchResultBundle.putInt("searchType", FARMER_SEARCH);
+    			searchResultBundle.putInt("searchType", PRICE_SEARCH);
     			searchResultBundle.putString("searchParams", queryParams);
     			searchResultIntent.putExtras(searchResultBundle);
 
