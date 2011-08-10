@@ -8,6 +8,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import static org.data.agroassistant.Constants.FARMERS_TABLE;
+import static org.data.agroassistant.Constants.FARMS_TABLE;
 
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
@@ -62,10 +63,18 @@ public class RESTServiceObj {
 				//Checks if the column variable is "farmerid". If so then it inserts the table name into param name. 
 				//This prevents database error in JOIN
 				Log.d("AgroAssistant", "RESTServiceObj: To string function. p.getName = " + p.getName());
+				
 				if ((p.getName().toLowerCase()).equals("farmerid"))
 					paramString = FARMERS_TABLE + "." + p.getName() + "=" + "'" +paramValue + "'";
 				else
 					paramString = p.getName() + "=" + "'" +paramValue + "'";
+				
+				if ((p.getName().toLowerCase()).equals("propertyid"))
+					paramString = FARMS_TABLE + "." + p.getName() + "=" + "'" +paramValue + "'";
+				else
+					paramString = p.getName() + "=" + "'" +paramValue + "'";
+				
+				Log.d("AgroAssistant","RESTServiceObj: Add table to query params "+paramString);
 				
                 if(combinedParams.length() > 1)
                 {
