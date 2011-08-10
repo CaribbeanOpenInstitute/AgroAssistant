@@ -67,19 +67,11 @@ public class ResultView extends ListActivity {
 	        	resultsCursor = agroDB.farmerRawQuery(FARMERS_TABLE, FROM_S_FARMERS_FARMS, searchParams);
 	    		break;
 	        case (FARM_SEARCH):
-	        	if(searchParams.contains("farmerid")){
-	        		
-	    			searchParams = searchParams.replace("farmerid", "farms.farmerid");
-	    			Toast.makeText(ResultView.this, searchParams, Toast.LENGTH_LONG).show();
-	    		}
+	        	
 	        	resultsCursor = agroDB.farmerRawQuery( FARMS_TABLE, FROM_S_FARMS_FARMERS, searchParams);
 	        	break;
 	        case (FARMER_FARM_SEARCH):
-	        	if(searchParams.contains("farmerid")){
-	        		
-	    			searchParams = searchParams.replace("farmerid", "farms.farmerid");
-	    			Toast.makeText(ResultView.this, searchParams, Toast.LENGTH_LONG).show();
-	    		}
+	        	
 	        	resultsCursor = agroDB.farmerRawQuery( FARMS_TABLE, FROM_S_FARMS_FARMERS, searchParams);
 	        	break;
 	        case (CROP_SEARCH):
@@ -105,7 +97,7 @@ public class ResultView extends ListActivity {
 	private void showResults(Cursor cursor){
 		SimpleCursorAdapter results = null;
 		//Log.d("AgroAssistant", "showResults: Cusor contains " + cursor.getCount() + " record(s)");
-
+		RelativeLayout bar;
 		switch(searchType) {
         case(FARMER_SEARCH): 
         	//adapter = new SimpleCursorAdapter(this, android.R.layout.simple_list_item_2, cursor, new String[] {FARMER_ID, FARMER_LNAME}, new int[] {android.R.id.text1, android.R.id.text2});
@@ -116,7 +108,7 @@ public class ResultView extends ListActivity {
         	results = new SimpleCursorAdapter(this, R.layout.result_farm_row, cursor, FARM_FROM, FARM_TO);
         	break;
         case (FARMER_FARM_SEARCH):
-        	RelativeLayout bar = (RelativeLayout) findViewById(R.id.menu_bar);
+        	bar = (RelativeLayout) findViewById(R.id.menu_bar);
     		bar.setVisibility(8);
     		results = new SimpleCursorAdapter(this, R.layout.dtl_farm_row, cursor, DTL_FARM_FROM, DTL_FARM_TO);
         	break;
@@ -124,6 +116,8 @@ public class ResultView extends ListActivity {
         	results = new SimpleCursorAdapter(this, R.layout.result_crop_row, cursor, CROP_FROM, CROP_TO);
         	break;
         case(FARM_CROP_SEARCH):
+        	bar = (RelativeLayout) findViewById(R.id.menu_bar);
+			bar.setVisibility(8);
         	results = new SimpleCursorAdapter(this, R.layout.result_crop_row, cursor, CROP_FROM, CROP_TO);
     		break;
     	
