@@ -2,6 +2,12 @@ package org.data.agroassistant;
 
 import static android.provider.BaseColumns._ID;
 import static org.data.agroassistant.Constants.CROPS_TABLE;
+import static org.data.agroassistant.Constants.CROP_AREA;
+import static org.data.agroassistant.Constants.CROP_COUNT;
+import static org.data.agroassistant.Constants.CROP_DATE;
+import static org.data.agroassistant.Constants.CROP_FARM_ID;
+import static org.data.agroassistant.Constants.CROP_GROUP;
+import static org.data.agroassistant.Constants.CROP_TYPE;
 import static org.data.agroassistant.Constants.DATABASE_NAME;
 import static org.data.agroassistant.Constants.FARMERS_TABLE;
 import static org.data.agroassistant.Constants.FARMER_FNAME;
@@ -19,10 +25,9 @@ import static org.data.agroassistant.Constants.FARM_PARISH;
 import static org.data.agroassistant.Constants.FARM_SIZE;
 import static org.data.agroassistant.Constants.FROM_CROPS;
 import static org.data.agroassistant.Constants.FROM_FARMERS;
-import static org.data.agroassistant.Constants.*;
+import static org.data.agroassistant.Constants.FROM_FARMS;
 
 import java.util.Arrays;
-import java.util.Date;
 
 import android.content.ContentValues;
 import android.content.Context;
@@ -47,7 +52,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		+ FARM_FARMER_ID + " integer not null, "
 		+ FARM_SIZE + " text not null, "
 		+ FARM_PARISH + " text not null, "
-		+ FARM_EXTENSION + " text not null, "
+		+ FARM_EXTENSION + " text not null, "  
 		+ FARM_DISTRICT + " text not null, "
 		+ FARM_LAT + " long not null, "
 		+ FARM_LONG + " long not null);";
@@ -61,7 +66,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	+ CROP_COUNT + " integer not null, "
 	+ CROP_DATE + " text not null);"; 
 		
-	private static final int DATABASE_VERSION = 16;
+	private static final int DATABASE_VERSION = 17;
 	
 	private SQLiteDatabase db;
 	
