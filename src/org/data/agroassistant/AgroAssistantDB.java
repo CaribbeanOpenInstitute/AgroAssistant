@@ -128,6 +128,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		
 		Log.d("AgroAssistant", "Farmer Raw Query Result: Returned " + cursor.getCount() + " record(s)");
 		Log.d("AgroAssistant", "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		db.close();
 		return cursor;
 	}
 	
