@@ -16,6 +16,7 @@ import android.widget.Toast;
 import android.widget.ViewAnimator;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
+import android.widget.Toast;
 
 public class Prices extends ListActivity {
 	static final int CROP_SEARCH = 0;
