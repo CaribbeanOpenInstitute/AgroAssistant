@@ -54,8 +54,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		+ FARM_PARISH + " text not null, "
 		+ FARM_EXTENSION + " text not null, "  
 		+ FARM_DISTRICT + " text not null, "
-		+ FARM_LAT + " long not null, "
-		+ FARM_LONG + " long not null);";
+		+ FARM_LAT + " double not null, "
+		+ FARM_LONG + " double not null);";
 	
 	private static final String CREATE_TABLE_CROPS = "create table " + CROPS_TABLE + " ( " 
 	+ _ID + " integer primary key autoincrement, "
@@ -64,9 +64,9 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	+ CROP_TYPE + " text not null, "
 	+ CROP_AREA + " integer not null, "
 	+ CROP_COUNT + " integer not null, "
-	+ CROP_DATE + " text not null);"; 
+	+ CROP_DATE + " text not null);";
 		
-	private static final int DATABASE_VERSION = 17;
+	private static final int DATABASE_VERSION = 20;
 	
 	private SQLiteDatabase db;
 	
@@ -169,8 +169,9 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	
 	public boolean insertFarmer(int id, String firstname, String lastname, String farmersize) {
 		db = this.getWritableDatabase();
+		Cursor cursor = db.query(FARMERS_TABLE, FROM_FARMERS, FARMER_ID + "=" + id, null, null, null, null);
 		//Checks if farmer already exists in the database
-		if ((db.query(FARMERS_TABLE, FROM_FARMERS, FARMER_ID + "=" + id, null, null, null, null)).getCount() == 1) {
+		if (cursor.getCount() == 1) {
 			Log.d("AgroAssistant", "insertFarmer: Farmer " + firstname + " " + lastname + " already exist in table");
 		} else {
 			ContentValues values = new ContentValues();
@@ -181,7 +182,6 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			try {
 				db.insertOrThrow(FARMERS_TABLE, null, values);
 				Log.d("AgroAssistant", "Insert Farmer: " + id + " " + firstname + " " + lastname + " " + farmersize);
-				db.close();
 			}
 			catch (RuntimeException e) {
 				db.close();
@@ -189,6 +189,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 				return false;
 			}
 		}
+		cursor.close();
+		db.close();
 		return true;
 	}
 	
@@ -203,10 +205,11 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		}
 	}
 	
-	public boolean insertFarm(int fid, int pid, int p_size, int latitude, int longtitude, String p_parish, String p_extension, String p_district) {
+	public boolean insertFarm(int fid, int pid, int p_size, double latitude, double longtitude, String p_parish, String p_extension, String p_district) {
 		db = this.getWritableDatabase();
 		//Checks if farm already exists in the database
-		if ((db.query(FARMS_TABLE, FROM_FARMS, FARM_ID + "=" + pid, null, null, null, null)).getCount() == 1) {
+		Cursor cursor = db.query(FARMS_TABLE, FROM_FARMS, FARM_ID + "=" + pid, null, null, null, null);
+		if ((cursor).getCount() == 1) {
 			Log.d("AgroAssistant", "insertFarm: Farm " + pid + " already exist in table");
 		} else {
 			ContentValues values = new ContentValues();
@@ -222,14 +225,16 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			try {
 				db.insertOrThrow(FARMS_TABLE, null, values);
 				Log.d("AgroAssistant", "Insert Farm: " + fid + " " + pid + " " + p_size + " " + latitude + " " + longtitude + " " + p_extension + " " + p_district);
-				db.close();
 			}
 			catch (RuntimeException e) {
+				cursor.close();
 				db.close();
 				Log.e("AgroAssistant","Farm Insertion Exception: "+e.toString());
 				return false;
 			}
 		}
+		cursor.close();
+		db.close();
 		return true;
 	}
 	
@@ -290,7 +295,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		//String insertVal = CROP_FARM_ID + "=" + pid + " AND " + CROP_TYPE + "=" + "'" + type +"'" + " AND " + CROP_DATE + "=" + "'" + date + "'" + " AND " + CROP_COUNT + "=" + count;
 		String insertVal = CROP_FARM_ID + "=" + pid + " AND " + CROP_TYPE + "=" + "'" + type +"'";
 		Log.d("AgroAssistant", "insertCrop validation" + insertVal);
-		if ((db.query(CROPS_TABLE, FROM_CROPS, insertVal, null, null, null, null)).getCount() >= 1) {
+		Cursor cursor = db.query(CROPS_TABLE, FROM_CROPS, insertVal, null, null, null, null);
+		if ((cursor).getCount() >= 1) {
 			Log.d("AgroAssistant", "insertCrop: Crop " + pid + " already exist in table");
 		} else {
 			ContentValues values = new ContentValues();
@@ -312,6 +318,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 				return false;
 			}
 		}
+		cursor.close();
+		db.close();
 		return true;
 	}
 	
@@ -338,12 +346,16 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		}
 	}
 	
+	/*
+	 * TODO All price functions incomplete
+	 */
 	public boolean insertPrice(int pid, String group, String type, int area, int count, String date) {
 		db = this.getWritableDatabase();
 		//Checks if crop already exists in the database
 		//String insertVal = CROP_FARM_ID + "=" + pid + " AND " + CROP_TYPE + "=" + "'" + type +"'" + " AND " + CROP_DATE + "=" + "'" + date + "'" + " AND " + CROP_COUNT + "=" + count;
 		String insertVal = CROP_FARM_ID + "=" + pid + " AND " + CROP_TYPE + "=" + "'" + type +"'";
-		if ((db.query(CROPS_TABLE, FROM_CROPS, insertVal, null, null, null, null)).getCount() == 1) {
+		Cursor cursor = db.query(CROPS_TABLE, FROM_CROPS, insertVal, null, null, null, null);
+		if ((cursor).getCount() >= 1) {
 			Log.d("AgroAssistant", "insertCrop: Crop " + pid + " already exist in table");
 		} else {
 			ContentValues values = new ContentValues();

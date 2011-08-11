@@ -1,6 +1,6 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.FARM_CROP_SEARCH;
+import static org.data.agroassistant.Constants.*;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -95,7 +95,7 @@ private final String FetchCropData(String column) {
 		String excptn = "";
 		ArrayList<CropObj> list = new ArrayList<CropObj>();
 		
-		parser.parseXML("Crop");
+		parser.parseXML(CROPS_TABLE);
 		
 		try{
 

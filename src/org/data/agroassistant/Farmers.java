@@ -296,16 +296,13 @@ public class Farmers extends ListActivity {
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
     			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
     		}else{
-    			//Toast.makeText(Farmers.this, apiResponse, Toast.LENGTH_SHORT).show();
-    			//farmerResponse = parseResponse(apiResponse);
     			xmlParse parser = new xmlParse(Farmers.this, apiResponse);
-    			parser.parseXML("Farmer");
-    			Log.d("AgroAssistant", "Thread: Number of records returned from the API: "+farmerResponse.size());
+    			parser.parseXML(FARMERS_TABLE);
+    			
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
     			 */
-    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
     			searchResultBundle.putInt("searchType", searchType);
     			searchResultBundle.putString("searchParams", queryParams);
     			searchResultIntent.putExtras(searchResultBundle);
@@ -316,7 +313,8 @@ public class Farmers extends ListActivity {
     		}
 		}
 	}
-
+	
+	/*
 	private List<FarmerObj> parseResponse(String responseStr){
 
 		xmlParse parser = new xmlParse(Farmers.this, responseStr);
@@ -332,6 +330,8 @@ public class Farmers extends ListActivity {
 
 		return list;
 	}
+	*/
+	
 	private void addNames(String fullName, RESTServiceObj client){
 		String fname, lname;
 		fullName = fullName.trim();

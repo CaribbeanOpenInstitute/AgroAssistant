@@ -96,7 +96,7 @@ public class FarmerView extends TabActivity{
 		String excptn = "";
 		ArrayList<FarmObj> list = new ArrayList<FarmObj>();
 		
-		parser.parseXML("Farm");
+		parser.parseXML(FARMS_TABLE);
 		
 		try{
 

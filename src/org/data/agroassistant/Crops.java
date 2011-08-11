@@ -6,7 +6,9 @@ import static org.data.agroassistant.Constants.*;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.ListActivity;
 //import android.content.Intent;
@@ -14,6 +16,8 @@ import android.app.ListActivity;
 import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
+import android.widget.ViewAnimator;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 /**
@@ -32,6 +36,7 @@ public class Crops extends ListActivity{
 	
 	private static List<CropObj> cropResponse;
 	
+	private int searchType;
 	private static String farmer_name = "", parish = "", extension = "", district = "", crop_type = "", crop_group = "";
 	private static String farmer_id = "", property_id = "", latitude = "", longitude = "";
 	private String apiResponse;
@@ -40,13 +45,17 @@ public class Crops extends ListActivity{
 	private int dtlSelection;
 	private String mResponseError = "Unknown Error";
 	private boolean mInitialScreen = true;
+	private static ViewAnimator animator;
 	
 	
 	@Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.crops_main);
-
+        
+        searchType = CROP_SEARCH;
+        animator = (ViewAnimator)findViewById(R.id.anim);
+        
         String[] cropItems = getResources().getStringArray(R.array.ary_crops_main);
 		this.setListAdapter(new AgroArrayAdapter(this, cropItems));
 		//setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.listTitle, farmerItems));
@@ -117,11 +126,11 @@ public class Crops extends ListActivity{
         			
         			crop_type = intent.getStringExtra("value");
         			//Toast.makeText(Crops.this, "Crop Type: "+ crop_type, //Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(crop_type, CROP_TG_SEARCH);
+        			FetchCropData(crop_type, CROP_TG_SEARCH);
         		}else{
         			crop_group = intent.getStringExtra("value");
         			//Toast.makeText(Crops.this, "Crop Group: "+ crop_group, //Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(crop_group, CROP_TG_SEARCH);
+        			FetchCropData(crop_group, CROP_TG_SEARCH);
         		}
         	} else if (requestCode == FNAME_SEARCH) {
         		//Call function to pull data from query
@@ -130,11 +139,11 @@ public class Crops extends ListActivity{
         			
         			farmer_name = intent.getStringExtra("value");
         			//Toast.makeText(Crops.this, "Farmer Name: "+ farmer_name, //Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(farmer_name, FNAME_SEARCH);
+        			FetchCropData(farmer_name, FNAME_SEARCH);
         		}else{
         			farmer_id = intent.getStringExtra("value");
         			//Toast.makeText(Crops.this, "Farmer ID: "+ farmer_id, //Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(farmer_id, FNAME_SEARCH);
+        			FetchCropData(farmer_id, FNAME_SEARCH);
         		}
         	} else if (requestCode == AREA_SEARCH) {
         		//Call function to pull data from query
@@ -143,19 +152,19 @@ public class Crops extends ListActivity{
         			
         			parish = intent.getStringExtra("value");
         			//Toast.makeText(Crops.this, "Parish: "+ parish, //Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(parish, AREA_SEARCH);
+        			FetchCropData(parish, AREA_SEARCH);
         			
         		}else if(intent.getStringExtra("column").equals("Extension")) {
         			
         			extension = intent.getStringExtra("value");
         			//Toast.makeText(Crops.this, "Extension "+ extension, //Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(extension, AREA_SEARCH);
+        			FetchCropData(extension, AREA_SEARCH);
         			
         		}else{
         			
         			district = intent.getStringExtra("value");
         			//Toast.makeText(Crops.this, "district "+ district, //Toast.LENGTH_SHORT).show();
-        			apiResponse = FetchCropData(district, AREA_SEARCH);
+        			FetchCropData(district, AREA_SEARCH);
         			
         		}
     			
@@ -179,7 +188,7 @@ public class Crops extends ListActivity{
         		//for farm search by Property ID
         		property_id = intent.getStringExtra("value");
     			//Toast.makeText(Crops.this, "Property ID "+ property_id, //Toast.LENGTH_SHORT).show();
-    			apiResponse = FetchCropData(property_id, PROPERTY_SEARCH);
+    			FetchCropData(property_id, PROPERTY_SEARCH);
         		
 	        } else if (requestCode == LOCATION_SEARCH) {
 	        	
@@ -225,27 +234,27 @@ public class Crops extends ListActivity{
         		default:
         			//Toast.makeText(Crops.this, "Error: This Makes no Sense", //Toast.LENGTH_SHORT).show();
         		}
-        		apiResponse = FetchCropData("", DETAILED_SEARCH);
+        		FetchCropData("", DETAILED_SEARCH);
         	}
-        	//Checks if API for data and acts accordingly
-    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-    			//Toast.makeText(Crops.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
-    		}else{
-    			cropResponse = parseResponse(apiResponse);
-    			/*
-    			 *Call & pass necessary information to ResultView activity 
-    			 *finish Farmer search activity 
-    			 */
-    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-    			searchResultBundle.putInt("searchType", CROP_SEARCH);
-    			Log.d("AgroAssistant", "Crop Search QueryParams: " + queryParams);
-    			searchResultBundle.putString("searchParams", queryParams);
-    			searchResultIntent.putExtras(searchResultBundle);
-    			
-    			searchResultIntent.setClass(Crops.this, ResultView.class);
-    			startActivity(searchResultIntent);
-    			finish();
-    		}
+//        	//Checks if API for data and acts accordingly
+//    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+//    			//Toast.makeText(Crops.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
+//    		}else{
+//    			cropResponse = parseResponse(apiResponse);
+//    			/*
+//    			 *Call & pass necessary information to ResultView activity 
+//    			 *finish Farmer search activity 
+//    			 */
+//    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
+//    			searchResultBundle.putInt("searchType", CROP_SEARCH);
+//    			Log.d("AgroAssistant", "Crop Search QueryParams: " + queryParams);
+//    			searchResultBundle.putString("searchParams", queryParams);
+//    			searchResultIntent.putExtras(searchResultBundle);
+//    			
+//    			searchResultIntent.setClass(Crops.this, ResultView.class);
+//    			startActivity(searchResultIntent);
+//    			finish();
+//    		}
         } else if( resultCode == RESULT_CANCELED) {
     		//Toast.makeText(Crops.this, "Error: There was a problem requesting search", //Toast.LENGTH_SHORT).show();
     	}
@@ -253,7 +262,7 @@ public class Crops extends ListActivity{
     }
 	
 //*****************************************************************************************************************************************
-	private final String FetchCropData(String column, final int selection) {
+	private final void FetchCropData(String column, final int selection) {
 		
 		final RESTServiceObj client = new RESTServiceObj(getString(R.string.CROPS_QUERY_URL));
     	
@@ -351,20 +360,82 @@ public class Crops extends ListActivity{
     		
     	}
 		
-    	try {
-    	    client.Execute(RESTServiceObj.RequestMethod.GET);
-    	} catch (Exception e) {
-    	    e.printStackTrace();
-    	    mResponseError = client.getErrorMessage();
-    	    return null;
-    	}
+		queryParams = client.toString();
+		new apiRequest().execute(client);
+		/*
+		//if (db.queryExists(client.toString) {
+		//pull from DB
+		//else
+	    	try {	//Check here if Query in database
+
+	    	    client.Execute(RESTServiceObj.RequestMethod.GET);
+	    	} catch (Exception e) {
+	    	    e.printStackTrace();
+	    	    mResponseError = client.getErrorMessage();
+	    	    return null;
+	    	}
     	final String response = client.getResponse();
     	if (response == null)
     		mResponseError = client.getErrorMessage();
-    	
-    	queryParams = client.toString();
-		return response;
+
+    	*/
+		//return response;
     }
+	
+	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			//animator.setDisplayedChild(1);
+		}
+
+		@Override
+		protected String doInBackground(RESTServiceObj... client) {
+			//if (db.queryExists(client.toString) {
+			//pull from DB
+			//else
+		    	try {	//Check here if Query in database
+		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	} catch (Exception e) {
+		    	    e.printStackTrace();
+		    	    mResponseError = client[0].getErrorMessage();
+		    	    return null;
+		    	}
+	    	final String response = client[0].getResponse();
+	    	if (response == null)
+	    		mResponseError = client[0].getErrorMessage();
+			return response;
+		}
+		
+		@Override
+		protected void onPostExecute(String apiResponse) {
+			super.onPostExecute(apiResponse);
+			Intent searchResultIntent = new Intent();
+			Bundle searchResultBundle = new Bundle();
+			
+			//animator.setDisplayedChild(0);
+			
+			//Checks if API for data and acts accordingly
+    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+    			Toast.makeText(Crops.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    		}else{
+    			xmlParse parser = new xmlParse(Crops.this, apiResponse);
+    			parser.parseXML(CROPS_TABLE);
+    			
+    			/*
+    			 *Call & pass necessary information to ResultView activity
+    			 *finish Farmer search activity
+    			 */
+    			searchResultBundle.putInt("searchType", searchType);
+    			searchResultBundle.putString("searchParams", queryParams);
+    			searchResultIntent.putExtras(searchResultBundle);
+
+    			searchResultIntent.setClass(Crops.this, ResultView.class);
+    			startActivity(searchResultIntent);
+    			finish();
+    		}
+		}
+	}
 	
 	private List<CropObj> parseResponse(String responseStr){
 		
@@ -372,7 +443,7 @@ public class Crops extends ListActivity{
 		String excptn = "";
 		ArrayList<CropObj> list = new ArrayList<CropObj>();
 		
-		parser.parseXML("Crop");
+		parser.parseXML(CROPS_TABLE);
 		
 		try{
 

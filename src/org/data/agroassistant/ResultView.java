@@ -90,7 +90,7 @@ public class ResultView extends ListActivity {
 	        startManagingCursor(resultsCursor);
 	        showResults(resultsCursor);
         } finally {
-        	//agroDB.close();
+        	agroDB.close();
         }
 	}
 

@@ -1,15 +1,19 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.FARMER_SEARCH;
+import static org.data.agroassistant.Constants.*;
 
 import java.util.ArrayList;
 import java.util.List;
 
+
 import android.app.ListActivity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.AdapterView;
+import android.widget.Toast;
+import android.widget.ViewAnimator;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 
@@ -21,6 +25,7 @@ public class Prices extends ListActivity {
 	
 	private static List<PriceObj> priceResponse;
 	
+	private int searchType;
 	private static String parish = "", crop_type = "", uprice = "", lprice = "", fprice = "", supplyStatus = "", quality = "";
 	private static String farmer_id = "", property_id = "", latitude = "", longitude = "", priceMonth = "";
 	private String apiResponse;
@@ -29,15 +34,16 @@ public class Prices extends ListActivity {
 	private int dtlSelection;
 	private String mResponseError = "Unknown Error";
 	private boolean mInitialScreen = true;
+	private static ViewAnimator animator;
 	
-	//private LayoutInflater mInflater;
-	//private Vector<RowData> data;
-	//RowData rd;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.prices_main);
+		
+		searchType = PRICE_SEARCH;
+		animator = (ViewAnimator)findViewById(R.id.anim);
 		
 		String[] priceItems = getResources().getStringArray(R.array.ary_prices_main);
 		this.setListAdapter(new AgroArrayAdapter(this, priceItems));
@@ -100,13 +106,13 @@ public class Prices extends ListActivity {
         		//intent.
         		crop_type = intent.getStringExtra("value");
         		//Toast.makeText(Prices.this, "Crop Type: "+ crop_type, //Toast.LENGTH_SHORT).show();
-        		apiResponse = FetchPriceData(crop_type, CROP_SEARCH);
+        		FetchPriceData(crop_type, CROP_SEARCH);
         		
         		
 	        }else if (requestCode == PARISH_SEARCH){
 	        	
 	        	parish = intent.getStringExtra("Parish");
-	        	apiResponse = FetchPriceData(parish, PARISH_SEARCH);
+	        	FetchPriceData(parish, PARISH_SEARCH);
 	        	
 	        }else if (requestCode == LOCATION_SEARCH){
 	        	
@@ -132,41 +138,41 @@ public class Prices extends ListActivity {
 	        	quality      = intent.getStringExtra("Quality");
 	        	priceMonth   = intent.getStringExtra("Price Month");
 	        	
-	        	apiResponse = FetchPriceData("", DETAILED_SEARCH);
+	        	FetchPriceData("", DETAILED_SEARCH);
 	        }else{
 	        	// log error here
 	        }
 	        
-	      //Checks if API for data and acts accordingly
-    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-    			//Toast.makeText(Prices.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
-    		}else{
-    			//Toast.makeText(Prices.this, apiResponse, //Toast.LENGTH_SHORT).show();
-    			
-    			priceResponse = parseResponse(apiResponse);
-    			/*
-    			 *Call & pass necessary information to ResultView activity
-    			 *finish Farmer search activity
-    			 */
-    			//Toast.makeText(Prices.this, ""+priceResponse.get(0) + "|" + priceResponse.size()+ "|" + queryParams, //Toast.LENGTH_SHORT).show();
-    			
-    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-    			searchResultBundle.putInt("searchType", FARMER_SEARCH);
-    			searchResultBundle.putString("searchParams", queryParams);
-    			searchResultIntent.putExtras(searchResultBundle);
-
-    			searchResultIntent.setClass(Prices.this, ResultView.class);
-    			startActivity(searchResultIntent);
-    			finish();
-    			//*/
-    		}
+//	      //Checks if API for data and acts accordingly
+//    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+//    			//Toast.makeText(Prices.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
+//    		}else{
+//    			//Toast.makeText(Prices.this, apiResponse, //Toast.LENGTH_SHORT).show();
+//    			
+//    			priceResponse = parseResponse(apiResponse);
+//    			/*
+//    			 *Call & pass necessary information to ResultView activity
+//    			 *finish Farmer search activity
+//    			 */
+//    			//Toast.makeText(Prices.this, ""+priceResponse.get(0) + "|" + priceResponse.size()+ "|" + queryParams, //Toast.LENGTH_SHORT).show();
+//    			
+//    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
+//    			searchResultBundle.putInt("searchType", FARMER_SEARCH);
+//    			searchResultBundle.putString("searchParams", queryParams);
+//    			searchResultIntent.putExtras(searchResultBundle);
+//
+//    			searchResultIntent.setClass(Prices.this, ResultView.class);
+//    			startActivity(searchResultIntent);
+//    			finish();
+//    			//*/
+//    		}
         }else if( resultCode == RESULT_CANCELED) {
     		//Toast.makeText(Prices.this, "Error: There was a problem requesting search", //Toast.LENGTH_SHORT).show();
     		
     	}
     }
 	
-	private final String FetchPriceData(String column, final int selection) {
+	private final void FetchPriceData(String column, final int selection) {
 		
 		final RESTServiceObj client = new RESTServiceObj(getString(R.string.PRICES_QUERY_URL));
     	
@@ -196,15 +202,88 @@ public class Prices extends ListActivity {
     	} catch (Exception e) {
     	    e.printStackTrace();
     	    mResponseError = client.getErrorMessage();
-    	    return null;
+    	    //return null;
     	}
     	final String response = client.getResponse();
     	if (response == null)
     		mResponseError = client.getErrorMessage();
     	
     	queryParams = client.toString();
-		return response;
+		new apiRequest().execute(client);
+		/*
+		//if (db.queryExists(client.toString) {
+		//pull from DB
+		//else
+	    	try {	//Check here if Query in database
+
+	    	    client.Execute(RESTServiceObj.RequestMethod.GET);
+	    	} catch (Exception e) {
+	    	    e.printStackTrace();
+	    	    mResponseError = client.getErrorMessage();
+	    	    return null;
+	    	}
+    	final String response = client.getResponse();
+    	if (response == null)
+    		mResponseError = client.getErrorMessage();
+
+    	*/
+		//return response;
     }
+	
+	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			//animator.setDisplayedChild(1);
+		}
+
+		@Override
+		protected String doInBackground(RESTServiceObj... client) {
+			//if (db.queryExists(client.toString) {
+			//pull from DB
+			//else
+		    	try {	//Check here if Query in database
+		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	} catch (Exception e) {
+		    	    e.printStackTrace();
+		    	    mResponseError = client[0].getErrorMessage();
+		    	    return null;
+		    	}
+	    	final String response = client[0].getResponse();
+	    	if (response == null)
+	    		mResponseError = client[0].getErrorMessage();
+			return response;
+		}
+		
+		@Override
+		protected void onPostExecute(String apiResponse) {
+			super.onPostExecute(apiResponse);
+			Intent searchResultIntent = new Intent();
+			Bundle searchResultBundle = new Bundle();
+			
+			//animator.setDisplayedChild(0);
+			
+			//Checks if API for data and acts accordingly
+    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+    			Toast.makeText(Prices.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    		}else{
+    			xmlParse parser = new xmlParse(Prices.this, apiResponse);
+    			parser.parseXML(PRICES_TABLE);
+    			
+    			/*
+    			 *Call & pass necessary information to ResultView activity
+    			 *finish Farmer search activity
+    			 */
+    			searchResultBundle.putInt("searchType", searchType);
+    			searchResultBundle.putString("searchParams", queryParams);
+    			searchResultIntent.putExtras(searchResultBundle);
+
+    			searchResultIntent.setClass(Prices.this, ResultView.class);
+    			startActivity(searchResultIntent);
+    			finish();
+    		}
+		}
+	}
 	
 	private List<PriceObj> parseResponse(String responseStr){
 		
@@ -212,7 +291,7 @@ public class Prices extends ListActivity {
 		String excptn = "";
 		ArrayList<PriceObj> list = new ArrayList<PriceObj>();
 		
-		parser.parseXML("Price");
+		parser.parseXML(PRICES_TABLE);
 		
 		try{
 

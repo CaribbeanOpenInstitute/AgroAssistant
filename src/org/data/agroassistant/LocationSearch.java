@@ -11,6 +11,7 @@ import android.location.Location;
 import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
@@ -287,7 +288,7 @@ public class LocationSearch extends MapActivity implements LocationListener{
 		mapController.setZoom(16);
 	    mapView.setBuiltInZoomControls(true);
 	    
-	    drawable = this.getResources().getDrawable(R.drawable.androidmarker);
+	    drawable = this.getResources().getDrawable(R.drawable.marker);  
 	    
 	    //itemizedoverlay.onTap(index)
 	    
@@ -298,6 +299,7 @@ public class LocationSearch extends MapActivity implements LocationListener{
 		if (currentLoc != null) {
 	    	lat = currentLoc.getLatitude()*1E6;
 	    	lng = currentLoc.getLongitude()*1E6;
+	    	Log.w("AgroAssistant", "Latitude: " + lat + " Longtitude: " + lng);
 	    	currentPoint = new GeoPoint((int) lat , (int) lng );
 	    	
 	    	//Remove Previous Items

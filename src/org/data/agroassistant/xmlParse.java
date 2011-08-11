@@ -1,5 +1,6 @@
 package org.data.agroassistant;
 
+import static org.data.agroassistant.Constants.*;
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
@@ -100,7 +101,7 @@ public class xmlParse {
 
 		//get a nodelist of elements
 		String tag; 
-		if (objType.equals("Farmer")){
+		if (objType.equals(FARMERS_TABLE)){
 			tag = "Farm";
 		}else{
 			tag = objType;
@@ -113,24 +114,24 @@ public class xmlParse {
 				// get the element
 				Element el = (Element) nl.item(i);
 				
-				if (objType.equals("Farm")){
+				if (objType.equals(FARMS_TABLE)){
 					FarmerObj farmer = getFarmer(el);
 					FarmObj farm = getFarm(el);
 					farmList.add(farm);
 					
-				}else if(objType.equals("Farmer")){
+				}else if(objType.equals(FARMERS_TABLE)){
 					FarmerObj farmer = getFarmer(el);
 					FarmObj farm = getFarm(el);
 					farmerList.add(farmer);
 					
-				}else if(objType.equals("Crop")){
+				}else if(objType.equals(CROPS_TABLE)){
 					FarmerObj farmer = getFarmer(el);
 					FarmObj farm = getFarm(el);
 					CropObj crop = getCrop(el);
 					
 					cropList.add(crop);
 					
-				}else if(objType.equals("Price")){
+				}else if(objType.equals(PRICES_TABLE)){
 					PriceObj price = getPrice(el);
 					
 					priceList.add(price);
@@ -152,8 +153,9 @@ public class xmlParse {
 		int farmerid     = getIntValue  ( farmE , "FarmerID"     ) ;
 		int farmid       = getIntValue  ( farmE , "PropertyID"   ) ;
 		int propertySize = getIntValue  ( farmE , "Propertysize" ) ;
-		int latitude     = getIntValue  ( farmE , "Ycoord"       ) ;
-		int longitude    = getIntValue  ( farmE , "Xcoord"       );
+		double latitude     = Double.parseDouble(getTextValue  ( farmE , "Ycoord"       )) ;
+		double longitude    = Double.parseDouble(getTextValue  ( farmE , "Xcoord"       ));
+		
 		
 		String parish    = getTextValue ( farmE , "Parish"    ) ;
 		String extension = getTextValue ( farmE , "Extension" ) ;

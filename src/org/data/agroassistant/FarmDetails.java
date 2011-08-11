@@ -6,6 +6,7 @@ import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TextView;
 
 import com.google.android.maps.GeoPoint;
@@ -28,6 +29,7 @@ public class FarmDetails extends MapActivity{
 	Drawable drawable;
 	ItemizedOverlay itemizedoverlay;
 	private String firstname, lastname, farmid, farmsize, farmer_id, parishStr, ext, dist;
+	private Double lat, lng;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
@@ -55,7 +57,10 @@ public class FarmDetails extends MapActivity{
 		parishStr 	=  farminfo.getString("parish"     );
 		ext			=  farminfo.getString("extension"  );
 		dist		=   farminfo.getString("district"  );
+		lat			=  Double.parseDouble(farminfo.getString("lat"  ));
+		lng			=  Double.parseDouble(farminfo.getString("long"  ));
 		
+		updateMap();
 		
 		farmername.setText(firstname + " " + lastname);
         farmerid.setText(farmer_id);
@@ -64,8 +69,6 @@ public class FarmDetails extends MapActivity{
         parish.setText(parishStr);
         extension.setText(ext);
         district.setText(dist);
-        
-        
 	}	
 	
 	@Override
@@ -80,10 +83,39 @@ public class FarmDetails extends MapActivity{
 		mapController.setZoom(16);
 	    mapView.setBuiltInZoomControls(true);
 	    
+	    drawable = this.getResources().getDrawable(R.drawable.marker);
 	    
 	    //itemizedoverlay.onTap(index)
 	    
 	    mapOverlays = mapView.getOverlays();
+	}
+	
+	private void updateMap() {
+		Log.w("AgroAssistant", "updateMap: Enter Update map");
+    	int latitude = (int) (lat*1E6);
+    	int longtitude = (int) (lng*1E6);
+    	Log.w("AgroAssistant", "Calulated:: Latitude: " + lat + " Longtitude: " + lng);
+    	Log.w("AgroAssistant", "Calulated:: Latitude: " + latitude + " Longtitude: " + longtitude);
+    	currentPoint = new GeoPoint((int) latitude , (int) longtitude ); 
+    	
+    	//Remove Previous Items
+    	if(!mapOverlays.isEmpty()) {
+    		mapView.getOverlays().clear();
+    		mapOverlays.clear();
+    		mapView.invalidate();
+        }
+    	
+    	//Initialize map overlay
+	    mapOverlays = mapView.getOverlays();
+	    itemizedoverlay = new ItemizedOverlay(drawable, this);
+
+    	//Add new overlay item
+    	overlayitem = new OverlayItem(currentPoint, "Farm Brown", "This is your current location");
+    	itemizedoverlay.addOverlay(overlayitem);
+    	mapOverlays.add(itemizedoverlay);
+    	mapController.animateTo(currentPoint);
+    	Log.w("AgroAssistant", "updateMap: Added geoPoint and animating to");
+		
 	}
 
 }

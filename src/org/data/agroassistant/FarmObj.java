@@ -5,13 +5,13 @@ public class FarmObj{
 	private int farmer_id;
 	private int property_id;
 	private int property_size;
-	private int farm_lat;
-	private int farm_long;
+	private double farm_lat;
+	private double farm_long;
 	private String parish, extension, district;
 	
 
 //************************************************************************************************************	
-	public FarmObj(int fid, int pid, int p_size, int latitude, int longitude, String p_parish, String p_extension, String p_district){
+	public FarmObj(int fid, int pid, int p_size, double latitude, double longitude, String p_parish, String p_extension, String p_district){
 		farmer_id     = fid         ;
 		property_id   = pid         ;
 		property_size = p_size      ;
@@ -36,11 +36,11 @@ public class FarmObj{
 		return property_size;
 	}
 	
-	public int getLatitude(){
+	public double getLatitude(){
 		return farm_lat;
 	}
 	
-	public int getLongitude(){
+	public double getLongitude(){
 		return farm_long;
 	}
 	
