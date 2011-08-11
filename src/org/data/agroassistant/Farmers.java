@@ -6,6 +6,7 @@ import java.util.List;
 import static org.data.agroassistant.Constants.*;
 import android.app.ListActivity;
 import android.content.Intent;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
@@ -23,7 +24,7 @@ public class Farmers extends ListActivity {
 
 	private static List<FarmerObj> farmerResponse;
 
-
+	private int searchType;
 	private static String farmer_name = "", parish = "", extension = "", district = "";
 	private static String farmer_id = "";// latitude = "", longitude = "";
 	private String apiResponse;
@@ -36,18 +37,12 @@ public class Farmers extends ListActivity {
 
 	private String queryParams;
 
-
-
-	//private LayoutInflater mInflater;
-	//private Vector<RowData> data;
-	//RowData rd;
-
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.farmers_main);
 
-
+		searchType = FARMER_SEARCH;
 		animator = (ViewAnimator)findViewById(R.id.anim);
 
 		String[] farmerItems = getResources().getStringArray(R.array.ary_farmers_main);
@@ -59,7 +54,6 @@ public class Farmers extends ListActivity {
 
 		lv.setOnItemClickListener(new OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		    	animator.setDisplayedChild(1);
 		    	Intent farmerSearchIntent = new Intent();
 		    	switch (position) {
 				case 0:
@@ -84,7 +78,6 @@ public class Farmers extends ListActivity {
 					break;
 				default:
 					Toast.makeText(Farmers.this, "No Selection made", Toast.LENGTH_SHORT).show();
-					animator.setDisplayedChild(0);
 					break;
 				}
 		      // When clicked, show a toast with the TextView text
@@ -93,9 +86,9 @@ public class Farmers extends ListActivity {
 		  });
 	}
 	
-	protected void onPreExecute() {
+	/*protected void onPreExecute() {
 		animator.setDisplayedChild(1);
-	}
+	}*/
 
 	@Override
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
@@ -110,13 +103,12 @@ public class Farmers extends ListActivity {
 		if( resultCode == RESULT_OK) {
 			if (requestCode == FNAME_SEARCH) {
         		//Call function to pull data by ID or name
-
         		if(intent.getStringExtra("column").equals("Farmer Name")){
         			farmer_name = intent.getStringExtra("value");
-        			apiResponse = fetchFarmerData(farmer_name, FNAME_SEARCH);
+        			fetchFarmerData(farmer_name, FNAME_SEARCH);
         		}else{
         			farmer_id = intent.getStringExtra("value");
-        			apiResponse = fetchFarmerData(farmer_id, FNAME_SEARCH);
+        			fetchFarmerData(farmer_id, FNAME_SEARCH);
         		}
 
         	} else if (requestCode == AREA_SEARCH) {
@@ -124,28 +116,22 @@ public class Farmers extends ListActivity {
     			if(intent.getStringExtra("column").equals("Parish")){
 
         			parish = intent.getStringExtra("value");
-        			//Toast.makeText(Farmers.this, "Parish: "+ parish, Toast.LENGTH_SHORT).show();
-        			apiResponse = fetchFarmerData(parish, AREA_SEARCH);
+        			fetchFarmerData(parish, AREA_SEARCH);
 
         		}else if(intent.getStringExtra("column").equals("Extension")) {
 
         			extension = intent.getStringExtra("value");
-        			//Toast.makeText(Farmers.this, "Extension "+ extension, Toast.LENGTH_SHORT).show();
-        			apiResponse = fetchFarmerData(extension, AREA_SEARCH);
+        			fetchFarmerData(extension, AREA_SEARCH);
 
         		}else if(intent.getStringExtra("column").equals("District")) {
 
         			district = intent.getStringExtra("value");
-        			//Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
-        			apiResponse = fetchFarmerData(district, AREA_SEARCH);
+        			fetchFarmerData(district, AREA_SEARCH);
         		}
 	    	} else if (requestCode == LOCATION_SEARCH) {
         		//Call function to pull data from query
         		//for farmer search by location
 	    	} else if (requestCode == DETAILED_SEARCH) {
-
-        		//Call function to pull data from query
-        		//for farmer detail search
         		String selectionStr = intent.getStringExtra("selection");
         		dtlSelection = Integer.parseInt(selectionStr);
 
@@ -168,10 +154,10 @@ public class Farmers extends ListActivity {
         		default:
         			//Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
         		}
-
-        		apiResponse = fetchFarmerData("", DETAILED_SEARCH);
+        		fetchFarmerData("", DETAILED_SEARCH);
         	}
-
+			
+			/*
 			//Checks if API for data and acts accordingly
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
     			animator.setDisplayedChild(0);
@@ -183,7 +169,7 @@ public class Farmers extends ListActivity {
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
-    			 */
+    			 
     			//Toast.makeText(Farmers.this, ""+farmerResponse.get(0) + "|" + farmerResponse.size()+ "|" + queryParams, Toast.LENGTH_SHORT).show();
     			
     			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
@@ -194,15 +180,15 @@ public class Farmers extends ListActivity {
     			searchResultIntent.setClass(Farmers.this, ResultView.class);
     			startActivity(searchResultIntent);
     			finish();
-    		}
+    			
+    		}*/
     	} else if( resultCode == RESULT_CANCELED) {
-        		//Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
-    		animator.setDisplayedChild(0);
+        		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
     	}
 
     }
 //*****************************************************************************************************************************************
-	private final String fetchFarmerData(String column, final int selection) {
+	private final void fetchFarmerData(String column, final int selection) {
 
 		final RESTServiceObj client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
 
@@ -250,6 +236,10 @@ public class Farmers extends ListActivity {
     		Toast.makeText(Farmers.this, "Something went Totally Wrong ", Toast.LENGTH_SHORT).show();
     		break;
     	}
+		
+		queryParams = client.toString();
+		new apiRequest().execute(client);
+		/*
 		//if (db.queryExists(client.toString) {
 		//pull from DB
 		//else
@@ -265,24 +255,79 @@ public class Farmers extends ListActivity {
     	if (response == null)
     		mResponseError = client.getErrorMessage();
 
-    	queryParams = client.toString();
-		return response;
+    	*/
+		//return response;
     }
+	
+	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			animator.setDisplayedChild(1);
+		}
+
+		@Override
+		protected String doInBackground(RESTServiceObj... client) {
+			//if (db.queryExists(client.toString) {
+			//pull from DB
+			//else
+		    	try {	//Check here if Query in database
+		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	} catch (Exception e) {
+		    	    e.printStackTrace();
+		    	    mResponseError = client[0].getErrorMessage();
+		    	    return null;
+		    	}
+	    	final String response = client[0].getResponse();
+	    	if (response == null)
+	    		mResponseError = client[0].getErrorMessage();
+			return response;
+		}
+		
+		@Override
+		protected void onPostExecute(String apiResponse) {
+			super.onPostExecute(apiResponse);
+			Intent searchResultIntent = new Intent();
+			Bundle searchResultBundle = new Bundle();
+			
+			animator.setDisplayedChild(0);
+			
+			//Checks if API for data and acts accordingly
+    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+    			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    		}else{
+    			//Toast.makeText(Farmers.this, apiResponse, Toast.LENGTH_SHORT).show();
+    			//farmerResponse = parseResponse(apiResponse);
+    			xmlParse parser = new xmlParse(Farmers.this, apiResponse);
+    			parser.parseXML("Farmer");
+    			Log.d("AgroAssistant", "Thread: Number of records returned from the API: "+farmerResponse.size());
+    			/*
+    			 *Call & pass necessary information to ResultView activity
+    			 *finish Farmer search activity
+    			 */
+    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
+    			searchResultBundle.putInt("searchType", searchType);
+    			searchResultBundle.putString("searchParams", queryParams);
+    			searchResultIntent.putExtras(searchResultBundle);
+
+    			searchResultIntent.setClass(Farmers.this, ResultView.class);
+    			startActivity(searchResultIntent);
+    			finish();
+    		}
+		}
+	}
 
 	private List<FarmerObj> parseResponse(String responseStr){
 
 		xmlParse parser = new xmlParse(Farmers.this, responseStr);
-		//String excptn = "";
 		ArrayList<FarmerObj> list = new ArrayList<FarmerObj>();
 
 		parser.parseXML("Farmer");
 
 		try{
-
 			list = parser.getFarmerList();
-
 		}catch(Exception e){
-			//excptn = e.toString();
+			Log.d("AgroAssistant", "parseResponse Exception: " + e.toString());
 		}
 
 		return list;
@@ -336,20 +381,5 @@ public class Farmers extends ListActivity {
 			Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
 		}
 	}
-
-	/*private String[][] toStringArray(List<FarmerObj> list){
-
-		String[][] returnArray = new String[list.size()][4];
-		int count = 0;
-		for(count = 0; count < list.size(); count++){
-
-			returnArray[count][0] = list.get(count).getFarmerFName();
-			returnArray[count][1] = list.get(count).getFarmerLName();
-			returnArray[count][2] = "" + list.get(count).getFarmerID();
-			returnArray[count][3] = list.get(count).getFarmerSize();
-
-		}
-		return returnArray;
-	}*/
 
 }
