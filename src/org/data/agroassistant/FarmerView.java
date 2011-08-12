@@ -2,19 +2,19 @@ package org.data.agroassistant;
 
 import static org.data.agroassistant.Constants.*;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.widget.TabHost;
+import android.widget.Toast;
 
 public class FarmerView extends TabActivity{
 	
 	private String mResponseError = "Unknown Error", apiResponse, queryParams;
-	private List<FarmObj> farms;
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.farmer_view);
@@ -31,17 +31,15 @@ public class FarmerView extends TabActivity{
 	    Bundle searchResultBundle = new Bundle();
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    farmerintent = new Intent().setClass(this, FarmerInfo.class);
-	    farmerintent.putExtras(farmerbundle);
+	    farmerintent.putExtras(farmerbundle); 
 	    
 	    
-	    apiResponse = fetchFarmData(farmerbundle.getString("farmerid"));
+	    fetchFarmData(farmerbundle.getString("farmerid"));	//Fetching farm data in the background
 	    
-	    farms = new ArrayList<FarmObj>();
+	    queryParams = FARMERS_TABLE + "." + FARMER_ID + "=" + farmerbundle.getString("farmerid");
 	    
-	    farms = parseResponse(apiResponse);
 	    
 	    farmintent = new Intent();
-	    searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
 		searchResultBundle.putInt("searchType", FARMER_FARM_SEARCH);
 		searchResultBundle.putString("searchParams", queryParams);
 		farmintent.putExtras(searchResultBundle);
@@ -64,48 +62,51 @@ public class FarmerView extends TabActivity{
 	    tabHost.setCurrentTab(0);
 	}
 	
-	private final String fetchFarmData(String column) {
-		
-		 RESTServiceObj client;
-		 
-			 client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
-		   	
-		
-       		client.AddParam("FarmerID", column);
-       	
-		
-   	try {
-   	    client.Execute(RESTServiceObj.RequestMethod.GET);
-   	} catch (Exception e) {
-   	    e.printStackTrace();
-   	    mResponseError = client.getErrorMessage();
-   	    return null;
-   	}
-   	final String response = client.getResponse();
-   	
-   	if (response == null)
-   		mResponseError = client.getErrorMessage();
-   	 
-   		queryParams = client.toString();
-		return response;
-   }
-	
-	private List<FarmObj> parseResponse(String responseStr){
-		
-		xmlParse parser = new xmlParse(this, responseStr);
-		String excptn = "";
-		ArrayList<FarmObj> list = new ArrayList<FarmObj>();
-		
-		parser.parseXML(FARMS_TABLE);
-		
-		try{
+	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			//animator.setDisplayedChild(1);
+		}
 
-			list = parser.getFarmList();
-			
-		}catch(Exception e){
-			excptn = e.toString();
+		@Override
+		protected String doInBackground(RESTServiceObj... client) {
+			//if (db.queryExists(client.toString) {
+			//pull from DB
+			//else
+		    	try {	//Check here if Query in database
+		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	} catch (Exception e) {
+		    	    e.printStackTrace();
+		    	    mResponseError = client[0].getErrorMessage();
+		    	    return null;
+		    	}
+	    	final String response = client[0].getResponse();
+	    	if (response == null)
+	    		mResponseError = client[0].getErrorMessage();
+			return response;
 		}
 		
-		return list;
+		@Override
+		protected void onPostExecute(String apiResponse) {
+			super.onPostExecute(apiResponse);
+			//animator.setDisplayedChild(0);
+			
+			//Checks if API for data
+    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+    			Toast.makeText(FarmerView.this, "Error: No Farms Data retrieved", Toast.LENGTH_SHORT).show();
+    		}else{
+    			xmlParse parser = new xmlParse(FarmerView.this, apiResponse);
+    			parser.parseXML(FARMS_TABLE);
+    		}
+		}
+	}
+	
+	private final void fetchFarmData(String column) {
+		RESTServiceObj client;
+		client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
+		client.AddParam("FarmerID", column);
+		//queryParams = client.toString();
+		new apiRequest().execute(client);
 	}
 }
