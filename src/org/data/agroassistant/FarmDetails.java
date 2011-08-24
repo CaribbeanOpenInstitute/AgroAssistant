@@ -80,7 +80,7 @@ public class FarmDetails extends MapActivity{
 	private void initMapView() {
 		mapView = (MapView) findViewById(R.id.farmDetailsMapView);
 		mapController = mapView.getController();
-		mapController.setZoom(16);
+		mapController.setZoom(10);
 	    mapView.setBuiltInZoomControls(true);
 	    
 	    drawable = this.getResources().getDrawable(R.drawable.marker);
@@ -117,5 +117,4 @@ public class FarmDetails extends MapActivity{
     	Log.w("AgroAssistant", "updateMap: Added geoPoint and animating to");
 		
 	}
-
 }

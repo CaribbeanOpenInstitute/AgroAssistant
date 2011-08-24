@@ -1,7 +1,7 @@
 package org.data.agroassistant;
 
 import static android.provider.BaseColumns._ID;
-import static org.data.agroassistant.Constants.CROPS_TABLE;
+import static org.data.agroassistant.Constants.*;
 import static org.data.agroassistant.Constants.CROP_AREA;
 import static org.data.agroassistant.Constants.CROP_COUNT;
 import static org.data.agroassistant.Constants.CROP_DATE;
@@ -397,5 +397,18 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		}
 	}
 	
+	/*=================================================================================================
+	 * Query Table Specific functions
+	 =================================================================================================*/
+	
+	public boolean queryExists(String table, String params){
+		db = this.getReadableDatabase();
+		String selectionValues = QUERY_URI + '=' + table + ' ' + QUERY_PARAMS + '=' + params;
+		Cursor query = db.query(QUERY_TABLE, FROM_QUERIES, selectionValues , null, null, null, null); 
+		if ( query.getCount() >= 1)
+			return true;
+		else
+			return false;
+	}
 	
 }

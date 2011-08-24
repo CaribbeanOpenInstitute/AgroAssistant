@@ -56,7 +56,7 @@ public class Farms extends ListActivity{
         setContentView(R.layout.farms_main);
         
         searchType = FARM_SEARCH;
-        animator = (ViewAnimator)findViewById(R.id.anim);
+        animator = (ViewAnimator)findViewById(R.id.farmSwitcher);
 
         String[] farmItems = getResources().getStringArray(R.array.ary_farms_main);
 		this.setListAdapter(new AgroArrayAdapter(this, farmItems));
@@ -335,7 +335,7 @@ public class Farms extends ListActivity{
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			//animator.setDisplayedChild(1);
+			animator.setDisplayedChild(1);
 		}
 
 		@Override
@@ -362,11 +362,10 @@ public class Farms extends ListActivity{
 			Intent searchResultIntent = new Intent();
 			Bundle searchResultBundle = new Bundle();
 			
-			//animator.setDisplayedChild(0);
-			
 			//Checks if API for data and acts accordingly
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
     			Toast.makeText(Farms.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    			animator.setDisplayedChild(0);
     		}else{
     			xmlParse parser = new xmlParse(Farms.this, apiResponse);
     			parser.parseXML(FARMS_TABLE);

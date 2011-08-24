@@ -14,27 +14,35 @@
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:gravity="center"
-        android:layout_weight="1" android:layout_gravity="center">
+        android:layout_weight="1" android:layout_gravity="center"
+        >
         <Button android:id="@+id/action_farmer"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
             android:onClick="onFarmerClick"
-            android:text="@string/btn_home_farmer" 
-            android:drawableTop="@drawable/ic_home_farmer" />
+            android:text="@string/btn_home_farmer"
+            android:textSize="18sp" 
+            android:drawableTop="@drawable/ic_farmer"
+            android:background="@null"
+            android:layout_gravity="center|left"
+            android:layout_marginRight="40dp"/>
         <Button android:id="@+id/action_two_button"
        		android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
             android:onClick="onFarmClick"
             android:text="@string/btn_home_farm"
-            android:drawableTop="@drawable/ic_home_farm"/>
+            android:textSize="18sp"
+            android:drawableTop="@drawable/ic_farm"
+            android:background="@null" 
+            android:layout_gravity="center|right"/>
     </LinearLayout>
 
     <LinearLayout
         android:orientation="horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_height="fill_parent"
         android:layout_weight="1" android:gravity="center"
         android:layout_gravity="center">
         <Button android:id="@+id/action_three_button"
@@ -42,12 +50,19 @@
         	android:layout_height="wrap_content"
             android:onClick="onCropClick"
             android:text="@string/btn_home_crop" 
-            android:drawableTop="@drawable/ic_home_crop"/>
+            android:textSize="18sp"
+            android:drawableTop="@drawable/ic_crop"
+            android:background="@null"
+            android:layout_gravity="center|left"
+            android:layout_marginRight="40dp"/>
         <Button android:id="@+id/action_four_button"
         	android:layout_width="wrap_content"
         	android:layout_height="wrap_content"
             android:onClick="onPriceClick"
             android:text="@string/btn_home_price"
-            android:drawableTop="@drawable/ic_home_price"/>
+            android:textSize="18sp"
+            android:drawableTop="@drawable/ic_price"
+            android:background="@null"
+            android:layout_gravity="center|right"/>
     </LinearLayout>   
 </LinearLayout>

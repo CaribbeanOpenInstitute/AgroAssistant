@@ -1,9 +1,9 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.*;
-
-import java.util.List;
-
+import static org.data.agroassistant.Constants.FARMERS_TABLE;
+import static org.data.agroassistant.Constants.FARMER_FARM_SEARCH;
+import static org.data.agroassistant.Constants.FARMER_ID;
+import static org.data.agroassistant.Constants.FARMS_TABLE;
 import android.app.TabActivity;
 import android.content.Intent;
 import android.content.res.Resources;
@@ -12,9 +12,17 @@ import android.os.Bundle;
 import android.widget.TabHost;
 import android.widget.Toast;
 
+/*
+ * BUG: If the user clicks on the Farms tab before the data is completely pulled from the API then they won't get 
+ * 			the full farmer information
+ */
+
 public class FarmerView extends TabActivity{
 	
-	private String mResponseError = "Unknown Error", apiResponse, queryParams;
+	private String mResponseError, queryParams;
+	private String FARMER_TAB = "farmerInfo";
+	private String FARM_TAB  = "farmInfo";
+	
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.farmer_view);
@@ -27,7 +35,7 @@ public class FarmerView extends TabActivity{
 	    
 	    Intent farmerdata = getIntent(); //intent containing farmer data passed from the calling activity
 	    
-	    Bundle farmerbundle = farmerdata.getExtras();
+	    final Bundle farmerbundle = farmerdata.getExtras(); 
 	    Bundle searchResultBundle = new Bundle();
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    farmerintent = new Intent().setClass(this, FarmerInfo.class);
@@ -45,22 +53,55 @@ public class FarmerView extends TabActivity{
 		farmintent.putExtras(searchResultBundle);
 
 		
-		
 	    // Initialize a TabSpec for each tab and add it to the TabHost
-	    spec = tabHost.newTabSpec("farmerInfo").setIndicator("Farmer",
+	    spec = tabHost.newTabSpec(FARMER_TAB).setIndicator("Farmer",
 	                      res.getDrawable(R.drawable.ic_menu_farmer))
 	                  .setContent(farmerintent);
 	    tabHost.addTab(spec);
 
 	    // Do the same for the other tabs
 	    farmintent.setClass(this, ResultView.class);
-	    spec = tabHost.newTabSpec("farmInfo").setIndicator("Farms",
+	    spec = tabHost.newTabSpec(FARM_TAB).setIndicator("Farms",
 	                      res.getDrawable(R.drawable.ic_menu_farm))
 	                  .setContent(farmintent);
 	    tabHost.addTab(spec);
 
 	    tabHost.setCurrentTab(0);
+	    
+	    /*
+	    tabHost.setOnTabChangedListener(new OnTabChangeListener(){
+	    	//@Override
+	    	public void onTabChanged(String tabId) {
+	    	    if(  FARMER_TAB.equals(tabId)) {
+	    	    	Log.d("AgroAssistant","FarmerView: Clicked on Farmer Info tab");	
+	    	    	//tabHost.setCurrentTab(0);
+	    	        //destroy earth
+	    	    }
+	    	    if(FARM_TAB.equals(tabId)) {
+	    	    	Log.d("AgroAssistant","FarmerView: Clicked on Farm Info tab");
+	    	    	
+	    	    	//fetchFarmData(farmerbundle.getString("farmerid"));	
+	    	    	
+	    	    	//Fetching farm data in the background
+	    	    	RESTServiceObj client;
+	    			client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
+	    			client.AddParam("FarmerID", "Farmerid");
+	    			while ( (new apiRequest().execute(client)).getStatus() != AsyncTask.Status.FINISHED ){
+	    			
+	    			}
+	    	    	
+	    			//while(fetchFarms.getStatus() != AsyncTask.Status.FINISHED) {
+	    				
+	    			//}
+	    	    	//tabHost.setCurrentTab(1);
+	    	        //destroy mars
+	    	    }
+	    	}});
+		*/
+	    
 	}
+	
+	
 	
 	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
 		@Override
@@ -106,7 +147,6 @@ public class FarmerView extends TabActivity{
 		RESTServiceObj client;
 		client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
 		client.AddParam("FarmerID", column);
-		//queryParams = client.toString();
 		new apiRequest().execute(client);
 	}
 }

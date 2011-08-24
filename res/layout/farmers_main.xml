@@ -12,7 +12,7 @@
 			layout="@layout/farmers_bar"
 			android:layout_weight="1" />
 		<ViewAnimator
-			android:id="@+id/anim"
+			android:id="@+id/farmerSwitcher"
 	    	android:paddingBottom="10dp"
 	    	android:inAnimation="@anim/fade_in"
 	    	android:outAnimation="@anim/fade_out"
@@ -27,7 +27,7 @@
 						android:cacheColorHint="#00000000"
 		    />
 		    <ProgressBar
-		    	android:id="@+id/progressBar1"
+		    	android:id="@+id/progressBar_farmers"
 		    	android:layout_gravity="center_horizontal"
 		    	style="@android:style/Widget.ProgressBar.Large.Inverse"
 		    	android:layout_width="wrap_content"

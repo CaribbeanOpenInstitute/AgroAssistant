@@ -22,8 +22,6 @@ public class Farmers extends ListActivity {
 	private static final int LOCATION_SEARCH = 2;
 	private static final int DETAILED_SEARCH = 3;
 
-	private static List<FarmerObj> farmerResponse;
-
 	private int searchType;
 	private static String farmer_name = "", parish = "", extension = "", district = "";
 	private static String farmer_id = "";// latitude = "", longitude = "";
@@ -43,11 +41,10 @@ public class Farmers extends ListActivity {
 		setContentView(R.layout.farmers_main);
 
 		searchType = FARMER_SEARCH;
-		animator = (ViewAnimator)findViewById(R.id.anim);
+		animator = (ViewAnimator)findViewById(R.id.farmerSwitcher);
 
 		String[] farmerItems = getResources().getStringArray(R.array.ary_farmers_main);
 		this.setListAdapter(new AgroArrayAdapter(this, farmerItems));
-		//setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.listTitle, farmerItems));
 
 		ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
@@ -94,7 +91,6 @@ public class Farmers extends ListActivity {
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
 		
         super.onActivityResult(requestCode, resultCode, intent);
-        farmerResponse = new ArrayList<FarmerObj>();
         Intent searchResultIntent = new Intent();
 		Bundle searchResultBundle = new Bundle();
 		
@@ -290,11 +286,10 @@ public class Farmers extends ListActivity {
 			Intent searchResultIntent = new Intent();
 			Bundle searchResultBundle = new Bundle();
 			
-			animator.setDisplayedChild(0);
-			
 			//Checks if API for data and acts accordingly
     		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
     			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    			animator.setDisplayedChild(0);
     		}else{
     			xmlParse parser = new xmlParse(Farmers.this, apiResponse);
     			parser.parseXML(FARMERS_TABLE);
