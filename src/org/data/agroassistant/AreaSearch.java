@@ -5,9 +5,11 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.widget.ArrayAdapter;
+import android.widget.AutoCompleteTextView;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.RadioGroup;
+import android.widget.SimpleCursorAdapter;
 
 public class AreaSearch extends Activity {
 	
@@ -18,8 +20,16 @@ public class AreaSearch extends Activity {
 	    setContentView(R.layout.area_search);
 	    
 	    final RadioGroup rdg_area = (RadioGroup) findViewById(R.id.rdgrp_asearch);
-	    final EditText edt_farmer_search = (EditText) findViewById(R.id.edt_area_search);
+	    //final EditText edt_farmer_search = (EditText) findViewById(R.id.edt_area_search);
+	    final AutoCompleteTextView edt_farmer_search = (AutoCompleteTextView) findViewById(R.id.edt_area_search);
 	    final Button btn_search = (Button) findViewById(R.id.btn_area_search);
+	    
+	    AgroAssistantDB agroDB = new AgroAssistantDB(this);
+	    String[] saArea = agroDB.getArea();
+	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.autocomplete_list, saArea);
+	    edt_farmer_search.setAdapter(adapter);
+	    //scaArea = new SimpleCursorAdapter(this, R.layout.autocomplete_list, cComments, new String[agroDB.]); 
+
 	    
 	    final Intent returnIntent = new Intent();
 	    
@@ -56,8 +66,8 @@ public class AreaSearch extends Activity {
 						//Toast.makeText(AreaSearch.this, "Please check area to search", //Toast.LENGTH_SHORT).show();
 						break;
 				}
-					
 			}
 		});
+		agroDB.close();
 	}
 }

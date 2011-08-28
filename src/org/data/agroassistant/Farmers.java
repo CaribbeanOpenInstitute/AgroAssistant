@@ -264,19 +264,21 @@ public class Farmers extends ListActivity {
 
 		@Override
 		protected String doInBackground(RESTServiceObj... client) {
-			//if (db.queryExists(client.toString) {
+			//if (db.queryExists(FARMERS_TABLE, client.toString) {
 			//pull from DB
-			//else
-		    	try {	//Check here if Query in database
+			//} else {
+		    	try {
 		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	    //db.addQuery(FARMERS_TABLE, client[0].toString);
 		    	} catch (Exception e) {
 		    	    e.printStackTrace();
-		    	    mResponseError = client[0].getErrorMessage();
+		    	    //mResponseError = client[0].getErrorMessage();
 		    	    return null;
 		    	}
+			//}
 	    	final String response = client[0].getResponse();
-	    	if (response == null)
-	    		mResponseError = client[0].getErrorMessage();
+	    	//if (response == null)
+	    		//mResponseError = client[0].getErrorMessage();
 			return response;
 		}
 		

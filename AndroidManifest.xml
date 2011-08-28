@@ -57,7 +57,10 @@
           android:theme="@android:style/Theme.NoTitleBar"/>
         
         <activity android:name=".ResultView" android:label="@string/app_name"
-          android:theme="@android:style/Theme.NoTitleBar"/> 
+          android:theme="@android:style/Theme.NoTitleBar"/>
+        
+        <activity android:name=".UserPrefs" android:label="@string/app_name"
+          android:theme="@android:style/Theme.NoTitleBar"/>
 	</application>
 </manifest>
 

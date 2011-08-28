@@ -3,6 +3,8 @@ package org.data.agroassistant;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Toast;
 
@@ -40,4 +42,29 @@ public class agroAssistant extends Activity {
         agroAssistant.this.startActivity(myIntent);
     }
     
+    /*==========================================================================
+     * MENU Functions
+     ==========================================================================*/
+    
+    @Override
+	public boolean onCreateOptionsMenu(Menu menu) {
+		getMenuInflater().inflate(R.menu.home_menu, menu);
+		
+		return true;
+	}
+    
+    @Override
+	public boolean onOptionsItemSelected(MenuItem item) {
+		
+		switch(item.getItemId()) {
+			case R.id.itemPrefs:
+				startActivity(new Intent(this, UserPrefs.class));
+			break;
+			case R.id.aboutPrefs:
+				Toast.makeText(this, "About activity to be implemented", Toast.LENGTH_SHORT).show();
+				//startActivity(new Intent(this, About.class));	//To About activity be implemented
+			break;
+		}
+		return super.onOptionsItemSelected(item);
+	}
 }

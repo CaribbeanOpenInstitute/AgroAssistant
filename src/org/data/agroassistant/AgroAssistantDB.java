@@ -400,6 +400,35 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	/*=================================================================================================
 	 * Query Table Specific functions
 	 =================================================================================================*/
+	public boolean insertQuery(String table, String params){
+		db = this.getWritableDatabase();
+		String query = QUERY_TABLE + "=" + table + " AND " + QUERY_PARAMS + " = " + params;
+		Cursor cursor = db.query(QUERY_TABLE, FROM_QUERIES, query, null, null, null, null);
+
+		//Checks if query already exists in the database
+		if (cursor.getCount() == 1) {
+			Log.d("AgroAssistant", "insertquery: Query on " + table + " where " + params + " already exist in table");
+			//update query entry
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(QUERY_TABLE, table);
+			values.put(QUERY_PARAMS, params);
+			//values.put(QUERY_DATE, "date");
+			//values.put(FARMER_SIZE, farmersize.toLowerCase());
+			try {
+				db.insertOrThrow(QUERY_TABLE, null, values);
+				Log.d("AgroAssistant", "Insert query: " + table + " where " + params);
+			}
+			catch (RuntimeException e) {
+				db.close();
+				Log.e("AgroAssistant","Query Insertion Exception: "+e.toString());
+				return false;
+			}
+		}
+		cursor.close();
+		db.close();
+		return true;
+	}
 	
 	public boolean queryExists(String table, String params){
 		db = this.getReadableDatabase();
@@ -409,6 +438,66 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			return true;
 		else
 			return false;
+	}
+	
+	/*==================================================================================================
+	 * Utility Functions
+	 ==================================================================================================*/
+	public String[] getArea() {
+		db = this.getReadableDatabase();
+		Cursor cursorParish = db.query(FARMS_TABLE, new String[] {FARM_PARISH}, null, null, FARM_PARISH, null, null);
+		Cursor cursorDistrict = db.query(FARMS_TABLE, new String[] {FARM_DISTRICT}, null, null, FARM_DISTRICT, null, null);
+		Cursor cursorExtension = db.query(FARMS_TABLE, new String[] {FARM_EXTENSION}, null, null, FARM_EXTENSION, null, null);
+		 
+        if(cursorParish.getCount() >0) {
+            String[] str = new String[cursorParish.getCount()+cursorDistrict.getCount()+cursorExtension.getCount()];
+            int i = 0;
+ 
+            while (cursorParish.moveToNext()) {
+                 str[i] = cursorParish.getString(cursorParish.getColumnIndex(FARM_PARISH));
+                 i++;
+             }
+            while (cursorDistrict.moveToNext()) {
+                str[i] = cursorDistrict.getString(cursorDistrict.getColumnIndex(FARM_DISTRICT));
+                i++;
+            }
+            while (cursorExtension.moveToNext()) {
+                str[i] = cursorExtension.getString(cursorExtension.getColumnIndex(FARM_EXTENSION));
+                i++;
+            }
+            db.close();
+            return str;
+        } else {
+        	db.close();
+            return new String[] {};
+        }
+	}
+	
+	public String[] getCrop() {
+		db = this.getReadableDatabase();
+		//String query = "SELECT parish, extension, district  FROM farms GROUP BY parish, extension, district";
+		Cursor cursorCropGroup = db.query(CROPS_TABLE, new String[] {CROP_GROUP}, null, null, CROP_GROUP, null, null);
+		Cursor cursorCropType= db.query(CROPS_TABLE, new String[] {CROP_TYPE}, null, null, CROP_TYPE, null, null);
+		//Cursor cursor = db.rawQuery(query, null);
+		 
+        if(cursorCropGroup.getCount() >0) {
+            String[] str = new String[cursorCropGroup.getCount()+cursorCropType.getCount()];
+            int i = 0;
+ 
+            while (cursorCropGroup.moveToNext()) {
+                 str[i] = cursorCropGroup.getString(cursorCropGroup.getColumnIndex(CROP_GROUP));
+                 i++;
+             }
+            while (cursorCropType.moveToNext()) {
+                str[i] = cursorCropType.getString(cursorCropType.getColumnIndex(CROP_TYPE));
+                i++;
+            }
+            db.close();
+            return str;
+        } else {
+        	db.close();
+            return new String[] {};
+        }
 	}
 	
 }
