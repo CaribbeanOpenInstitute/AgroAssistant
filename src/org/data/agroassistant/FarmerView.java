@@ -1,5 +1,6 @@
 package org.data.agroassistant;
 
+import static org.data.agroassistant.Constants.DB_SEARCH;
 import static org.data.agroassistant.Constants.FARMERS_TABLE;
 import static org.data.agroassistant.Constants.FARMER_FARM_SEARCH;
 import static org.data.agroassistant.Constants.FARMER_ID;
@@ -9,17 +10,19 @@ import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.TabHost;
 import android.widget.Toast;
 
-/*
- * BUG: If the user clicks on the Farms tab before the data is completely pulled from the API then they won't get 
- * 			the full farmer information
+/* DESC:	Activity to view the information of an individual farmer
+ * BUGS: 	1)If the user clicks on the Farms tab before the data is completely pulled from the API then they won't get 
+ * 				the full farmer information
  */
 
 public class FarmerView extends TabActivity{
 	
-	private String mResponseError, queryParams;
+	private String mResponseError;
+	private String queryParams;
 	private String FARMER_TAB = "farmerInfo";
 	private String FARM_TAB  = "farmInfo";
 	
@@ -38,13 +41,12 @@ public class FarmerView extends TabActivity{
 	    final Bundle farmerbundle = farmerdata.getExtras(); 
 	    Bundle searchResultBundle = new Bundle();
 	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    farmerintent = new Intent().setClass(this, FarmerInfo.class);
+	    farmerintent = new Intent().setClass(this, FarmerDetails.class);
 	    farmerintent.putExtras(farmerbundle); 
 	    
+	    queryParams = FARMERS_TABLE + "." + FARMER_ID + "=" + farmerbundle.getString("farmerid");
 	    
 	    fetchFarmData(farmerbundle.getString("farmerid"));	//Fetching farm data in the background
-	    
-	    queryParams = FARMERS_TABLE + "." + FARMER_ID + "=" + farmerbundle.getString("farmerid");
 	    
 	    
 	    farmintent = new Intent();
@@ -68,37 +70,6 @@ public class FarmerView extends TabActivity{
 
 	    tabHost.setCurrentTab(0);
 	    
-	    /*
-	    tabHost.setOnTabChangedListener(new OnTabChangeListener(){
-	    	//@Override
-	    	public void onTabChanged(String tabId) {
-	    	    if(  FARMER_TAB.equals(tabId)) {
-	    	    	Log.d("AgroAssistant","FarmerView: Clicked on Farmer Info tab");	
-	    	    	//tabHost.setCurrentTab(0);
-	    	        //destroy earth
-	    	    }
-	    	    if(FARM_TAB.equals(tabId)) {
-	    	    	Log.d("AgroAssistant","FarmerView: Clicked on Farm Info tab");
-	    	    	
-	    	    	//fetchFarmData(farmerbundle.getString("farmerid"));	
-	    	    	
-	    	    	//Fetching farm data in the background
-	    	    	RESTServiceObj client;
-	    			client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
-	    			client.AddParam("FarmerID", "Farmerid");
-	    			while ( (new apiRequest().execute(client)).getStatus() != AsyncTask.Status.FINISHED ){
-	    			
-	    			}
-	    	    	
-	    			//while(fetchFarms.getStatus() != AsyncTask.Status.FINISHED) {
-	    				
-	    			//}
-	    	    	//tabHost.setCurrentTab(1);
-	    	        //destroy mars
-	    	    }
-	    	}});
-		*/
-	    
 	}
 	
 	
@@ -112,19 +83,21 @@ public class FarmerView extends TabActivity{
 
 		@Override
 		protected String doInBackground(RESTServiceObj... client) {
-			//if (db.queryExists(client.toString) {
-			//pull from DB
-			//else
-		    	try {	//Check here if Query in database
+			AgroAssistantDB agroDB = new AgroAssistantDB(FarmerView.this);
+			if (agroDB.queryExists(FARMS_TABLE, queryParams)) {
+				agroDB.close();
+				return DB_SEARCH;
+			} else {
+		    	try {
 		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	    agroDB.insertQuery(FARMS_TABLE, queryParams);
+		    	    agroDB.close();
 		    	} catch (Exception e) {
-		    	    e.printStackTrace();
-		    	    mResponseError = client[0].getErrorMessage();
+		    		Log.e("AgroAssistant","Farms RESTServiceObj pull: "+e.toString());
 		    	    return null;
 		    	}
+			}
 	    	final String response = client[0].getResponse();
-	    	if (response == null)
-	    		mResponseError = client[0].getErrorMessage();
 			return response;
 		}
 		
@@ -133,8 +106,10 @@ public class FarmerView extends TabActivity{
 			super.onPostExecute(apiResponse);
 			//animator.setDisplayedChild(0);
 			
-			//Checks if API for data
-    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+			if (apiResponse.equals(DB_SEARCH)) {
+				//Does nothing
+			}
+			else if((apiResponse == null) || !(apiResponse.contains("Parish"))){
     			Toast.makeText(FarmerView.this, "Error: No Farms Data retrieved", Toast.LENGTH_SHORT).show();
     		}else{
     			xmlParse parser = new xmlParse(FarmerView.this, apiResponse);

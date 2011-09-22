@@ -2,12 +2,16 @@ package org.data.agroassistant;
 
 import java.util.List;
 
+import static org.data.agroassistant.Constants.*;
+
+import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.maps.GeoPoint;
 import com.google.android.maps.MapActivity;
@@ -22,6 +26,7 @@ public class FarmDetails extends MapActivity{
 	private LocationManager mgr;
 	private GeoPoint currentPoint;
 	private Location currentLoc;
+	private AgroAssistantDB agroDB;
 
 	//Map Items
 	private List<Overlay> mapOverlays;
@@ -38,6 +43,7 @@ public class FarmDetails extends MapActivity{
 		setContentView(R.layout.farm_details);
 		initMapView();
 		
+		agroDB = new AgroAssistantDB(this);
 		
 		final TextView farmername     = (TextView) findViewById(R.id.dtl_farm_farmername);
         final TextView farmerid       = (TextView) findViewById(R.id.dtl_farm_farmerid);
@@ -49,16 +55,38 @@ public class FarmDetails extends MapActivity{
         
         Bundle farminfo = getIntent().getExtras();
         
-        firstname   =  farminfo.getString("firstname"  );
-        lastname    =  farminfo.getString("lastname"   );
-        farmer_id   =  farminfo.getString("farmerid"   );
-        farmsize	=  farminfo.getString("size"       );
-		farmid		=  farminfo.getString("farmid"     );
-		parishStr 	=  farminfo.getString("parish"     );
+        /*firstname   =  farminfo.getString("firstname");
+        lastname    =  farminfo.getString("lastname");
+        farmer_id   =  farminfo.getString("farmerid");
+        farmsize	=  farminfo.getString("size");*/
+		farmid		=  farminfo.getString("farmid");
+		/*parishStr 	=  farminfo.getString("parish"     );
 		ext			=  farminfo.getString("extension"  );
 		dist		=   farminfo.getString("district"  );
 		lat			=  Double.parseDouble(farminfo.getString("lat"  ));
-		lng			=  Double.parseDouble(farminfo.getString("long"  ));
+		lng			=  Double.parseDouble(farminfo.getString("long"  ));*/
+        
+        
+        try {
+        	Log.d("AgroAssistant", "FarmDetails: Farm ID: " + farmid);
+        	Cursor farmInfo = agroDB.getFarmDetails(farmid);
+            farmInfo.moveToFirst();
+            
+            firstname   =  farmInfo.getString(farmInfo.getColumnIndex(FARMER_FNAME));
+            lastname    =  farmInfo.getString(farmInfo.getColumnIndex(FARMER_LNAME));
+            farmer_id   =  farmInfo.getString(farmInfo.getColumnIndex(FARMER_ID));
+            farmsize 	=  farmInfo.getString(farmInfo.getColumnIndex(FARM_SIZE));
+            parishStr 	=  farmInfo.getString(farmInfo.getColumnIndex(FARM_PARISH));
+    		ext			=  farmInfo.getString(farmInfo.getColumnIndex(FARM_EXTENSION));
+    		dist		=  farmInfo.getString(farmInfo.getColumnIndex(FARM_DISTRICT));
+    		lat			=  farmInfo.getDouble(farmInfo.getColumnIndex(FARM_LAT));
+    		lng			=  farmInfo.getDouble(farmInfo.getColumnIndex(FARM_LONG));
+        } catch (Exception e) {
+        	Log.e("AgroAssistant", "FarmerView -> Farmer Info: " + e.toString());
+        	firstname = lastname = farmsize = " ";
+        	Toast.makeText(FarmDetails.this, "Sorry, unable to display requested farmer record", Toast.LENGTH_LONG).show();
+        }
+        
 		
 		updateMap();
 		
@@ -80,7 +108,7 @@ public class FarmDetails extends MapActivity{
 	private void initMapView() {
 		mapView = (MapView) findViewById(R.id.farmDetailsMapView);
 		mapController = mapView.getController();
-		mapController.setZoom(10);
+		mapController.setZoom(9);
 	    mapView.setBuiltInZoomControls(true);
 	    
 	    drawable = this.getResources().getDrawable(R.drawable.marker);

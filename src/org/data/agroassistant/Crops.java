@@ -65,40 +65,31 @@ public class Crops extends ListActivity{
 
 		  lv.setOnItemClickListener(new OnItemClickListener() {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-		      // When clicked, show a //Toast with the TextView text
 		    	
 		    	Intent cropSearchIntent = new Intent();
 		    	
 		    	switch (position) {
 		    	case 0:
-					//Toast.makeText(Crops.this, "You selected to Search by Crop Type or Crop Group", //Toast.LENGTH_SHORT).show();
 					cropSearchIntent.setClass(Crops.this, CropSearch.class);
 					startActivityForResult(cropSearchIntent,CROP_TG_SEARCH);
 					break;
 		    	case 1:
-					//Toast.makeText(Crops.this, "You selected to Search by Parish", //Toast.LENGTH_SHORT).show();
 					cropSearchIntent.setClass(Crops.this, AreaSearch.class);
 					startActivityForResult(cropSearchIntent,AREA_SEARCH);
 					break;
 		    	case 2:
-					//Toast.makeText(Crops.this, "You selected to Search by Farmer Name", //Toast.LENGTH_SHORT).show();
 					cropSearchIntent.setClass(Crops.this, FarmerSearch.class);
 					startActivityForResult(cropSearchIntent,FNAME_SEARCH);
-					//Intent farmerIntent = new Intent(Crops.this, FarmerNameSearch.class);
-					//startActivity(farmerIntent);
 					break;
 				case 3: 
-					//Toast.makeText(Crops.this, "You selected to Search by Property ID", //Toast.LENGTH_SHORT).show();
 					cropSearchIntent.setClass(Crops.this, PIDSearch.class);
 					startActivityForResult(cropSearchIntent,PROPERTY_SEARCH);
 					break;
 				case 4:
-					//Toast.makeText(Crops.this, "You selected to Search by Location", //Toast.LENGTH_SHORT).show();
 					cropSearchIntent.setClass(Crops.this, LocationSearch.class);
 					startActivityForResult(cropSearchIntent,LOCATION_SEARCH);
 					break;
 				case 5:
-					//Toast.makeText(Crops.this, "You selected to Search by Detailed search", //Toast.LENGTH_SHORT).show();
 					cropSearchIntent.setClass(Crops.this, DetailSearch.class);
 					startActivityForResult(cropSearchIntent,DETAILED_SEARCH);
 					break; 
@@ -114,8 +105,6 @@ public class Crops extends ListActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         cropResponse = new ArrayList<CropObj>();
-        Intent searchResultIntent = new Intent();
-		Bundle searchResultBundle = new Bundle();
         
         //TODO: Receive query from search functions
 		if( resultCode == RESULT_OK) {
@@ -125,11 +114,9 @@ public class Crops extends ListActivity{
         		if(intent.getStringExtra("column").equals("Crop Type")){
         			
         			crop_type = intent.getStringExtra("value");
-        			//Toast.makeText(Crops.this, "Crop Type: "+ crop_type, //Toast.LENGTH_SHORT).show();
         			FetchCropData(crop_type, CROP_TG_SEARCH);
         		}else{
         			crop_group = intent.getStringExtra("value");
-        			//Toast.makeText(Crops.this, "Crop Group: "+ crop_group, //Toast.LENGTH_SHORT).show();
         			FetchCropData(crop_group, CROP_TG_SEARCH);
         		}
         	} else if (requestCode == FNAME_SEARCH) {
@@ -236,25 +223,6 @@ public class Crops extends ListActivity{
         		}
         		FetchCropData("", DETAILED_SEARCH);
         	}
-//        	//Checks if API for data and acts accordingly
-//    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-//    			//Toast.makeText(Crops.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
-//    		}else{
-//    			cropResponse = parseResponse(apiResponse);
-//    			/*
-//    			 *Call & pass necessary information to ResultView activity 
-//    			 *finish Farmer search activity 
-//    			 */
-//    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-//    			searchResultBundle.putInt("searchType", CROP_SEARCH);
-//    			Log.d("AgroAssistant", "Crop Search QueryParams: " + queryParams);
-//    			searchResultBundle.putString("searchParams", queryParams);
-//    			searchResultIntent.putExtras(searchResultBundle);
-//    			
-//    			searchResultIntent.setClass(Crops.this, ResultView.class);
-//    			startActivity(searchResultIntent);
-//    			finish();
-//    		}
         } else if( resultCode == RESULT_CANCELED) {
     		//Toast.makeText(Crops.this, "Error: There was a problem requesting search", //Toast.LENGTH_SHORT).show();
     	}
@@ -271,7 +239,6 @@ public class Crops extends ListActivity{
     	case 0:
     		if(crop_type.equals(column)){
     			client.AddParam("CropType", column);
-    			
     		}else{
     			client.AddParam("CropGroup", column);
     		}
@@ -279,10 +246,8 @@ public class Crops extends ListActivity{
     	case 1:
     		if(parish.equals(column)){
     			client.AddParam("Parish", column);
-    			
     		}else if(extension.equals(column)){
     			client.AddParam("Extension", column);
-    			
     		}else{
     			client.AddParam("District", column);
     		}
@@ -291,7 +256,6 @@ public class Crops extends ListActivity{
     		if (farmer_id.equals(column)){
         		client.AddParam("FarmerID", column);
         	}else{
-        		
         		String fname, lname;
         		column = column.trim();
         		
@@ -362,24 +326,6 @@ public class Crops extends ListActivity{
 		
 		queryParams = client.toString();
 		new apiRequest().execute(client);
-		/*
-		//if (db.queryExists(client.toString) {
-		//pull from DB
-		//else
-	    	try {	//Check here if Query in database
-
-	    	    client.Execute(RESTServiceObj.RequestMethod.GET);
-	    	} catch (Exception e) {
-	    	    e.printStackTrace();
-	    	    mResponseError = client.getErrorMessage();
-	    	    return null;
-	    	}
-    	final String response = client.getResponse();
-    	if (response == null)
-    		mResponseError = client.getErrorMessage();
-
-    	*/
-		//return response;
     }
 	
 	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
@@ -391,19 +337,21 @@ public class Crops extends ListActivity{
 
 		@Override
 		protected String doInBackground(RESTServiceObj... client) {
-			//if (db.queryExists(client.toString) {
-			//pull from DB
-			//else
-		    	try {	//Check here if Query in database
+			AgroAssistantDB agroDB = new AgroAssistantDB(Crops.this);
+			if (agroDB.queryExists(CROPS_TABLE, queryParams)) {
+				agroDB.close();
+				return DB_SEARCH;
+			} else {
+		    	try {
 		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	    agroDB.insertQuery(CROPS_TABLE, queryParams);
+		    	    agroDB.close();
 		    	} catch (Exception e) {
-		    	    e.printStackTrace();
-		    	    mResponseError = client[0].getErrorMessage();
+		    		Log.e("AgroAssistant","Crops RESTServiceObj pull: "+e.toString());
 		    	    return null;
 		    	}
+			}
 	    	final String response = client[0].getResponse();
-	    	if (response == null)
-	    		mResponseError = client[0].getErrorMessage();
 			return response;
 		}
 		
@@ -413,14 +361,25 @@ public class Crops extends ListActivity{
 			Intent searchResultIntent = new Intent();
 			Bundle searchResultBundle = new Bundle();
 			
-			//Checks if API for data and acts accordingly
-    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+			if (apiResponse.equals(DB_SEARCH)) {
+				/*
+    			 *Call & pass necessary information to ResultView activity
+    			 *finish Farmer search activity
+    			 */
+    			searchResultBundle.putInt("searchType", searchType);
+    			searchResultBundle.putString("searchParams", queryParams);
+    			searchResultIntent.putExtras(searchResultBundle);
+
+    			searchResultIntent.setClass(Crops.this, ResultView.class);
+    			startActivity(searchResultIntent);
+    			finish();
+			}
+			else if((apiResponse == null) || !(apiResponse.contains("Parish"))){	//Checks if API for data and acts accordingly
     			Toast.makeText(Crops.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
     			animator.setDisplayedChild(0);
     		}else{
-    			xmlParse parser = new xmlParse(Crops.this, apiResponse);
-    			parser.parseXML(CROPS_TABLE);
-    			
+				xmlParse parser = new xmlParse(Crops.this, apiResponse);
+				parser.parseXML(CROPS_TABLE);
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity

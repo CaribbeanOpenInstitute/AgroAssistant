@@ -25,7 +25,7 @@ public interface Constants extends BaseColumns {
 	//Columns in the Query table
 	public static final String QUERY_DATE = "date";
 	public static final String QUERY_PARAMS = "params";
-	public static final String QUERY_URI = "table";
+	public static final String QUERY_URI = "uri";
 	public static final String QUERY_COUNT = "count";
 	public static final String QUERY_PAGE = "page";
 	
@@ -62,7 +62,7 @@ public interface Constants extends BaseColumns {
 	public static final String[] FROM_FARMS = {_ID, FARM_ID, FARM_FARMER_ID, FARM_SIZE, FARM_PARISH, FARM_EXTENSION, FARM_DISTRICT, FARM_LAT, FARM_LONG};
 	public static final String[] FROM_FARMERS_FARMS = {_ID, FARMER_ID, FARMER_FNAME, FARMER_LNAME, FARMER_SIZE, FARM_ID, FARM_FARMER_ID, FARM_SIZE, FARM_PARISH, FARM_EXTENSION, FARM_DISTRICT, FARM_LAT, FARM_LONG};
 	public static final String[] FROM_CROPS = {_ID, CROP_FARM_ID, CROP_GROUP, CROP_TYPE, CROP_AREA, CROP_COUNT, CROP_DATE};
-	public static final String[] FROM_QUERIES = {_ID, QUERY_PARAMS, QUERY_URI, QUERY_DATE};
+	public static final String[] FROM_QUERIES = {_ID, QUERY_PARAMS, QUERY_URI};
 	
 	
 	public static final String FROM_S_FARMERS = _ID + ", " + FARMER_ID + ", " + FARMER_FNAME + ", " + FARMER_LNAME + ", " + FARMER_SIZE;
@@ -71,4 +71,10 @@ public interface Constants extends BaseColumns {
 	public static final String FROM_S_FARMS_FARMERS = FARMS_TABLE+"."+_ID + ", " + FARMERS_TABLE+"."+FARMER_ID + ", " + FARMER_FNAME + ", " + FARMER_LNAME + ", " + FARMER_SIZE + ", " + FARM_ID + ", " + FARM_SIZE + ", " + FARM_PARISH + ", " + FARM_EXTENSION + ", " + FARM_DISTRICT + ", " + FARM_LAT + ", " + FARM_LONG;
 	public static final String FROM_S_CROPS = _ID + ", " + CROP_FARM_ID + ", " + CROP_GROUP + ", " + CROP_TYPE + ", " + CROP_AREA + ", " + CROP_COUNT + ", " + CROP_DATE;
 	//public static final String FROM_S_PRICES = _ID + ", " + CROP_FARM_ID + ", " + CROP_GROUP + ", " + CROP_TYPE + ", " + CROP_AREA + ", " + CROP_COUNT + ", " + CROP_DATE;
+	
+	/*====APP CONSTANTS======================
+	 * Constants used by the database adapter class
+	 */
+	public static final String API_ERROR = "error";
+	public static final String DB_SEARCH = "database";
 }

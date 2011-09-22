@@ -10,6 +10,7 @@ import android.app.ListActivity;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Toast;
@@ -240,19 +241,21 @@ public class Prices extends ListActivity {
 
 		@Override
 		protected String doInBackground(RESTServiceObj... client) {
-			//if (db.queryExists(client.toString) {
-			//pull from DB
-			//else
-		    	try {	//Check here if Query in database
+			AgroAssistantDB agroDB = new AgroAssistantDB(Prices.this);
+			if (agroDB.queryExists(PRICES_TABLE, queryParams)) {
+				agroDB.close();
+				return DB_SEARCH;
+			} else {
+		    	try {
 		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	    agroDB.insertQuery(PRICES_TABLE, queryParams);
+		    	    agroDB.close();
 		    	} catch (Exception e) {
-		    	    e.printStackTrace();
-		    	    mResponseError = client[0].getErrorMessage();
+		    		Log.e("AgroAssistant","Prices RESTServiceObj pull: "+e.toString());
 		    	    return null;
 		    	}
+			}
 	    	final String response = client[0].getResponse();
-	    	if (response == null)
-	    		mResponseError = client[0].getErrorMessage();
 			return response;
 		}
 		
@@ -262,14 +265,25 @@ public class Prices extends ListActivity {
 			Intent searchResultIntent = new Intent();
 			Bundle searchResultBundle = new Bundle();
 			
-			//Checks if API for data and acts accordingly
-    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
+			if (apiResponse.equals(DB_SEARCH)) {
+				/*
+    			 *Call & pass necessary information to ResultView activity
+    			 *finish Farmer search activity
+    			 */
+    			searchResultBundle.putInt("searchType", searchType);
+    			searchResultBundle.putString("searchParams", queryParams);
+    			searchResultIntent.putExtras(searchResultBundle);
+
+    			searchResultIntent.setClass(Prices.this, ResultView.class);
+    			startActivity(searchResultIntent);
+    			finish();
+			}
+			else if((apiResponse == null) || !(apiResponse.contains("Parish"))){	//Checks if API for data and acts accordingly
     			Toast.makeText(Prices.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
     			animator.setDisplayedChild(0);
     		}else{
-    			xmlParse parser = new xmlParse(Prices.this, apiResponse);
-    			parser.parseXML(PRICES_TABLE);
-    			
+				xmlParse parser = new xmlParse(Prices.this, apiResponse);
+				parser.parseXML(PRICES_TABLE);
     			/*
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity

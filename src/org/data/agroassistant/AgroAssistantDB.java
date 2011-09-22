@@ -65,8 +65,13 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	+ CROP_AREA + " integer not null, "
 	+ CROP_COUNT + " integer not null, "
 	+ CROP_DATE + " text not null);";
+	
+	private static final String CREATE_TABLE_QUERY = "create table " + QUERY_TABLE + " ( " 
+	+ _ID + " integer primary key autoincrement, "
+	+ QUERY_URI + " text not null, " 
+	+ QUERY_PARAMS + " text not null);";
 		
-	private static final int DATABASE_VERSION = 20;
+	private static final int DATABASE_VERSION = 24;
 	
 	private SQLiteDatabase db;
 	
@@ -83,8 +88,10 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			Log.d("AgroAssistant", "Create FARMS table: " + CREATE_TABLE_FARMS);
 			db.execSQL(CREATE_TABLE_CROPS);
 			Log.d("AgroAssistant", "Create CROPS table: " + CREATE_TABLE_CROPS);
+			db.execSQL(CREATE_TABLE_QUERY);
+			Log.d("AgroAssistant", "Create QUERIES table: " + CREATE_TABLE_QUERY);
 		} catch (RuntimeException e) {
-			Log.d("AgroAssistant", "Unable to create tables: " + CREATE_TABLE_FARMERS);
+			Log.d("AgroAssistant", "Unable to create tables: ");
 		}
 	}
 	
@@ -96,6 +103,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + FARMERS_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + FARMS_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + CROPS_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + QUERY_TABLE);
 		} catch (SQLException e) {
 			Log.d("AgroAssistant", "Upgrade step: " + "Unable to DROP TABLES");
 		}
@@ -268,9 +276,28 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	 * Returns the information for a particular farm from the farms table only
 	 */
 	public Cursor getFarm(String propertyID) {
+		Log.d("AgroAssistant", "getFarm: Enter function. ProportyID = " + propertyID);
 		db = this.getReadableDatabase();
 		Cursor cursor = db.query(FARMS_TABLE, FROM_FARMS, FARM_ID + "=" + propertyID, null, null, null, null);
-		Log.d("AgroAssistant", "getFar: Cusor contains " + cursor.getCount() + " record(s)");
+		Log.d("AgroAssistant", "getFarm: Cusor contains " + cursor.getCount() + " record(s)");
+		return cursor;
+	}
+	
+	public Cursor getFarmDetails(String propertyID) {
+		Log.d("AgroAssistant", "getFarm: Enter function. ProportyID = " + propertyID);
+		db = this.getReadableDatabase();
+		Cursor cursor = null;
+		String query = "SELECT *" + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " WHERE " + FARMS_TABLE + "." + FARM_ID + "=" + propertyID;
+		try {
+			cursor = db.rawQuery(query, null);
+			Log.d("AgroAssistant", "Farm details query: " + query);
+		} catch (SQLException e) {
+			Log.e("AgroAssistant", "Farm details query Exception: " + e.toString());
+		}
+		
+		Log.d("AgroAssistant", "Farm details query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d("AgroAssistant", "FarmDetailsQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		
 		return cursor;
 	}
 	
@@ -402,7 +429,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	 =================================================================================================*/
 	public boolean insertQuery(String table, String params){
 		db = this.getWritableDatabase();
-		String query = QUERY_TABLE + "=" + table + " AND " + QUERY_PARAMS + " = " + params;
+		String query = QUERY_URI + "=" + "'" + table + "'" + " AND " + QUERY_PARAMS + "=" + '"' + params + '"';
 		Cursor cursor = db.query(QUERY_TABLE, FROM_QUERIES, query, null, null, null, null);
 
 		//Checks if query already exists in the database
@@ -411,7 +438,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			//update query entry
 		} else {
 			ContentValues values = new ContentValues();
-			values.put(QUERY_TABLE, table);
+			values.put(QUERY_URI, table);
 			values.put(QUERY_PARAMS, params);
 			//values.put(QUERY_DATE, "date");
 			//values.put(FARMER_SIZE, farmersize.toLowerCase());
@@ -432,12 +459,20 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	
 	public boolean queryExists(String table, String params){
 		db = this.getReadableDatabase();
-		String selectionValues = QUERY_URI + '=' + table + ' ' + QUERY_PARAMS + '=' + params;
+		String selectionValues = QUERY_URI + '=' + "'" + table + "'" + " AND " + ' ' + QUERY_PARAMS + '=' + '"' + params + '"';
 		Cursor query = db.query(QUERY_TABLE, FROM_QUERIES, selectionValues , null, null, null, null); 
-		if ( query.getCount() >= 1)
+		if ( query.getCount() >= 1) {
+			query.close();
+			db.close();
+			Log.e("AgroAssistant","Query does exist: " + table + " on " + params);
 			return true;
-		else
+		}
+		else {
+			query.close();
+			db.close();
+			Log.e("AgroAssistant","Query does not exists: " + table + " on " + params);
 			return false;
+		}
 	}
 	
 	/*==================================================================================================
