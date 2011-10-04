@@ -20,7 +20,6 @@ public class FarmerSearch extends Activity{
 	    final RadioGroup rdg_farmer = (RadioGroup) findViewById(R.id.rdgrp_fsearch);
 	    final EditText edt_farmer_search = (EditText) findViewById(R.id.edt_farmer_search);
 	    final Button btn_search = (Button) findViewById(R.id.btn_farmer_search);
-	    //Returning query to farmer activity
         
 	    final Intent returnIntent = new Intent();
 		
@@ -34,7 +33,7 @@ public class FarmerSearch extends Activity{
 					
 					switch(rdg_farmer.getCheckedRadioButtonId()) {
 						case R.id.rdo_fname:
-							userInput = edt_farmer_search.getText().toString();
+							//userInput = edt_farmer_search.getText().toString();
 							//Toast.makeText(FarmerSearch.this, "Farmer Name: " + userInput, //Toast.LENGTH_SHORT).show();
 							returnIntent.putExtra("selection", "1");
 							returnIntent.putExtra("column", "Farmer Name");

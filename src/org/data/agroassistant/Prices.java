@@ -1,5 +1,13 @@
 package org.data.agroassistant;
 
+/*
+ * Prices Activity
+ * 
+ * DESC: Top level activity for all searches related to Price information
+ * TODO: 1) Implement correct searches
+ * 		 2) Refactor activity
+ * 
+ */
 import static org.data.agroassistant.Constants.*;
 
 import java.util.ArrayList;
@@ -20,22 +28,16 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 public class Prices extends ListActivity {
-	static final int CROP_SEARCH = 0;
+	static final int CROP_PARISH_SEARCH = 0;
 	static final int PARISH_SEARCH = 1;
 	static final int LOCATION_SEARCH = 2;
 	static final int DETAILED_SEARCH = 3;
 	
-	private static List<PriceObj> priceResponse;
-	
 	private int searchType;
 	private static String parish = "", crop_type = "", uprice = "", lprice = "", fprice = "", supplyStatus = "", quality = "";
-	private static String farmer_id = "", property_id = "", latitude = "", longitude = "", priceMonth = "";
-	private String apiResponse;
+	private static String priceMonth = "";
 	private String queryParams;
 	
-	private int dtlSelection;
-	private String mResponseError = "Unknown Error";
-	private boolean mInitialScreen = true;
 	private static ViewAnimator animator;
 	
 	
@@ -49,7 +51,6 @@ public class Prices extends ListActivity {
 		
 		String[] priceItems = getResources().getStringArray(R.array.ary_prices_main);
 		this.setListAdapter(new AgroArrayAdapter(this, priceItems));
-		//setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.listTitle, farmerItems));
 		
 		ListView lv = getListView();
 		lv.setTextFilterEnabled(true);
@@ -60,8 +61,8 @@ public class Prices extends ListActivity {
 		    	switch (position) {
 				case 0:
 					//Toast.makeText(Prices.this, "You selected to Search by Crop Type", //Toast.LENGTH_SHORT).show();
-					farmerSearchIntent.setClass(Prices.this, CropSearch.class);
-					startActivityForResult(farmerSearchIntent,CROP_SEARCH);
+					farmerSearchIntent.setClass(Prices.this, CropParishSearch.class);
+					startActivityForResult(farmerSearchIntent,CROP_PARISH_SEARCH);
 					//Intent farmerIntent = new Intent(Farmers.this, FarmerNameSearch.class);
 					//startActivity(farmerIntent);
 					break;
@@ -97,18 +98,14 @@ public class Prices extends ListActivity {
         super.onActivityResult(requestCode, resultCode, intent);
         //TODO: Receive query from search functions
         
-        priceResponse = new ArrayList<PriceObj>();
-        Intent searchResultIntent = new Intent();
-		Bundle searchResultBundle = new Bundle();
-        
         if( resultCode == RESULT_OK) {
     		//Call function to pull data from query
-	        if (requestCode == CROP_SEARCH) {
+	        if (requestCode == CROP_PARISH_SEARCH) {
 	        	//Call function to pull data from query
-        		//intent.
-        		crop_type = intent.getStringExtra("value");
+        		parish = intent.getStringExtra("Parish");
+	        	crop_type = intent.getStringExtra("Crop Type");
         		//Toast.makeText(Prices.this, "Crop Type: "+ crop_type, //Toast.LENGTH_SHORT).show();
-        		FetchPriceData(crop_type, CROP_SEARCH);
+        		FetchPriceData("", CROP_PARISH_SEARCH);
         		
         		
 	        }else if (requestCode == PARISH_SEARCH){
@@ -145,32 +142,8 @@ public class Prices extends ListActivity {
 	        	// log error here
 	        }
 	        
-//	      //Checks if API for data and acts accordingly
-//    		if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-//    			//Toast.makeText(Prices.this, "Error: No Data retrieved", //Toast.LENGTH_SHORT).show();
-//    		}else{
-//    			//Toast.makeText(Prices.this, apiResponse, //Toast.LENGTH_SHORT).show();
-//    			
-//    			priceResponse = parseResponse(apiResponse);
-//    			/*
-//    			 *Call & pass necessary information to ResultView activity
-//    			 *finish Farmer search activity
-//    			 */
-//    			//Toast.makeText(Prices.this, ""+priceResponse.get(0) + "|" + priceResponse.size()+ "|" + queryParams, //Toast.LENGTH_SHORT).show();
-//    			
-//    			searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-//    			searchResultBundle.putInt("searchType", FARMER_SEARCH);
-//    			searchResultBundle.putString("searchParams", queryParams);
-//    			searchResultIntent.putExtras(searchResultBundle);
-//
-//    			searchResultIntent.setClass(Prices.this, ResultView.class);
-//    			startActivity(searchResultIntent);
-//    			finish();
-//    			//*/
-//    		}
         }else if( resultCode == RESULT_CANCELED) {
     		//Toast.makeText(Prices.this, "Error: There was a problem requesting search", //Toast.LENGTH_SHORT).show();
-    		
     	}
     }
 	
@@ -180,8 +153,9 @@ public class Prices extends ListActivity {
     	
 		switch(selection){
     	
-    	case CROP_SEARCH:
-    		client.AddParam("CropType", column);
+    	case CROP_PARISH_SEARCH:
+    		//client.AddParam("CropType", column);
+    		addDetailedParams(client);
     		
     		break;
     	case PARISH_SEARCH:
@@ -199,37 +173,21 @@ public class Prices extends ListActivity {
     		break;
     	}
 		
-    	try {
+    	/*try {
     	    client.Execute(RESTServiceObj.RequestMethod.GET);
     	} catch (Exception e) {
     	    e.printStackTrace();
-    	    mResponseError = client.getErrorMessage();
+    	    //mResponseError = client.getErrorMessage();
     	    //return null;
     	}
     	final String response = client.getResponse();
     	if (response == null)
-    		mResponseError = client.getErrorMessage();
-    	
-    	queryParams = client.toString();
-		new apiRequest().execute(client);
-		/*
-		//if (db.queryExists(client.toString) {
-		//pull from DB
-		//else
-	    	try {	//Check here if Query in database
-
-	    	    client.Execute(RESTServiceObj.RequestMethod.GET);
-	    	} catch (Exception e) {
-	    	    e.printStackTrace();
-	    	    mResponseError = client.getErrorMessage();
-	    	    return null;
-	    	}
-    	final String response = client.getResponse();
-    	if (response == null)
-    		mResponseError = client.getErrorMessage();
-
+    		//mResponseError = client.getErrorMessage();
     	*/
-		//return response;
+		
+    	queryParams = client.toString();
+    	Log.d("AgroAssistant", "Prices > FetchPricesData: queryParams sent to API: " + queryParams);
+		new apiRequest().execute(client);
     }
 	
 	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
@@ -299,7 +257,7 @@ public class Prices extends ListActivity {
 		}
 	}
 	
-	private List<PriceObj> parseResponse(String responseStr){
+	/*private List<PriceObj> parseResponse(String responseStr){
 		
 		xmlParse parser = new xmlParse(Prices.this, responseStr);
 		String excptn = "";
@@ -316,7 +274,7 @@ public class Prices extends ListActivity {
 		}
 		
 		return list;
-	}
+	}*/
 	
 	private void addDetailedParams(RESTServiceObj conn){
 		
@@ -324,7 +282,7 @@ public class Prices extends ListActivity {
 			conn.AddParam("Parish", parish);
 		}
 		if (!crop_type.equals("") && crop_type.length()>1){
-			conn.AddParam("Crop Type", crop_type);
+			conn.AddParam("CropType", crop_type);
 		}
 		if (lprice.equals("") && uprice.equals("") && fprice.equals("")){
 			// no price to add

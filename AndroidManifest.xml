@@ -36,6 +36,9 @@
 		<!-- Prices search sub-activities -->
 		<activity android:name=".CropSearch" android:theme="@style/DialogTheme"></activity>
 		<activity android:name=".ParishSearch" android:theme="@style/DialogTheme"></activity>
+		<activity android:name=".CropParishSearch" android:theme="@style/DialogTheme"></activity>
+		<activity android:name=".CropPriceSearch" android:theme="@style/DialogTheme"></activity>
+		
 		
 		<!-- Location Search  -->
 		<activity android:name=".LocationSearch" />

@@ -74,7 +74,7 @@ public class Farmers extends ListActivity {
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
 					break;
 				default:
-					Toast.makeText(Farmers.this, "No Selection made", Toast.LENGTH_SHORT).show();
+					//Toast.makeText(Farmers.this, "No Selection made", Toast.LENGTH_SHORT).show();
 					break;
 				}
 		      // When clicked, show a toast with the TextView text

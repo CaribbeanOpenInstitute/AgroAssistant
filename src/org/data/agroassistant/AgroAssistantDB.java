@@ -70,8 +70,21 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	+ _ID + " integer primary key autoincrement, "
 	+ QUERY_URI + " text not null, " 
 	+ QUERY_PARAMS + " text not null);";
+	
+	private static final String CREATE_TABLE_PRICES = "create table " + PRICES_TABLE + " ( " 
+	+ _ID + " integer primary key autoincrement, "
+	+ PRICE_PARISH + " text not null, " 
+	+ PRICE_CROPTYPE + " text not null, "
+	+ PRICE_LPRICE + " integer not null, "
+	+ PRICE_UPRICE + " integer not null, "
+	+ PRICE_FPRICE + " integer not null, "
+	+ PRICE_SUPPLY + " text not null, "
+	+ PRICE_QUALITY + " text not null, "
+	+ PRICE_MONTH + " text not null); ";
+	//+ PRICE_LAT + " double not null, "
+	//+ PRICE_LONG + " double not null);";
 		
-	private static final int DATABASE_VERSION = 24;
+	private static final int DATABASE_VERSION = 26;
 	
 	private SQLiteDatabase db;
 	
@@ -90,6 +103,8 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			Log.d("AgroAssistant", "Create CROPS table: " + CREATE_TABLE_CROPS);
 			db.execSQL(CREATE_TABLE_QUERY);
 			Log.d("AgroAssistant", "Create QUERIES table: " + CREATE_TABLE_QUERY);
+			db.execSQL(CREATE_TABLE_PRICES);
+			Log.d("AgroAssistant", "Create PRICES table: " + CREATE_TABLE_PRICES);
 		} catch (RuntimeException e) {
 			Log.d("AgroAssistant", "Unable to create tables: ");
 		}
@@ -104,6 +119,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 			db.execSQL("DROP TABLE IF EXISTS " + FARMS_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + CROPS_TABLE);
 			db.execSQL("DROP TABLE IF EXISTS " + QUERY_TABLE);
+			db.execSQL("DROP TABLE IF EXISTS " + PRICES_TABLE);
 		} catch (SQLException e) {
 			Log.d("AgroAssistant", "Upgrade step: " + "Unable to DROP TABLES");
 		}
@@ -527,9 +543,13 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
                 str[i] = cursorCropType.getString(cursorCropType.getColumnIndex(CROP_TYPE));
                 i++;
             }
+            cursorCropGroup.close();
+            cursorCropType.close();
             db.close();
             return str;
         } else {
+        	cursorCropGroup.close();
+            cursorCropType.close();
         	db.close();
             return new String[] {};
         }

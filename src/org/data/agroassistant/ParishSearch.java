@@ -12,6 +12,7 @@ import android.widget.Toast;
 
 public class ParishSearch extends Activity{
 	private String parish;
+	private Intent returnIntent = new Intent();
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		// TODO Auto-generated method stub
@@ -34,12 +35,12 @@ public class ParishSearch extends Activity{
         public void onItemSelected(AdapterView<?> parent,
             View view, int pos, long id) {
         	parish = parent.getItemAtPosition(pos).toString();
-          Toast.makeText(parent.getContext(), "The parish is " + parish, Toast.LENGTH_LONG).show();
-          Intent returnIntent = new Intent();
+          //Toast.makeText(parent.getContext(), "The parish is " + parish, Toast.LENGTH_LONG).show();
+          
           
           returnIntent.putExtra("Parish", parish);
-          setResult(RESULT_OK,returnIntent);    	
-          finish();
+          //setResult(RESULT_OK,returnIntent);    	
+          //finish();
           
         }
 

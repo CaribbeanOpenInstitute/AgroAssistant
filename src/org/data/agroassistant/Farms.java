@@ -61,7 +61,6 @@ public class Farms extends ListActivity{
 
         String[] farmItems = getResources().getStringArray(R.array.ary_farms_main);
 		this.setListAdapter(new AgroArrayAdapter(this, farmItems));
-		//setListAdapter(new ArrayAdapter<String>(this, R.layout.list_item, R.id.listTitle, farmerItems));
 
 		ListView lv = getListView();
 		  lv.setTextFilterEnabled(true);
@@ -106,8 +105,6 @@ public class Farms extends ListActivity{
     protected void onActivityResult(int requestCode, int resultCode, Intent intent) {
         super.onActivityResult(requestCode, resultCode, intent);
         farmResponse = new ArrayList<FarmObj>();
-        Intent searchResultIntent = new Intent();
-		Bundle searchResultBundle = new Bundle();
         
         //TODO: Receive query from search functions
         if( resultCode == RESULT_OK) {

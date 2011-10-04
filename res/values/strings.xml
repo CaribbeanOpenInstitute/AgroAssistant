@@ -51,8 +51,8 @@
     <string name="mnu_prices_bar">Prices</string>
     <!-- Prices Activity -->
     <string-array name="ary_prices_main">
-        <item>Crop Type / Crop Group</item>
-        <item>Parish</item>
+        <item>Crop by Parish</item>
+        <item>Crop by Price</item>
         <item>My location</item>
         <item>Detailed Search</item>
     </string-array>

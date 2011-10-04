@@ -56,7 +56,16 @@ public interface Constants extends BaseColumns {
 	public static final String CROP_LONG = "ycoord";
 	
 	//Columns in the Prices table
-	
+	public static final String PRICE_PARISH = "parish";
+	public static final String PRICE_CROPTYPE = "croptype";
+	public static final String PRICE_LPRICE = "lowerprice";
+	public static final String PRICE_UPRICE = "upperprice";
+	public static final String PRICE_FPRICE = "freqprice";
+	public static final String PRICE_SUPPLY = "supplystatus";
+	public static final String PRICE_QUALITY = "quality";
+	public static final String PRICE_MONTH = "pricemonth";
+	public static final String PRICE_LAT = "xcoord";
+	public static final String PRICE_LONG = "ycoord";
 	
 	public static final String[] FROM_FARMERS = {_ID, FARMER_ID, FARMER_FNAME, FARMER_LNAME, FARMER_SIZE};
 	public static final String[] FROM_FARMS = {_ID, FARM_ID, FARM_FARMER_ID, FARM_SIZE, FARM_PARISH, FARM_EXTENSION, FARM_DISTRICT, FARM_LAT, FARM_LONG};
