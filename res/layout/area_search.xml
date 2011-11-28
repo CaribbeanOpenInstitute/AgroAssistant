@@ -6,12 +6,23 @@
 	<TextView android:id="@+id/area_search_title"
 		android:layout_width="wrap_content" android:layout_height="wrap_content"
 		android:text="@string/area_title" android:textSize="18sp"
-		android:paddingTop="5dp" android:paddingBottom="10dp">
+		android:paddingTop="5dp" android:paddingBottom="5dp">
 	</TextView>
+	
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp" 
+		android:paddingTop="2dp" android:paddingBottom="2dp"
+		android:background="#90909090" />
+	
+	<TextView android:id="@+id/area_space"
+		android:layout_width="wrap_content" android:layout_height="wrap_content"
+		android:text="" android:textSize="5sp"/>
+	    
 	<AutoCompleteTextView android:id="@+id/edt_area_search"
         android:layout_width="fill_parent"
         android:layout_height="wrap_content"
         android:hint="Enter area name" android:textSize="12sp"
+        
         />
     <!--     
 	<EditText android:id="@+id/edt_area_search"
@@ -34,7 +45,13 @@
 			android:text="@string/rdo_district">
 		</RadioButton>
 	</RadioGroup>
-	<RelativeLayout android:layout_width="fill_parent"
+	
+	<View android:layout_height="2px" android:layout_width="fill_parent"
+		android:layout_marginTop="5dp" 
+		android:paddingTop="5dp" android:paddingBottom="5dp"
+		android:background="#90909090" />
+	    
+	<RelativeLayout android:layout_width="fill_parent" android:paddingTop="5dp"
 		android:layout_height="wrap_content">
 		<Button android:id="@+id/btn_area_search" android:layout_width="wrap_content"
 			android:layout_height="wrap_content" android:text="@string/btn_search"
