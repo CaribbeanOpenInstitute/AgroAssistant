@@ -9,15 +9,15 @@ public class PriceObj{
 	
 	private String parish      ;
 	private String crop_type   ;
-	private int    lower_price ;
-	private int    upper_price ;
-	private int    freq_price  ;
+	private double    lower_price ;
+	private double    upper_price ;
+	private double    freq_price  ;
 	private String supply_status  ;
 	private String quality     ;
 	private Date   price_month ;
 
 //************************************************************************************************************	
-	public PriceObj(String in_parish, String type, int lprice, int uprice, int fprice, String status, String crop_quality, Date date){
+	public PriceObj(String in_parish, String type, double lprice, double uprice, double fprice, String status, String crop_quality, Date date){
 		parish      =  in_parish 	;
 		crop_type   =  type      	;
 		lower_price =  lprice    	;
@@ -29,7 +29,7 @@ public class PriceObj{
 		
 	}
 	
-	public PriceObj(String in_parish, String type, int lprice, int uprice, int fprice, String status, String crop_quality){
+	public PriceObj(String in_parish, String type, double lprice, double uprice, double fprice, String status, String crop_quality){
 		parish      =  in_parish 	;
 		crop_type   =  type      	;
 		lower_price =  lprice    	;
@@ -47,15 +47,15 @@ public class PriceObj{
 	public String getCropType(){
 		return crop_type;
 	}
-	public int getLPrice(){
+	public double getLPrice(){
 		return lower_price;
 	}
 	
-	public int getUPrice(){
+	public double getUPrice(){
 		return upper_price;
 	}
 	
-	public int getFPrice(){
+	public double getFPrice(){
 		return freq_price;
 	}
 	

@@ -213,10 +213,12 @@ public class xmlParse {
 		String parish   = getTextValue ( PriceE , "Parish"   ) ;
 		String type 	= getTextValue ( PriceE , "CropType" ) ;
 		
-		
-		int uprice   = getIntValue  ( PriceE , "UpperPrice"  ) ;
-		int lprice   = getIntValue  ( PriceE , "LowerPrice"  ) ;
-		int fprice   = getIntValue  ( PriceE , "FreqPrice"   ) ;
+		double uprice = Double.parseDouble(getTextValue( PriceE , "UpperPrice")) ;
+		double lprice = Double.parseDouble(getTextValue( PriceE , "LowerPrice")) ;
+		double fprice = Double.parseDouble(getTextValue( PriceE , "FreqPrice")) ;
+		//int uprice   = getIntValue  ( PriceE , "UpperPrice"  ) ;
+		//int lprice   = getIntValue  ( PriceE , "LowerPrice"  ) ;
+		//int fprice   = getIntValue  ( PriceE , "FreqPrice"   ) ;
 				
 		String supply    = getTextValue ( PriceE , "SupplyStatus" ) ;
 		String quality   = getTextValue ( PriceE , "Quality    "  ) ;
@@ -230,7 +232,7 @@ public class xmlParse {
 		
 		//Create a new crop with the value read from the xml nodes
 		PriceObj price = new PriceObj(parish, type, lprice, uprice, fprice, supply, quality, date);
-		//agroDB.insertPrice(parish, type, lprice, uprice, fprice, supply, quality, date.toString());
+		agroDB.insertPrice(parish, type, lprice, uprice, fprice, supply, quality, date.toString());
 		return price;
 		
 	}

@@ -392,40 +392,45 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	/*
 	 * TODO All price functions incomplete
 	 */
-	public boolean insertPrice(int pid, String group, String type, int area, int count, String date) {
+	public boolean insertPrice(String parish, String type, double lprice, double uprice, double fprice, String supply, String quality, String pMonth) {
 		db = this.getWritableDatabase();
-		//Checks if crop already exists in the database
-		//String insertVal = CROP_FARM_ID + "=" + pid + " AND " + CROP_TYPE + "=" + "'" + type +"'" + " AND " + CROP_DATE + "=" + "'" + date + "'" + " AND " + CROP_COUNT + "=" + count;
+		/*Checks if crop already exists in the database
 		String insertVal = CROP_FARM_ID + "=" + pid + " AND " + CROP_TYPE + "=" + "'" + type +"'";
 		Cursor cursor = db.query(CROPS_TABLE, FROM_CROPS, insertVal, null, null, null, null);
 		if ((cursor).getCount() >= 1) {
 			Log.d("AgroAssistant", "insertCrop: Crop " + pid + " already exist in table");
 		} else {
+		*/
+		if (true) {
 			ContentValues values = new ContentValues();
-			values.put(CROP_FARM_ID, pid);
-			values.put(CROP_GROUP, group.toLowerCase());
-			values.put(CROP_TYPE, type.toLowerCase());
-			values.put(CROP_AREA, area);
-			values.put(CROP_COUNT, count);
-			values.put(CROP_DATE, date.toLowerCase());
+			values.put(PRICE_PARISH, parish);
+			values.put(PRICE_CROPTYPE, type.toLowerCase());
+			values.put(PRICE_LPRICE, lprice);
+			values.put(PRICE_UPRICE, uprice);
+			values.put(PRICE_FPRICE, fprice);
+			values.put(PRICE_SUPPLY, supply);
+			values.put(PRICE_QUALITY, quality);
+			values.put(PRICE_MONTH, pMonth);
+			//values.put(PRICE_LAT, lat);
+			//values.put(PRICE_LONG, lon);
 			
 			try {
-				db.insertOrThrow(CROPS_TABLE, null, values);
-				Log.d("AgroAssistant", "Insert Crop: " + pid + " " + " " + type + " " + area + " " + count + " " + date);
+				db.insertOrThrow(PRICES_TABLE, null, values);
+				Log.d("AgroAssistant", "Insert Price: " + parish+ " " + " " + type + " " + pMonth + " " + supply + " " + quality);
 				db.close();
 			}
 			catch (RuntimeException e) {
 				db.close();
-				Log.e("AgroAssistant","Crop Insertion Exception: "+e.toString());
+				Log.e("AgroAssistant","Price Insertion Exception: "+e.toString());
 				return false;
 			}
 		}
 		return true;
 	}
 	
-	public Cursor getPrice() {
+	public Cursor getPrices() {
 		db = this.getReadableDatabase();
-		Cursor cursor = db.query(CROPS_TABLE, FROM_CROPS, null, null, null, null, null);
+		Cursor cursor = db.query(CROPS_TABLE, FROM_PRICES, null, null, null, null, null);
 		return cursor;
 	}
 	
@@ -442,7 +447,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	
 	/*=================================================================================================
 	 * Query Table Specific functions
-	 =================================================================================================*/
+	 *================================================================================================*/
 	public boolean insertQuery(String table, String params){
 		db = this.getWritableDatabase();
 		String query = QUERY_URI + "=" + "'" + table + "'" + " AND " + QUERY_PARAMS + "=" + '"' + params + '"';

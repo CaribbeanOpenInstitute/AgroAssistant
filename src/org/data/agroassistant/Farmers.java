@@ -140,7 +140,7 @@ public class Farmers extends ListActivity {
         		fetchFarmerData("", DETAILED_SEARCH);
         	}
     	} else if( resultCode == RESULT_CANCELED) {
-        		Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
+        		//Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
     	}
 
     }
