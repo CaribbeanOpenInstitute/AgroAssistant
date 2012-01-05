@@ -13,6 +13,7 @@ public class FarmerDetails extends Activity{
 	private String firstname, lastname, id, size;
 	private AgroAssistantDB agroDB;
 	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 		//TODO Implement Farmer tab UI
 		//TODO Grey and black UI icons

@@ -1,16 +1,8 @@
 package org.data.agroassistant;
 
-/*
- * Prices Activity
- * 
- * DESC: Top level activity for all searches related to Price information
- * TODO: 1) Implement correct searches
- * 		 2) Refactor activity
- * 
- */
-import static org.data.agroassistant.Constants.*;
-
 import java.util.ArrayList;
+import static org.data.agroassistant.DBConstants.*;
+
 import java.util.List;
 
 
@@ -25,7 +17,6 @@ import android.widget.Toast;
 import android.widget.ViewAnimator;
 import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
-import android.widget.Toast;
 
 public class Prices extends ListActivity {
 	static final int CROP_PARISH_SEARCH = 0;

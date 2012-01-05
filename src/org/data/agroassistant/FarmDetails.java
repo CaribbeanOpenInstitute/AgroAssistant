@@ -2,8 +2,6 @@ package org.data.agroassistant;
 
 import java.util.List;
 
-import static org.data.agroassistant.Constants.*;
-
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
 import android.location.Location;
@@ -19,6 +17,7 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
+import static org.data.agroassistant.DBConstants.*;
 
 public class FarmDetails extends MapActivity{
 	private MapView mapView;
@@ -124,7 +123,7 @@ public class FarmDetails extends MapActivity{
     	int longtitude = (int) (lng*1E6);
     	Log.w("AgroAssistant", "Calulated:: Latitude: " + lat + " Longtitude: " + lng);
     	Log.w("AgroAssistant", "Calulated:: Latitude: " + latitude + " Longtitude: " + longtitude);
-    	currentPoint = new GeoPoint((int) latitude , (int) longtitude ); 
+    	currentPoint = new GeoPoint(latitude , longtitude ); 
     	
     	//Remove Previous Items
     	if(!mapOverlays.isEmpty()) {

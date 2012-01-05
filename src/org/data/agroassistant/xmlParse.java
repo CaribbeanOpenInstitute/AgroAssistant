@@ -1,6 +1,15 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.*;
+import static org.data.agroassistant.DBConstants.*;
+import static org.data.agroassistant.AgroConstants.*;
+import static org.data.agroassistant.DBConstants.FARMERS_TABLE;
+import static org.data.agroassistant.DBConstants.FARMER_FNAME;
+import static org.data.agroassistant.DBConstants.FARMER_ID;
+import static org.data.agroassistant.DBConstants.FARMER_LNAME;
+import static org.data.agroassistant.DBConstants.FARMER_SIZE;
+import static org.data.agroassistant.DBConstants.FARMS_TABLE;
+import static org.data.agroassistant.DBConstants.PRICES_TABLE;
+
 import java.io.IOException;
 import java.io.StringReader;
 import java.text.ParseException;
@@ -19,6 +28,7 @@ import org.w3c.dom.NodeList;
 import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
 
+import android.content.ContentValues;
 import android.content.Context;
 
 
@@ -31,15 +41,22 @@ public class xmlParse {
 	private static ArrayList<PriceObj>  priceList;
 	
 	private AgroAssistantDB agroDB;
+	private AgroApplication agroApp;
+	private AgroData agroData;
+	private ContentValues apiRecord;
 		
 	
 	public xmlParse(Context context, String xmlString) {
 		agroDB = new AgroAssistantDB(context);
+		agroData = new AgroData(context);
+		//agroApp = new AgroApplication(context);
 		
 		farmerList = new ArrayList<FarmerObj>();
 		farmList   = new ArrayList<FarmObj>();
 		cropList   = new ArrayList<CropObj>();
 		priceList  = new ArrayList<PriceObj>();
+		
+		apiRecord = new ContentValues();
 		
 		try {
 		
@@ -156,30 +173,47 @@ public class xmlParse {
 		double latitude     = Double.parseDouble(getTextValue  ( farmE , "Ycoord"       )) ;
 		double longitude    = Double.parseDouble(getTextValue  ( farmE , "Xcoord"       ));
 		
-		
 		String parish    = getTextValue ( farmE , "Parish"    ) ;
 		String extension = getTextValue ( farmE , "Extension" ) ;
 		String district  = getTextValue ( farmE , "District"  ) ;
 		
+		apiRecord.put(FARMER_ID, farmerid);
+		apiRecord.put(FARM_ID, farmid);
+		apiRecord.put(FARM_PARISH, parish);
+		apiRecord.put(FARM_EXTENSION, extension);
+		apiRecord.put(FARM_DISTRICT, district);
+		apiRecord.put(FARM_LONG, latitude);
+		apiRecord.put(FARM_LAT, longitude);
+		
 		//Create a new farm with the value read from the xml nodes
 		FarmObj farm = new FarmObj(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
-		agroDB.insertFarm(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
+		//agroApp.agroData.insert(FARMS_TABLE, apiRecord);
+		agroData.insert(FARMS_TABLE, apiRecord);
+		apiRecord.clear();
+		//agroDB.insertFarm(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
 
 		return farm;
-
 	}
 	
 	private FarmerObj getFarmer(Element farmerE){
 		
-		int farmerid  = getIntValue  ( farmerE , "FarmerID"   ) ;
-		String fName  = getTextValue ( farmerE , "firstname"  ) ;
-		String lName  = getTextValue ( farmerE , "lastname"   ) ;
-		String fSize  = getTextValue ( farmerE , "Farmersize" ) ;
+		int farmerid  = getIntValue  (farmerE, "FarmerID");
+		String fName  = getTextValue (farmerE, "firstname");
+		String lName  = getTextValue (farmerE, "lastname");
+		String fSize  = getTextValue (farmerE, "Farmersize");
+		
+		apiRecord.put(FARMER_ID, farmerid);
+		apiRecord.put(FARMER_FNAME, fName.toLowerCase());
+		apiRecord.put(FARMER_LNAME, lName.toLowerCase());
+		apiRecord.put(FARMER_SIZE, fSize.toLowerCase());
 		
 		//Create a new farmer with the value read from the xml nodes
 		//FarmerObj farmer = new FarmerObj(201001261, "Gebre", "Wallace", "SMALL");
 		FarmerObj farmer = new FarmerObj(farmerid, fName, lName,fSize);
-		agroDB.insertFarmer(farmerid, fName.toLowerCase(), lName.toLowerCase(),fSize.toLowerCase());
+		//agroApp.agroData.insert(FARMERS_TABLE, apiRecord);
+		agroData.insert(FARMERS_TABLE, apiRecord);
+		apiRecord.clear();
+		//agroDB.insertFarmer(farmerid, fName.toLowerCase(), lName.toLowerCase(),fSize.toLowerCase());
 		return farmer;
 	}
 

@@ -1,11 +1,8 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.DB_SEARCH;
-import static org.data.agroassistant.Constants.FARMERS_TABLE;
-import static org.data.agroassistant.Constants.FARMER_FARM_SEARCH;
-import static org.data.agroassistant.Constants.FARMER_ID;
-import static org.data.agroassistant.Constants.FARMS_TABLE;
 import android.app.TabActivity;
+import static org.data.agroassistant.DBConstants.*;
+
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -26,6 +23,7 @@ public class FarmerView extends TabActivity{
 	private String FARMER_TAB = "farmerInfo";
 	private String FARM_TAB  = "farmInfo";
 	
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.farmer_view);

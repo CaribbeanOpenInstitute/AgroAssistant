@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.widget.TextView;
 
 public class CropInfo extends Activity{
+	@Override
 	public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 

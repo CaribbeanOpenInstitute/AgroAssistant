@@ -1,31 +1,7 @@
 package org.data.agroassistant;
 
 import static android.provider.BaseColumns._ID;
-import static org.data.agroassistant.Constants.*;
-import static org.data.agroassistant.Constants.CROP_AREA;
-import static org.data.agroassistant.Constants.CROP_COUNT;
-import static org.data.agroassistant.Constants.CROP_DATE;
-import static org.data.agroassistant.Constants.CROP_FARM_ID;
-import static org.data.agroassistant.Constants.CROP_GROUP;
-import static org.data.agroassistant.Constants.CROP_TYPE;
-import static org.data.agroassistant.Constants.DATABASE_NAME;
-import static org.data.agroassistant.Constants.FARMERS_TABLE;
-import static org.data.agroassistant.Constants.FARMER_FNAME;
-import static org.data.agroassistant.Constants.FARMER_ID;
-import static org.data.agroassistant.Constants.FARMER_LNAME;
-import static org.data.agroassistant.Constants.FARMER_SIZE;
-import static org.data.agroassistant.Constants.FARMS_TABLE;
-import static org.data.agroassistant.Constants.FARM_DISTRICT;
-import static org.data.agroassistant.Constants.FARM_EXTENSION;
-import static org.data.agroassistant.Constants.FARM_FARMER_ID;
-import static org.data.agroassistant.Constants.FARM_ID;
-import static org.data.agroassistant.Constants.FARM_LAT;
-import static org.data.agroassistant.Constants.FARM_LONG;
-import static org.data.agroassistant.Constants.FARM_PARISH;
-import static org.data.agroassistant.Constants.FARM_SIZE;
-import static org.data.agroassistant.Constants.FROM_CROPS;
-import static org.data.agroassistant.Constants.FROM_FARMERS;
-import static org.data.agroassistant.Constants.FROM_FARMS;
+import static org.data.agroassistant.DBConstants.*;
 
 import java.util.Arrays;
 
@@ -84,7 +60,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	//+ PRICE_LAT + " double not null, "
 	//+ PRICE_LONG + " double not null);";
 		
-	private static final int DATABASE_VERSION = 26;
+	private static final int DATABASE_VERSION = 27;
 	
 	private SQLiteDatabase db;
 	
@@ -110,7 +86,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 		}
 	}
 	
-	@Override
+	@Override 
 	public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
 		Log.w("AgroAssistant", "Upgrading database from version " + oldVersion + " to "
 						+ newVersion + ", which will destroy all old data");

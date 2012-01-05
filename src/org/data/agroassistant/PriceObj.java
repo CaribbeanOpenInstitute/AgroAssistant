@@ -118,6 +118,7 @@ public class PriceObj{
 	}
 	
 //************************************************************************************************************
+	@Override
 	public String toString(){
 		String retString  = "" +parish + "," +  crop_type + "," + lower_price + "," + upper_price + "," + freq_price
 							+ "," + supply_status + "," + quality + "," + price_month.toGMTString();

@@ -3,8 +3,8 @@ package org.data.agroassistant;
 import java.util.ArrayList;
 import java.util.List;
 
-import static org.data.agroassistant.Constants.*;
 import android.app.ListActivity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
@@ -15,12 +15,15 @@ import android.widget.AdapterView.OnItemClickListener;
 import android.widget.ListView;
 import android.widget.Toast;
 import android.widget.ViewAnimator;
+import static org.data.agroassistant.DBConstants.*;
+import static org.data.agroassistant.AgroConstants.*;
+
 
 public class Farmers extends ListActivity {
-	private static final int FNAME_SEARCH = 0;
-	private static final int AREA_SEARCH = 1;
-	private static final int LOCATION_SEARCH = 2;
-	private static final int DETAILED_SEARCH = 3;
+	private static final int LIST_FNAME_SEARCH = 0;
+	private static final int LIST_AREA_SEARCH = 1;
+	private static final int LIST_LOCATION_SEARCH = 2;
+	private static final int LIST_DETAILED_SEARCH = 3;
 
 	private int searchType;
 	private static String farmer_name = "", parish = "", extension = "", district = "";
@@ -34,10 +37,14 @@ public class Farmers extends ListActivity {
 
 
 	private String queryParams;
+	
+	private AgroApplication agroApp;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
+		agroApp = new AgroApplication();
+		
 		setContentView(R.layout.farmers_main);
 
 		searchType = FARMER_SEARCH;
@@ -53,22 +60,22 @@ public class Farmers extends ListActivity {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		    	Intent farmerSearchIntent = new Intent();
 		    	switch (position) {
-				case 0:
+				case LIST_FNAME_SEARCH:
 					//Toast.makeText(Farmers.this, "You selected to Search by Farmer name", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, FarmerSearch.class);
 					startActivityForResult(farmerSearchIntent,FNAME_SEARCH);
 					break;
-				case 1:
+				case LIST_AREA_SEARCH:
 					//Toast.makeText(Farmers.this, "You selected to Search by Parish", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, AreaSearch.class);
 					startActivityForResult(farmerSearchIntent,AREA_SEARCH);
 					break;
-				case 2:
+				case LIST_LOCATION_SEARCH:
 					//Toast.makeText(Farmers.this, "You selected to Search by Location", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, LocationSearch.class);
 					startActivityForResult(farmerSearchIntent,LOCATION_SEARCH);
 					break;
-				case 3:
+				case LIST_DETAILED_SEARCH:
 					//Toast.makeText(Farmers.this, "You selected to Search by Detailed search", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, FarmerDetailSearch.class);
 					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
@@ -90,14 +97,23 @@ public class Farmers extends ListActivity {
 
 		if( resultCode == RESULT_OK) {
 			if (requestCode == FNAME_SEARCH) {
-        		//Call function to pull data by ID or name
+				
+				//Test AgroApplication-->getQueryData()
+				agroApp = ((AgroApplication)getApplication());
+				ContentValues testFarmerQuery = new ContentValues();
+				String farmerID = "702040016";
+				testFarmerQuery.put(FARMER_ID, farmerID);
+				agroApp.getQueryData(FARMERS_SEARCH, testFarmerQuery);
+				/////////////////////////////////////////
+				
+        		/*//Call function to pull data by ID or name
         		if(intent.getStringExtra("column").equals("Farmer Name")){
         			farmer_name = intent.getStringExtra("value");
         			fetchFarmerData(farmer_name, FNAME_SEARCH);
         		}else{
         			farmer_id = intent.getStringExtra("value");
         			fetchFarmerData(farmer_id, FNAME_SEARCH);
-        		}
+        		}*/
 
         	} else if (requestCode == AREA_SEARCH) {
 
@@ -201,7 +217,10 @@ public class Farmers extends ListActivity {
 
 		@Override
 		protected String doInBackground(RESTServiceObj... client) {
-			AgroAssistantDB agroDB = new AgroAssistantDB(Farmers.this);
+			
+			///////////////////////////////////////
+			
+			/*AgroAssistantDB agroDB = new AgroAssistantDB(Farmers.this);
 			if (agroDB.queryExists(FARMERS_TABLE, queryParams)) {
 				agroDB.close();
 				return DB_SEARCH;
@@ -214,8 +233,9 @@ public class Farmers extends ListActivity {
 		    	    e.printStackTrace();
 		    	    return null;
 		    	}
-			}
-	    	final String response = client[0].getResponse();
+			}*/
+//	    	final String response = client[0].getResponse();
+	    	final String response = agroApp.apiResponse;
 			return response;
 		}
 		

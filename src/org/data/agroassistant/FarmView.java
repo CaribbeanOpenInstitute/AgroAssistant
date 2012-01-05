@@ -1,6 +1,6 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.*;
+
 
 /* DESC:	Activity to view the information of an individual farm. Shows that farm information as well as
  * 				associated crops
@@ -9,6 +9,8 @@ import static org.data.agroassistant.Constants.*;
  */
 
 import java.util.ArrayList;
+import static org.data.agroassistant.DBConstants.*;
+
 import java.util.List;
 
 import android.app.TabActivity;

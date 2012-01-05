@@ -1,7 +1,8 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.Constants.*;
 import android.app.ListActivity;
+import static org.data.agroassistant.DBConstants.*;
+
 import android.content.Intent;
 import android.database.Cursor;
 import android.os.Bundle;
