@@ -1,6 +1,7 @@
 package org.data.agroassistant;
 
 import static android.provider.BaseColumns._ID;
+import static org.data.agroassistant.AgroConstants.FARMERS_SEARCH;
 import static org.data.agroassistant.DBConstants.CROPS_TABLE;
 import static org.data.agroassistant.DBConstants.CROP_AREA;
 import static org.data.agroassistant.DBConstants.CROP_COUNT;
@@ -37,6 +38,8 @@ import static org.data.agroassistant.DBConstants.QUERY_PARAMS;
 import static org.data.agroassistant.DBConstants.QUERY_TABLE;
 import static org.data.agroassistant.DBConstants.QUERY_URI;
 
+import java.util.Arrays;
+
 import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
@@ -48,6 +51,7 @@ import android.util.Log;
 
 public class AgroData {
 	private static final String TAG = AgroData.class.getSimpleName();
+	private int currentApiVersion = android.os.Build.VERSION.SDK_INT;
 	
 	Context context;
 	DbHelper dbHelper;
@@ -58,22 +62,27 @@ public class AgroData {
 	}
 	
 	/**
+	 * Insert record into specified table 
+	 * 
 	 * @param table Name of table record to be inserted into
 	 * @param values Name-value pairs 
 	 */
 	public void insert(String table, ContentValues values) {
 		
-		int currentApiVersion = android.os.Build.VERSION.SDK_INT;
+		
 		//Log.d(TAG, String.format("Current API level: %d. Froyo Version build: %d", currentApiVersion, android.os.Build.VERSION_CODES.FROYO));
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		
 		//db.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_IGNORE);
 		//Log.d(TAG, String.format("Record %s inserted into table %s", values.toString(),table));
 		
+		
 		if (currentApiVersion >= android.os.Build.VERSION_CODES.FROYO){ //Phone versions >= froyo
-			Log.d(TAG, String.format("Current API level: >= Froyo "));
-			db.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-			Log.d(TAG, String.format("Record %s inserted into table %s", values.toString(),table));
+			//Log.d(TAG, String.format("Current API level: >= Froyo "));
+			if ( db.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_IGNORE) != -1 )
+				Log.d(TAG, String.format("Record %s inserted into table %s", values.toString(),table));
+			else 
+				Log.e(TAG, String.format("Error inserting Record %s into table %s", values.toString(),table));
 		} else {//Phones running SDK < Froyo (2.2)
 			Cursor cursor = db.query(table, null, _ID + "=" +  values.get(_ID), null, null, null, null);
 			//Checks if farmer already exists in the database
@@ -93,6 +102,7 @@ public class AgroData {
 	}
 	
 	/**
+	 * Checks if a specified query has been completed before. Returns boolean.
 	 * 
 	 * @param table
 	 * @param queryParams 
@@ -100,6 +110,32 @@ public class AgroData {
 	 */
 	public boolean queryExists(int table, String queryParams) {
 		return false;
+	}
+	
+	/**
+	 * 
+	 * @param tableName
+	 * @param tableColumns
+	 * @param queryParams
+	 * @return Cursor linking to data base
+	 * 
+	 * TODO: Abstract out records based on tableName
+	 */
+	public Cursor farmerRawQuery(String tableName, String tableColumns, String queryParams) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		String query = "SELECT "+ tableColumns + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " WHERE " + queryParams;
+		try {
+			cursor = db.rawQuery(query, null);
+			Log.d("AgroAssistant", "Farmer Raw Query: " + query);
+		} catch (SQLException e) {
+			Log.e("AgroAssistant", "Farmer raw Query Exception: " + e.toString());
+		}
+		
+		Log.d("AgroAssistant", "Farmer Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d("AgroAssistant", "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		
+		return cursor;
 	}
 	
 	private class DbHelper extends SQLiteOpenHelper {
@@ -149,7 +185,7 @@ public class AgroData {
 			//+ PRICE_LAT + " double not null, "
 			//+ PRICE_LONG + " double not null);";
 		
-		private static final int DB_VERSION = 27;
+		private static final int DB_VERSION = 29;
 
 		public DbHelper(Context context) {
 			super(context, DATABASE_NAME, null, DB_VERSION);

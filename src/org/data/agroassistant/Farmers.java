@@ -20,7 +20,9 @@ import static org.data.agroassistant.AgroConstants.*;
 
 
 public class Farmers extends ListActivity {
-	private static final int LIST_FNAME_SEARCH = 0;
+	private final String TAG = Farmers.class.getSimpleName();
+	
+	private static final int LIST_FARMER_SEARCH = 0;
 	private static final int LIST_AREA_SEARCH = 1;
 	private static final int LIST_LOCATION_SEARCH = 2;
 	private static final int LIST_DETAILED_SEARCH = 3;
@@ -39,11 +41,13 @@ public class Farmers extends ListActivity {
 	private String queryParams;
 	
 	private AgroApplication agroApp;
+	private ContentValues searchParams;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		agroApp = new AgroApplication();
+		searchParams = new ContentValues();
 		
 		setContentView(R.layout.farmers_main);
 
@@ -60,10 +64,10 @@ public class Farmers extends ListActivity {
 		    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
 		    	Intent farmerSearchIntent = new Intent();
 		    	switch (position) {
-				case LIST_FNAME_SEARCH:
+				case LIST_FARMER_SEARCH:
 					//Toast.makeText(Farmers.this, "You selected to Search by Farmer name", Toast.LENGTH_SHORT).show();
 					farmerSearchIntent.setClass(Farmers.this, FarmerSearch.class);
-					startActivityForResult(farmerSearchIntent,FNAME_SEARCH);
+					startActivityForResult(farmerSearchIntent,FARMER_SEARCH); //Define in AgroConstants
 					break;
 				case LIST_AREA_SEARCH:
 					//Toast.makeText(Farmers.this, "You selected to Search by Parish", Toast.LENGTH_SHORT).show();
@@ -96,7 +100,10 @@ public class Farmers extends ListActivity {
         super.onActivityResult(requestCode, resultCode, intent);
 
 		if( resultCode == RESULT_OK) {
-			if (requestCode == FNAME_SEARCH) {
+			ContentValues searchParams = (ContentValues) intent.getParcelableExtra(SEARCH_PARAMS);
+			
+			new apiRequest().execute(searchParams);
+			/*if (requestCode == FARMER_SEARCH) {
 				
 				//Test AgroApplication-->getQueryData()
 				agroApp = ((AgroApplication)getApplication());
@@ -106,14 +113,15 @@ public class Farmers extends ListActivity {
 				agroApp.getQueryData(FARMERS_SEARCH, testFarmerQuery);
 				/////////////////////////////////////////
 				
-        		/*//Call function to pull data by ID or name
+				
+        		//Call function to pull data by ID or name
         		if(intent.getStringExtra("column").equals("Farmer Name")){
         			farmer_name = intent.getStringExtra("value");
         			fetchFarmerData(farmer_name, FNAME_SEARCH);
         		}else{
         			farmer_id = intent.getStringExtra("value");
         			fetchFarmerData(farmer_id, FNAME_SEARCH);
-        		}*/
+        		}
 
         	} else if (requestCode == AREA_SEARCH) {
 
@@ -154,7 +162,7 @@ public class Farmers extends ListActivity {
         			//Toast.makeText(Farmers.this, "Error: This Makes no Sense", Toast.LENGTH_SHORT).show();
         		}
         		fetchFarmerData("", DETAILED_SEARCH);
-        	}
+        	}*/
     	} else if( resultCode == RESULT_CANCELED) {
         		//Toast.makeText(Farmers.this, "Error: There was a problem requesting search", Toast.LENGTH_SHORT).show();
     	}
@@ -205,10 +213,10 @@ public class Farmers extends ListActivity {
     		break;
     	}
 		queryParams = client.toString();
-		new apiRequest().execute(client);
+		//new apiRequest().execute(client);
     }
 	
-	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
+	private class apiRequest extends AsyncTask<ContentValues, String, String> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
@@ -216,8 +224,10 @@ public class Farmers extends ListActivity {
 		}
 
 		@Override
-		protected String doInBackground(RESTServiceObj... client) {
-			
+		protected String doInBackground(ContentValues... searchParams) {
+			Log.e(TAG, String.format("Query Search Params: %s", searchParams[0]));
+			agroApp = ((AgroApplication)getApplication());
+			agroApp.getQueryData(FARMERS_SEARCH, searchParams[0]);
 			///////////////////////////////////////
 			
 			/*AgroAssistantDB agroDB = new AgroAssistantDB(Farmers.this);
@@ -235,21 +245,30 @@ public class Farmers extends ListActivity {
 		    	}
 			}*/
 //	    	final String response = client[0].getResponse();
-	    	final String response = agroApp.apiResponse;
-			return response;
+	    	String queryParams = agroApp.queryParams;	//e.g "parish=St.ANN and district=balaclava"
+	    	Log.e(TAG, String.format("Query Param String: %s", queryParams));
+			return queryParams;
 		}
 		
 		@Override
-		protected void onPostExecute(String apiResponse) {
-			super.onPostExecute(apiResponse);
+		protected void onPostExecute(String queryParams) {
+			super.onPostExecute(queryParams);
 			Intent searchResultIntent = new Intent();
 			Bundle searchResultBundle = new Bundle();
 			
-			if (apiResponse.equals(DB_SEARCH)) {
-				/*
+			searchResultBundle.putInt("searchType", searchType);
+			searchResultBundle.putString("searchParams", queryParams);
+			searchResultIntent.putExtras(searchResultBundle);
+
+			searchResultIntent.setClass(Farmers.this, ResultView.class);
+			startActivity(searchResultIntent);
+			finish();
+			
+			/*if (apiResponse.equals(DB_SEARCH)) {
+				
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
-    			 */
+    			 
     			searchResultBundle.putInt("searchType", searchType);
     			searchResultBundle.putString("searchParams", queryParams);
     			searchResultIntent.putExtras(searchResultBundle);
@@ -264,10 +283,81 @@ public class Farmers extends ListActivity {
     		}else{
 				xmlParse parser = new xmlParse(Farmers.this, apiResponse);
 				parser.parseXML(FARMERS_TABLE);
-    			/*
+    			
     			 *Call & pass necessary information to ResultView activity
     			 *finish Farmer search activity
-    			 */
+    			 
+    			searchResultBundle.putInt("searchType", searchType);
+    			searchResultBundle.putString("searchParams", queryParams);
+    			searchResultIntent.putExtras(searchResultBundle);
+
+    			searchResultIntent.setClass(Farmers.this, ResultView.class);
+    			startActivity(searchResultIntent);
+    			finish();
+    		}*/
+		}
+	}
+	
+	/*private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
+		@Override
+		protected void onPreExecute() {
+			super.onPreExecute();
+			animator.setDisplayedChild(1);
+		}
+
+		@Override
+		protected String doInBackground(RESTServiceObj... client) {
+			
+			///////////////////////////////////////
+			
+			AgroAssistantDB agroDB = new AgroAssistantDB(Farmers.this);
+			if (agroDB.queryExists(FARMERS_TABLE, queryParams)) {
+				agroDB.close();
+				return DB_SEARCH;
+			} else {
+		    	try {
+		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
+		    	    agroDB.insertQuery(FARMERS_TABLE, queryParams);
+		    	    agroDB.close();
+		    	} catch (Exception e) {
+		    	    e.printStackTrace();
+		    	    return null;
+		    	}
+			}
+//	    	final String response = client[0].getResponse();
+	    	final String response = agroApp.apiResponse;
+			return response;
+		}
+		
+		@Override
+		protected void onPostExecute(String apiResponse) {
+			super.onPostExecute(apiResponse);
+			Intent searchResultIntent = new Intent();
+			Bundle searchResultBundle = new Bundle();
+			
+			if (apiResponse.equals(DB_SEARCH)) {
+				
+    			 *Call & pass necessary information to ResultView activity
+    			 *finish Farmer search activity
+    			 
+    			searchResultBundle.putInt("searchType", searchType);
+    			searchResultBundle.putString("searchParams", queryParams);
+    			searchResultIntent.putExtras(searchResultBundle);
+
+    			searchResultIntent.setClass(Farmers.this, ResultView.class);
+    			startActivity(searchResultIntent);
+    			finish();
+			}
+			else if((apiResponse == null) || !(apiResponse.contains("Parish"))){	//Checks if API for data and acts accordingly
+    			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
+    			animator.setDisplayedChild(0);
+    		}else{
+				xmlParse parser = new xmlParse(Farmers.this, apiResponse);
+				parser.parseXML(FARMERS_TABLE);
+    			
+    			 *Call & pass necessary information to ResultView activity
+    			 *finish Farmer search activity
+    			 
     			searchResultBundle.putInt("searchType", searchType);
     			searchResultBundle.putString("searchParams", queryParams);
     			searchResultIntent.putExtras(searchResultBundle);
@@ -277,7 +367,7 @@ public class Farmers extends ListActivity {
     			finish();
     		}
 		}
-	}
+	}*/
 	
 	private void addNames(String fullName, RESTServiceObj client){
 		String fname, lname;

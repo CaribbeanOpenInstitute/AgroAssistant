@@ -74,8 +74,15 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 		//Authenticate user and check for new API key
 	}
 	
+	/**
+	 * 
+	 * @param table		Table int constant being searched 
+	 * @param values	Name/Pair pair of params being searched
+	 * TODO:		Logic for DB vs API searching
+	 */
 	public void getQueryData(int table, ContentValues values) {
 		searchType = table;
+		queryParams = "";
 		
 		//Set correct API URI for the search
 		switch(table) {	
@@ -136,6 +143,7 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 		}
 		
 		queryParams = client.toString();
+		Log.e(TAG, "Query Param string" + queryParams);
 		Log.e(TAG, String.format("Check that query: %s on table %s (%d)", queryParams, queryTable, table));
 		if (agroData.queryExists(table, queryParams)) {
 			apiRequest(true); //Pull from local DB

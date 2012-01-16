@@ -177,8 +177,9 @@ public class xmlParse {
 		String extension = getTextValue ( farmE , "Extension" ) ;
 		String district  = getTextValue ( farmE , "District"  ) ;
 		
-		apiRecord.put(FARMER_ID, farmerid);
+		apiRecord.put(FARM_FARMER_ID, farmerid);
 		apiRecord.put(FARM_ID, farmid);
+		apiRecord.put(FARM_SIZE, propertySize);
 		apiRecord.put(FARM_PARISH, parish);
 		apiRecord.put(FARM_EXTENSION, extension);
 		apiRecord.put(FARM_DISTRICT, district);

@@ -1,6 +1,7 @@
 package org.data.agroassistant;
 
 import android.app.ListActivity;
+import static org.data.agroassistant.AgroConstants.FARMERS_SEARCH;
 import static org.data.agroassistant.DBConstants.*;
 
 import android.content.Intent;
@@ -14,7 +15,7 @@ import android.widget.SimpleCursorAdapter;
 import android.widget.Toast;
 
 public class ResultView extends ListActivity {
-	
+	private AgroApplication agroApp;
 	private AgroAssistantDB agroDB;
 	private Cursor resultsCursor;
 	private int searchType;
@@ -49,6 +50,9 @@ public class ResultView extends ListActivity {
         //final String searchResponse = searchResultBundle.getString("searchResponse");
         String searchParams = searchResultBundle.getString("searchParams");
         
+      //Refactor
+        agroApp = ((AgroApplication)getApplication());
+      /////////	
 		
 		
         
@@ -65,11 +69,12 @@ public class ResultView extends ListActivity {
 	        switch(searchType) {
 	        case(FARMER_SEARCH): 
 	        	//resultsCursor = agroDB.rawQuery(FARMERS_TABLE, FROM_S_FARMERS, searchParams);
-	        	resultsCursor = agroDB.farmerRawQuery(FARMERS_TABLE, FROM_S_FARMERS_FARMS, searchParams);
+	        	//resultsCursor = agroDB.farmerRawQuery(FARMERS_TABLE, FROM_S_FARMERS_FARMS, searchParams);
+	        	resultsCursor = agroApp.agroData.farmerRawQuery(FARMERS_TABLE, FROM_S_FARMERS_FARMS, searchParams);
 	    		break;
 	        case (FARM_SEARCH):
 	        	
-	        	resultsCursor = agroDB.farmerRawQuery( FARMS_TABLE, FROM_S_FARMS_FARMERS, searchParams);
+	        	resultsCursor = agroApp.agroData.farmerRawQuery( FARMS_TABLE, FROM_S_FARMS_FARMERS, searchParams);
 	        	break;
 	        case (FARMER_FARM_SEARCH):
 	        	

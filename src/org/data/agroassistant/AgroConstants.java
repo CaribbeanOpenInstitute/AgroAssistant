@@ -30,5 +30,12 @@ public interface AgroConstants {
 	public static final int CROP_PARISH_SEARCH = 7;
 	public static final int CROP_PRICE_SEARCH = 8;
 	public static final int DETAILED_SEARCH = 9;
+	
+	/*
+	 * Other Constants
+	 */
+	public static final String FARMER_NAME = "farmerName";
+	public static final String SEARCH_PARAMS = "searchParams";
+	public static final String SEARCH_TYPE = "searchType";
 
 }

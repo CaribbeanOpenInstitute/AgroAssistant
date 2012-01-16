@@ -2,6 +2,7 @@ package org.data.agroassistant;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ContentValues;
 import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -13,11 +14,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.RadioGroup;
 
+import static org.data.agroassistant.AgroConstants.*;
+import static org.data.agroassistant.DBConstants.*;
+
 public class FarmerSearch extends Activity{
+	private ContentValues searchInput;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.farmer_search);
 	    
@@ -50,6 +54,8 @@ public class FarmerSearch extends Activity{
 	    final Button btn_search = (Button) findViewById(R.id.btn_farmer_search);
         
 	    final Intent returnIntent = new Intent();
+	    
+	    searchInput = new ContentValues();
 		
 	    btn_search.setOnClickListener(new OnClickListener() {
 			//@Override
@@ -66,6 +72,21 @@ public class FarmerSearch extends Activity{
 							returnIntent.putExtra("selection", "1");
 							returnIntent.putExtra("column", "Farmer Name");
 							returnIntent.putExtra("value", userInput );
+							
+							//Refactor
+							userInput.trim();
+							String[] name = userInput.split(" ");
+							if (name.length == 1 ) {
+								searchInput.put(FARMER_LNAME, name[0]);
+							} else {
+								searchInput.put(FARMER_FNAME, name[0]);
+								searchInput.put(FARMER_LNAME, name[1]);
+							}
+							
+							searchInput.put(FARMER_NAME, userInput);
+							returnIntent.putExtra(SEARCH_PARAMS, searchInput);
+							returnIntent.putExtra(SEARCH_TYPE, FNAME_SEARCH);
+							//
 							setResult(RESULT_OK,returnIntent);    	
 					    	finish();
 							break;
@@ -74,7 +95,13 @@ public class FarmerSearch extends Activity{
 							returnIntent.putExtra("selection", "2");
 							returnIntent.putExtra("column", "Farmer ID");
 							returnIntent.putExtra("value", userInput );
-							setResult(RESULT_OK,returnIntent);    	
+							
+							//Refactor
+							searchInput.put(FARMER_ID, userInput);
+							returnIntent.putExtra(SEARCH_PARAMS, searchInput);
+							returnIntent.putExtra(SEARCH_TYPE, FID_SEARCH);
+							//
+							setResult(RESULT_OK,returnIntent);
 					    	finish();
 							break;
 						case -1:
