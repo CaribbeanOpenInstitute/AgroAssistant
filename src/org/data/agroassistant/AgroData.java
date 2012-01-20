@@ -1,7 +1,7 @@
 package org.data.agroassistant;
 
 import static android.provider.BaseColumns._ID;
-import static org.data.agroassistant.AgroConstants.FARMERS_SEARCH;
+import static org.data.agroassistant.AgroConstants.*;
 import static org.data.agroassistant.DBConstants.CROPS_TABLE;
 import static org.data.agroassistant.DBConstants.CROP_AREA;
 import static org.data.agroassistant.DBConstants.CROP_COUNT;
@@ -63,37 +63,46 @@ public class AgroData {
 	}
 	
 	/**
-	 * Insert record into specified table 
+	 * Insert record into specified table. Includes duplication check to prevent double entries 
 	 * 
-	 * @param table Name of table record to be inserted into
+	 * @param tableName Name of table record to be inserted into
 	 * @param values Name-value pairs 
 	 */
-	public void insert(String table, ContentValues values) {
-		//Log.d(TAG, String.format("Current API level: %d. Froyo Version build: %d", currentApiVersion, android.os.Build.VERSION_CODES.FROYO));
+	public void insert(String tableName, ContentValues values) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		int tableCode = AgroApplication.getTableCode(tableName);
+		String tableKey = "";
 		
-		if (currentApiVersion >= android.os.Build.VERSION_CODES.FROYO){ //Phone versions >= froyo
-			if ( db.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_IGNORE) != -1 )
-				Log.d(TAG, String.format("Record %s inserted into table %s", values.toString(),table));
-			else 
-				Log.e(TAG, String.format("Error inserting Record %s into table %s", values.toString(),table));
+		//Getting correct primary key for tables
+		switch (tableCode) {
+		case FARMERS_SEARCH:
+			tableKey = FARMER_ID;
+			break;
+		case FARMS_SEARCH:
+			tableKey = FARM_ID;
+			break;
+		case CROPS_SEARCH:
+			tableKey = CROP_FARM_ID;
+			break;
+		case PRICES_SEARCH:
+			tableKey = _ID;
+			break;
+		}
 		
-		} else {//Phones running SDK < Froyo (2.2)
-			Cursor cursor = db.query(table, null, _ID + "=" +  values.get(_ID), null, null, null, null);
-		
-			//Checks if farmer already exists in the database
-			if (cursor.getCount() == 1) {
-				Log.d(TAG, String.format("Record already exists in table %s", table));
-			} else {
-				try {
-					db.insertOrThrow(table, null, values);
-					Log.d(TAG, String.format("Inserting into table %s", table));
-				}
-				catch (RuntimeException e) {
-					Log.e(TAG,"Farmer Insertion Exception: "+e.toString());
-				}
+		//Duplicate Check
+		Cursor cursor = db.query(tableName, null, tableKey + "=" +  values.get(tableKey), null, null, null, null);
+		if (cursor.getCount() == 1) {
+			Log.d(TAG, String.format("Record already exists in table %s", tableName));
+		} else {
+			try {
+				db.insertOrThrow(tableName, null, values);
+				Log.d(TAG, String.format("Inserting into table %s", tableName));
+			}
+			catch (RuntimeException e) {
+				Log.e(TAG,"Farmer Insertion Exception: "+e.toString());
 			}
 		}
+		cursor.close();
 		db.close();
 	}
 	
@@ -121,6 +130,46 @@ public class AgroData {
 			Log.e(TAG,"Query does not exists: " + tableName + " on " + queryParams);
 			return false;
 		}
+	}
+	
+	/**
+	 * 
+	 * @param tableCode
+	 * @param queryParams
+	 * @return boolean indicating success of insertion
+	 * 
+	 * TODO: In future implement age of query records.
+	 */
+	public boolean insertQuery(int tableCode, String queryParams) {
+		SQLiteDatabase db = dbHelper.getWritableDatabase();
+		String tableName = AgroApplication.getTableName(tableCode);
+		String query = QUERY_URI + "=" + "'" + tableName + "'" + " AND " + QUERY_PARAMS + "=" + '"' + queryParams + '"';
+		Cursor cursor = db.query(QUERY_TABLE, FROM_QUERIES, query, null, null, null, null);
+
+		//Checks if query already exists in the database
+		if (cursor.getCount() == 1) {
+			Log.d("AgroAssistant", "insertquery: Query on " + tableName + " where " + queryParams + " already exist in table");
+			//update query entry and date
+		} else {
+			ContentValues values = new ContentValues();
+			values.put(QUERY_URI, tableName);
+			values.put(QUERY_PARAMS, queryParams);
+			//values.put(QUERY_DATE, "date");
+			//values.put(FARMER_SIZE, farmersize.toLowerCase());
+			try {
+				db.insertOrThrow(QUERY_TABLE, null, values);
+				Log.d("AgroAssistant", "Insert query: " + tableName + " where " + queryParams);
+			}
+			catch (RuntimeException e) {
+				db.close();
+				Log.e("AgroAssistant","Query Insertion Exception: "+e.toString());
+				return false;
+			}
+		}
+		cursor.close();
+		db.close();
+		return true;
+		
 	}
 	
 	/**
@@ -202,7 +251,7 @@ public class AgroData {
 			//+ PRICE_LAT + " double not null, "
 			//+ PRICE_LONG + " double not null);";
 		
-		private static final int DB_VERSION = 30;
+		private static final int DB_VERSION = 33;
 
 		public DbHelper(Context context) {
 			super(context, DATABASE_NAME, null, DB_VERSION);

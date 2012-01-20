@@ -41,7 +41,7 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 	Context appCtx;
 	
 	private RESTServiceObj client;
-	int searchType;
+	int tableCode;
 	public String queryParams = "";
 	public String apiResponse;
 	String queryTable = "";
@@ -81,11 +81,11 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 	 * TODO:		Logic for DB vs API searching
 	 */
 	public void getQueryData(int table, ContentValues values) {
-		searchType = table;
+		tableCode = table;
 		queryParams = "";
 		
 		//Set correct API URI for the search
-		switch(table) {	
+		switch(tableCode) {	
 		case FARMERS_SEARCH:	//Farmer ID or Farmer lastname or first anme last name
 			client = new RESTServiceObj(FARMS_QUERY_URL);
 			queryTable = FARMERS_TABLE;
@@ -143,13 +143,12 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 		}
 		
 		queryParams = client.toString();
-		Log.e(TAG, "Query Param string" + queryParams);
-		Log.e(TAG, String.format("Check that query: %s on table %s (%d)", queryParams, queryTable, table));
-		if (agroData.queryExists(table, queryParams)) {
+		Log.e(TAG, "Query Params " + queryParams);
+		Log.e(TAG, String.format("Check that query: %s on table %s (%d)", queryParams, queryTable, tableCode));
+		if (agroData.queryExists(tableCode, queryParams)) {
 			apiRequest(true); //Pull from local DB
 		} else {
 			apiRequest(false); //Pull from API
-		//new apiRequest().execute(client);
 		}
 	}
 	
@@ -161,13 +160,11 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 		Intent searchResultIntent = new Intent();
 		Bundle searchResultBundle = new Bundle();
 		
-		if (DB_FLAG) { //False means go to API Call
-			//DB Call
-		} else {
+		if (!DB_FLAG) { //False means go to API Call
 			try {
 	    	    client.Execute(RESTServiceObj.RequestMethod.GET);
 	    	    //Insert query params into db
-	    	    //agroDB.insertQuery(FARMERS_TABLE, queryParams);	
+	    	    agroData.insertQuery(tableCode, queryParams);	
 	    	} catch (Exception e) {
 	    		Log.d(TAG, String.format("apiRequest Exception: %s", e.toString()));
 	    	}
@@ -181,11 +178,11 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
     			Log.d(TAG, "API Response containts no data");
     		}
 		 
-			//Call & pass necessary information to ResultView activity
-			searchResultBundle.putInt("searchType", searchType);
-			searchResultBundle.putString("searchParams", queryParams);
-			searchResultIntent.putExtras(searchResultBundle);
 		}
+		//Call & pass necessary information to ResultView activity
+		searchResultBundle.putInt("searchType", tableCode);
+		searchResultBundle.putString("searchParams", queryParams);
+		searchResultIntent.putExtras(searchResultBundle);
 		
 		/*//Pass query params and search type to ResultView
 		searchResultBundle.putInt("searchType", searchType);
@@ -344,6 +341,19 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 			return PRICES_TABLE;
 		}
 		return null;
+	}
+	
+	public static int getTableCode(String tableName) {
+		if (tableName.equals(FARMERS_TABLE))
+			return FARMERS_SEARCH;
+		else if (tableName.equals(FARMS_TABLE))
+			return FARMS_SEARCH;
+		else if (tableName.equals(CROPS_TABLE))
+			return CROPS_SEARCH;
+		else if (tableName.equals(PRICES_TABLE))
+			return PRICES_SEARCH;
+		
+		return -1;
 	}
 
 }
