@@ -25,6 +25,7 @@ import static org.data.agroassistant.DBConstants.FARM_LONG;
 import static org.data.agroassistant.DBConstants.FARM_PARISH;
 import static org.data.agroassistant.DBConstants.FARM_SIZE;
 import static org.data.agroassistant.DBConstants.FROM_FARMERS;
+import static org.data.agroassistant.DBConstants.FROM_QUERIES;
 import static org.data.agroassistant.DBConstants.PRICES_TABLE;
 import static org.data.agroassistant.DBConstants.PRICE_CROPTYPE;
 import static org.data.agroassistant.DBConstants.PRICE_FPRICE;
@@ -68,23 +69,18 @@ public class AgroData {
 	 * @param values Name-value pairs 
 	 */
 	public void insert(String table, ContentValues values) {
-		
-		
 		//Log.d(TAG, String.format("Current API level: %d. Froyo Version build: %d", currentApiVersion, android.os.Build.VERSION_CODES.FROYO));
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		
-		//db.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_IGNORE);
-		//Log.d(TAG, String.format("Record %s inserted into table %s", values.toString(),table));
-		
-		
 		if (currentApiVersion >= android.os.Build.VERSION_CODES.FROYO){ //Phone versions >= froyo
-			//Log.d(TAG, String.format("Current API level: >= Froyo "));
 			if ( db.insertWithOnConflict(table, null, values, SQLiteDatabase.CONFLICT_IGNORE) != -1 )
 				Log.d(TAG, String.format("Record %s inserted into table %s", values.toString(),table));
 			else 
 				Log.e(TAG, String.format("Error inserting Record %s into table %s", values.toString(),table));
+		
 		} else {//Phones running SDK < Froyo (2.2)
 			Cursor cursor = db.query(table, null, _ID + "=" +  values.get(_ID), null, null, null, null);
+		
 			//Checks if farmer already exists in the database
 			if (cursor.getCount() == 1) {
 				Log.d(TAG, String.format("Record already exists in table %s", table));
@@ -108,16 +104,30 @@ public class AgroData {
 	 * @param queryParams 
 	 * @return TRUE for DB Call & FALSE for API call
 	 */
-	public boolean queryExists(int table, String queryParams) {
-		return false;
+	public boolean queryExists(int tableCode, String queryParams) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		String tableName = AgroApplication.getTableName(tableCode);
+		String selectionValues = QUERY_URI + '=' + "'" + tableName + "'" + " AND " + ' ' + QUERY_PARAMS + '=' + '"' + queryParams + '"';
+		Cursor query = db.query(QUERY_TABLE, FROM_QUERIES, selectionValues , null, null, null, null); 
+		if ( query.getCount() >= 1) {
+			query.close();
+			db.close();
+			Log.e(TAG,"Query does exist: " + tableName + " on " + queryParams);
+			return true;
+		}
+		else {
+			query.close();
+			db.close();
+			Log.e(TAG,"Query does not exists: " + tableName + " on " + queryParams);
+			return false;
+		}
 	}
 	
 	/**
-	 * 
 	 * @param tableName
 	 * @param tableColumns
 	 * @param queryParams
-	 * @return Cursor linking to data base
+	 * @return Cursor linking to database
 	 * 
 	 * TODO: Abstract out records based on tableName
 	 */
@@ -127,14 +137,21 @@ public class AgroData {
 		String query = "SELECT "+ tableColumns + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " WHERE " + queryParams;
 		try {
 			cursor = db.rawQuery(query, null);
-			Log.d("AgroAssistant", "Farmer Raw Query: " + query);
+			Log.d(TAG, "Farmer Raw Query: " + query);
 		} catch (SQLException e) {
-			Log.e("AgroAssistant", "Farmer raw Query Exception: " + e.toString());
+			Log.e(TAG, "Farmer raw Query Exception: " + e.toString());
 		}
 		
-		Log.d("AgroAssistant", "Farmer Raw Query Result: Returned " + cursor.getCount() + " record(s)");
-		Log.d("AgroAssistant", "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		Log.d(TAG, "Farmer Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d(TAG, "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
 		
+		return cursor;
+	}
+	
+	public Cursor getFarmer(String farmerID) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = db.query(FARMERS_TABLE, FROM_FARMERS, FARMER_ID + "=" + farmerID, null, null, null, null);
+		Log.d(TAG, "getFarmers: Cusor contains " + cursor.getCount() + " record(s)");
 		return cursor;
 	}
 	
@@ -185,7 +202,7 @@ public class AgroData {
 			//+ PRICE_LAT + " double not null, "
 			//+ PRICE_LONG + " double not null);";
 		
-		private static final int DB_VERSION = 29;
+		private static final int DB_VERSION = 30;
 
 		public DbHelper(Context context) {
 			super(context, DATABASE_NAME, null, DB_VERSION);
@@ -205,7 +222,7 @@ public class AgroData {
 				db.execSQL(CREATE_TABLE_PRICES);
 				Log.d(TAG, "Create PRICES table: " + CREATE_TABLE_PRICES);
 			} catch (RuntimeException e) {
-				Log.d("AgroAssistant", "Unable to create tables: ");
+				Log.d(TAG, "Unable to create tables: ");
 			}
 		}
 

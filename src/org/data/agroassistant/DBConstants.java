@@ -15,7 +15,7 @@ public interface DBConstants extends BaseColumns {
 	/*====DATABASE CONSTANTS======================
 	 * Constants used by the database adapter class
 	 */
-	public static final String DATABASE_NAME = "agroassistant.db";
+	public static final String DATABASE_NAME = "agroAssistant.db";
 	public static final String QUERY_TABLE= "queries";
 	public static final String FARMERS_TABLE= "farmers";
 	public static final String FARMS_TABLE= "farms";

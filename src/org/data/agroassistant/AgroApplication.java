@@ -13,7 +13,7 @@ import static org.data.agroassistant.DBConstants.FARMER_ID;
 import static org.data.agroassistant.DBConstants.FARMER_LNAME;
 import static org.data.agroassistant.DBConstants.FARM_DISTRICT;
 import static org.data.agroassistant.DBConstants.FARM_EXTENSION;
-import static org.data.agroassistant.DBConstants.FARM_ID;
+import static org.data.agroassistant.DBConstants.*;
 import static org.data.agroassistant.DBConstants.FARM_LAT;
 import static org.data.agroassistant.DBConstants.FARM_LONG;
 import static org.data.agroassistant.DBConstants.FARM_PARISH;
@@ -314,5 +314,36 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 			Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
 		}
 	}*/
+	
+	public static String UppercaseFirstLetters(String str) 
+	{
+	    boolean prevWasWhiteSp = true;
+	    char[] chars = str.toCharArray();
+	    for (int i = 0; i < chars.length; i++) {
+	        if (Character.isLetter(chars[i])) {
+	            if (prevWasWhiteSp) {
+	                chars[i] = Character.toUpperCase(chars[i]);    
+	            }
+	            prevWasWhiteSp = false;
+	        } else {
+	            prevWasWhiteSp = Character.isWhitespace(chars[i]);
+	        }
+	    }
+	    return new String(chars);
+	}
+
+	public static String getTableName(int tableCode) {
+		switch(tableCode) {
+		case FARMERS_SEARCH:
+			return FARMERS_TABLE;
+		case FARMS_SEARCH:
+			return FARMS_TABLE;
+		case CROPS_SEARCH:
+			return CROPS_TABLE;
+		case PRICES_SEARCH:
+			return PRICES_TABLE;
+		}
+		return null;
+	}
 
 }

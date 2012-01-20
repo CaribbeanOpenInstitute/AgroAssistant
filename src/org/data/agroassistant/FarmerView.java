@@ -1,8 +1,13 @@
 package org.data.agroassistant;
 
+import static org.data.agroassistant.AgroConstants.*;
+import static org.data.agroassistant.DBConstants.DB_SEARCH;
+import static org.data.agroassistant.DBConstants.FARMERS_TABLE;
+import static org.data.agroassistant.DBConstants.FARMER_FARM_SEARCH;
+import static org.data.agroassistant.DBConstants.FARMER_ID;
+import static org.data.agroassistant.DBConstants.FARMS_TABLE;
 import android.app.TabActivity;
-import static org.data.agroassistant.DBConstants.*;
-
+import android.content.ContentValues;
 import android.content.Intent;
 import android.content.res.Resources;
 import android.os.AsyncTask;
@@ -17,6 +22,7 @@ import android.widget.Toast;
  */
 
 public class FarmerView extends TabActivity{
+	private final String TAG = Farmers.class.getSimpleName();
 	
 	private String mResponseError;
 	private String queryParams;
@@ -32,38 +38,37 @@ public class FarmerView extends TabActivity{
 	    TabHost tabHost = getTabHost();  // The activity TabHost
 	    TabHost.TabSpec spec;  // Resusable TabSpec for each tab
 	    
-	    Intent farmerintent, farmintent;  // Reusable Intent for each tab
+	    Intent farmerIntent, farmIntent;  // Reusable Intent for each tab
+	    Intent farmerData = getIntent(); //intent containing farmer data passed from the calling activity
 	    
-	    Intent farmerdata = getIntent(); //intent containing farmer data passed from the calling activity
-	    
-	    final Bundle farmerbundle = farmerdata.getExtras(); 
+	    final Bundle farmerbundle = farmerData.getExtras(); 
 	    Bundle searchResultBundle = new Bundle();
 	    // Create an Intent to launch an Activity for the tab (to be reused)
-	    farmerintent = new Intent().setClass(this, FarmerDetails.class);
-	    farmerintent.putExtras(farmerbundle); 
+	    farmerIntent = new Intent().setClass(this, FarmerDetails.class);
+	    farmerIntent.putExtras(farmerbundle); 
 	    
 	    queryParams = FARMERS_TABLE + "." + FARMER_ID + "=" + farmerbundle.getString("farmerid");
 	    
 	    fetchFarmData(farmerbundle.getString("farmerid"));	//Fetching farm data in the background
 	    
 	    
-	    farmintent = new Intent();
+	    farmIntent = new Intent();
 		searchResultBundle.putInt("searchType", FARMER_FARM_SEARCH);
 		searchResultBundle.putString("searchParams", queryParams);
-		farmintent.putExtras(searchResultBundle);
+		farmIntent.putExtras(searchResultBundle);
 
 		
 	    // Initialize a TabSpec for each tab and add it to the TabHost
 	    spec = tabHost.newTabSpec(FARMER_TAB).setIndicator("Farmer",
 	                      res.getDrawable(R.drawable.ic_menu_farmer))
-	                  .setContent(farmerintent);
+	                  .setContent(farmerIntent);
 	    tabHost.addTab(spec);
 
 	    // Do the same for the other tabs
-	    farmintent.setClass(this, ResultView.class);
+	    farmIntent.setClass(this, ResultView.class);
 	    spec = tabHost.newTabSpec(FARM_TAB).setIndicator("Farms",
 	                      res.getDrawable(R.drawable.ic_menu_farm))
-	                  .setContent(farmintent);
+	                  .setContent(farmIntent);
 	    tabHost.addTab(spec);
 
 	    tabHost.setCurrentTab(0);
@@ -72,54 +77,31 @@ public class FarmerView extends TabActivity{
 	
 	
 	
-	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
+	private class apiRequest extends AsyncTask<ContentValues, String, String> {
 		@Override
 		protected void onPreExecute() {
 			super.onPreExecute();
-			//animator.setDisplayedChild(1);
 		}
 
 		@Override
-		protected String doInBackground(RESTServiceObj... client) {
-			AgroAssistantDB agroDB = new AgroAssistantDB(FarmerView.this);
-			if (agroDB.queryExists(FARMS_TABLE, queryParams)) {
-				agroDB.close();
-				return DB_SEARCH;
-			} else {
-		    	try {
-		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
-		    	    agroDB.insertQuery(FARMS_TABLE, queryParams);
-		    	    agroDB.close();
-		    	} catch (Exception e) {
-		    		Log.e("AgroAssistant","Farms RESTServiceObj pull: "+e.toString());
-		    	    return null;
-		    	}
-			}
-	    	final String response = client[0].getResponse();
-			return response;
+		protected String doInBackground(ContentValues... searchParams) {
+			AgroApplication  agroApp = ((AgroApplication)getApplication());
+			agroApp.getQueryData(FARMS_SEARCH, searchParams[0]);
+			
+	    	String queryParams = agroApp.queryParams;	//e.g "parish=St.ANN and district=balaclava"
+	    	Log.e(TAG, String.format("Query Param String: %s", queryParams));
+			return queryParams;
 		}
 		
 		@Override
-		protected void onPostExecute(String apiResponse) {
-			super.onPostExecute(apiResponse);
-			//animator.setDisplayedChild(0);
-			
-			if (apiResponse.equals(DB_SEARCH)) {
-				//Does nothing
-			}
-			else if((apiResponse == null) || !(apiResponse.contains("Parish"))){
-    			Toast.makeText(FarmerView.this, "Error: No Farms Data retrieved", Toast.LENGTH_SHORT).show();
-    		}else{
-    			xmlParse parser = new xmlParse(FarmerView.this, apiResponse);
-    			parser.parseXML(FARMS_TABLE);
-    		}
+		protected void onPostExecute(String queryParams) {
+			super.onPostExecute(queryParams);
 		}
 	}
 	
 	private final void fetchFarmData(String column) {
-		RESTServiceObj client;
-		client = new RESTServiceObj(getString(R.string.FARMS_QUERY_URL));
-		client.AddParam("FarmerID", column);
-		new apiRequest().execute(client);
+		ContentValues farmParams = new ContentValues();
+		farmParams.put(FARMER_ID, column);
+		new apiRequest().execute(farmParams);
 	}
 }
