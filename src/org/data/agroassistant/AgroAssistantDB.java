@@ -60,7 +60,7 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	//+ PRICE_LAT + " double not null, "
 	//+ PRICE_LONG + " double not null);";
 		
-	private static final int DATABASE_VERSION = 33;
+	private static final int DATABASE_VERSION = 34;
 	
 	private SQLiteDatabase db;
 	

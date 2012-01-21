@@ -66,12 +66,14 @@ public class AgroData {
 	 * Insert record into specified table. Includes duplication check to prevent double entries 
 	 * 
 	 * @param tableName Name of table record to be inserted into
-	 * @param values Name-value pairs 
+	 * @param tableRecord Name-value pairs 
 	 */
-	public void insert(String tableName, ContentValues values) {
+	public void insert(String tableName, ContentValues tableRecord) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		int tableCode = AgroApplication.getTableCode(tableName);
 		String tableKey = "";
+		String tableKeyAdd = "";
+		Cursor cursor = null;
 		
 		//Getting correct primary key for tables
 		switch (tableCode) {
@@ -83,6 +85,7 @@ public class AgroData {
 			break;
 		case CROPS_SEARCH:
 			tableKey = CROP_FARM_ID;
+			tableKeyAdd = CROP_DATE;
 			break;
 		case PRICES_SEARCH:
 			tableKey = _ID;
@@ -90,12 +93,16 @@ public class AgroData {
 		}
 		
 		//Duplicate Check
-		Cursor cursor = db.query(tableName, null, tableKey + "=" +  values.get(tableKey), null, null, null, null);
+		if (tableCode != CROPS_SEARCH) {
+			cursor = db.query(tableName, null, tableKey + "=" +  tableRecord.get(tableKey), null, null, null, null);
+		} else {	//Special condition for double primary key on crop table
+			cursor = db.query(tableName, null, String.format("%s=%s AND %s=%s", tableKey, tableRecord.get(tableKey), tableKeyAdd, tableRecord.get(tableKeyAdd)), null, null, null, null);
+		}
 		if (cursor.getCount() == 1) {
 			Log.d(TAG, String.format("Record already exists in table %s", tableName));
 		} else {
 			try {
-				db.insertOrThrow(tableName, null, values);
+				db.insertOrThrow(tableName, null, tableRecord);
 				Log.d(TAG, String.format("Inserting into table %s", tableName));
 			}
 			catch (RuntimeException e) {
@@ -121,13 +128,13 @@ public class AgroData {
 		if ( query.getCount() >= 1) {
 			query.close();
 			db.close();
-			Log.e(TAG,"Query does exist: " + tableName + " on " + queryParams);
+			Log.e(TAG,"Query does exist: " + selectionValues);
 			return true;
 		}
 		else {
 			query.close();
 			db.close();
-			Log.e(TAG,"Query does not exists: " + tableName + " on " + queryParams);
+			Log.e(TAG,"Query does not exists: " + selectionValues);
 			return false;
 		}
 	}
@@ -143,11 +150,12 @@ public class AgroData {
 	public boolean insertQuery(int tableCode, String queryParams) {
 		SQLiteDatabase db = dbHelper.getWritableDatabase();
 		String tableName = AgroApplication.getTableName(tableCode);
-		String query = QUERY_URI + "=" + "'" + tableName + "'" + " AND " + QUERY_PARAMS + "=" + '"' + queryParams + '"';
+		String query = String.format("%s='%s' AND %s=\"%s\"", QUERY_URI, tableName, QUERY_PARAMS, queryParams);
+		//String query = QUERY_URI + "=" + "'" + tableName + "'" + " AND " + QUERY_PARAMS + "=" + '"' + queryParams + '"';
 		Cursor cursor = db.query(QUERY_TABLE, FROM_QUERIES, query, null, null, null, null);
 
 		//Checks if query already exists in the database
-		if (cursor.getCount() == 1) {
+		if (cursor.getCount() >= 1) {
 			Log.d("AgroAssistant", "insertquery: Query on " + tableName + " where " + queryParams + " already exist in table");
 			//update query entry and date
 		} else {
@@ -161,6 +169,7 @@ public class AgroData {
 				Log.d("AgroAssistant", "Insert query: " + tableName + " where " + queryParams);
 			}
 			catch (RuntimeException e) {
+				cursor.close();
 				db.close();
 				Log.e("AgroAssistant","Query Insertion Exception: "+e.toString());
 				return false;
@@ -201,6 +210,24 @@ public class AgroData {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		Cursor cursor = db.query(FARMERS_TABLE, FROM_FARMERS, FARMER_ID + "=" + farmerID, null, null, null, null);
 		Log.d(TAG, "getFarmers: Cusor contains " + cursor.getCount() + " record(s)");
+		return cursor;
+	}
+	
+	public Cursor getFarm(String farmID) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		
+		String query = "SELECT *" + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " WHERE " + FARMS_TABLE + "." + FARM_ID + "=" + farmID;
+		try {
+			cursor = db.rawQuery(query, null);
+			Log.d(TAG, "Farm details query: " + query);
+		} catch (SQLException e) {
+			Log.e(TAG, "Farm details query Exception: " + e.toString());
+		}
+		
+		Log.d(TAG, "Farm details query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d(TAG, "FarmDetailsQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		
 		return cursor;
 	}
 	
@@ -251,7 +278,7 @@ public class AgroData {
 			//+ PRICE_LAT + " double not null, "
 			//+ PRICE_LONG + " double not null);";
 		
-		private static final int DB_VERSION = 33;
+		private static final int DB_VERSION = 34;
 
 		public DbHelper(Context context) {
 			super(context, DATABASE_NAME, null, DB_VERSION);

@@ -1,6 +1,7 @@
 package org.data.agroassistant;
 
 import static org.data.agroassistant.DBConstants.FARMER_FNAME;
+import static org.data.agroassistant.DBConstants.FARMER_ID;
 import static org.data.agroassistant.DBConstants.FARMER_LNAME;
 import static org.data.agroassistant.DBConstants.FARMER_SIZE;
 import android.app.Activity;
@@ -10,14 +11,17 @@ import android.util.Log;
 import android.widget.TextView;
 import android.widget.Toast;
 
+/*
+ * Activity used to display a single farmer record
+ * 
+ * TODO Implement farmer record edits + updating
+ */
 public class FarmerDetails extends Activity{
 	private String firstname, lastname, id, size;
 	private AgroApplication agroApp;
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
-		//TODO Implement Farmer tab UI
-		//TODO Grey and black UI icons
         super.onCreate(savedInstanceState);
         setContentView(R.layout.farmer_info);
         
@@ -29,7 +33,7 @@ public class FarmerDetails extends Activity{
         
         Bundle farmerinfo = getIntent().getExtras();
         
-        id = farmerinfo.getString("farmerid" );
+        id = farmerinfo.getString(FARMER_ID);
         
         try {
         	Cursor farmer = agroApp.agroData.getFarmer(id);

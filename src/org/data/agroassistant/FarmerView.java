@@ -24,10 +24,9 @@ import android.widget.Toast;
 public class FarmerView extends TabActivity{
 	private final String TAG = Farmers.class.getSimpleName();
 	
-	private String mResponseError;
 	private String queryParams;
-	private String FARMER_TAB = "farmerInfo";
-	private String FARM_TAB  = "farmInfo";
+	private final String FARMER_TAB = "farmerInfo";
+	private final String FARM_TAB  = "farmInfo";
 	
 	@Override
 	public void onCreate(Bundle savedInstanceState) {
@@ -37,21 +36,19 @@ public class FarmerView extends TabActivity{
 	    Resources res = getResources(); // Resource object to get Drawables
 	    TabHost tabHost = getTabHost();  // The activity TabHost
 	    TabHost.TabSpec spec;  // Resusable TabSpec for each tab
-	    
 	    Intent farmerIntent, farmIntent;  // Reusable Intent for each tab
 	    Intent farmerData = getIntent(); //intent containing farmer data passed from the calling activity
-	    
+	    Bundle searchResultBundle = new Bundle();	//Bundle pass back to result view
 	    final Bundle farmerbundle = farmerData.getExtras(); 
-	    Bundle searchResultBundle = new Bundle();
+	    
 	    // Create an Intent to launch an Activity for the tab (to be reused)
 	    farmerIntent = new Intent().setClass(this, FarmerDetails.class);
 	    farmerIntent.putExtras(farmerbundle); 
 	    
-	    queryParams = FARMERS_TABLE + "." + FARMER_ID + "=" + farmerbundle.getString("farmerid");
+	    String farmerID = farmerbundle.getString(FARMER_ID);
+	    fetchFarmData(farmerID);	//Fetching farm data in the background
 	    
-	    fetchFarmData(farmerbundle.getString("farmerid"));	//Fetching farm data in the background
-	    
-	    
+	    queryParams = FARMERS_TABLE + "." + FARMER_ID + "=" + farmerID;
 	    farmIntent = new Intent();
 		searchResultBundle.putInt("searchType", FARMER_FARM_SEARCH);
 		searchResultBundle.putString("searchParams", queryParams);
@@ -63,8 +60,7 @@ public class FarmerView extends TabActivity{
 	                      res.getDrawable(R.drawable.ic_menu_farmer))
 	                  .setContent(farmerIntent);
 	    tabHost.addTab(spec);
-
-	    // Do the same for the other tabs
+	    //FARM Tab
 	    farmIntent.setClass(this, ResultView.class);
 	    spec = tabHost.newTabSpec(FARM_TAB).setIndicator("Farms",
 	                      res.getDrawable(R.drawable.ic_menu_farm))

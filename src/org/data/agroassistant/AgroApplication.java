@@ -144,7 +144,7 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 		
 		queryParams = client.toString();
 		Log.e(TAG, "Query Params " + queryParams);
-		Log.e(TAG, String.format("Check that query: %s on table %s (%d)", queryParams, queryTable, tableCode));
+		Log.e(TAG, String.format("Check that query: %s on table %s", queryParams, queryTable));
 		if (agroData.queryExists(tableCode, queryParams)) {
 			apiRequest(true); //Pull from local DB
 		} else {
@@ -162,6 +162,7 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 		
 		if (!DB_FLAG) { //False means go to API Call
 			try {
+				Log.e(TAG, "API PULL");
 	    	    client.Execute(RESTServiceObj.RequestMethod.GET);
 	    	    //Insert query params into db
 	    	    agroData.insertQuery(tableCode, queryParams);	

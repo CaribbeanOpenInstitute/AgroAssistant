@@ -183,8 +183,8 @@ public class xmlParse {
 		apiRecord.put(FARM_PARISH, parish);
 		apiRecord.put(FARM_EXTENSION, extension);
 		apiRecord.put(FARM_DISTRICT, district);
-		apiRecord.put(FARM_LONG, latitude);
-		apiRecord.put(FARM_LAT, longitude);
+		apiRecord.put(FARM_LONG, longitude);
+		apiRecord.put(FARM_LAT, latitude);
 		
 		//Create a new farm with the value read from the xml nodes
 		FarmObj farm = new FarmObj(farmerid, farmid, propertySize, latitude, longitude, parish, extension, district);
@@ -209,7 +209,6 @@ public class xmlParse {
 		apiRecord.put(FARMER_SIZE, fSize.toLowerCase());
 		
 		//Create a new farmer with the value read from the xml nodes
-		//FarmerObj farmer = new FarmerObj(201001261, "Gebre", "Wallace", "SMALL");
 		FarmerObj farmer = new FarmerObj(farmerid, fName, lName,fSize);
 		//agroApp.agroData.insert(FARMERS_TABLE, apiRecord);
 		agroData.insert(FARMERS_TABLE, apiRecord);
@@ -234,9 +233,18 @@ public class xmlParse {
 			date = new Date(0,0,0);
 		}
 		
+		apiRecord.put(CROP_FARM_ID, farmid);
+		apiRecord.put(CROP_AREA, area);
+		apiRecord.put(CROP_COUNT, count);
+		apiRecord.put(CROP_GROUP, group);
+		apiRecord.put(CROP_TYPE, type);
+		apiRecord.put(CROP_DATE, dateStr);
+		
 		//Create a new crop with the value read from the xml nodes
 		CropObj crop = new CropObj(farmid, group, type, area, count, date);
-		agroDB.insertCrop(farmid, group, type, area, count, dateStr);
+		//agroDB.insertCrop(farmid, group, type, area, count, dateStr);
+		agroData.insert(CROPS_TABLE, apiRecord);
+		apiRecord.clear();
 		return crop;
 		
 	}

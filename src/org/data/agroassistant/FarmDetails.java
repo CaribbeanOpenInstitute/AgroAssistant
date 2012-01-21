@@ -25,14 +25,15 @@ public class FarmDetails extends MapActivity{
 	private LocationManager mgr;
 	private GeoPoint currentPoint;
 	private Location currentLoc;
-	private AgroAssistantDB agroDB;
+	//private AgroAssistantDB agroDB;
+	private AgroApplication agroApp;
 
 	//Map Items
 	private List<Overlay> mapOverlays;
 	private OverlayItem overlayitem;
 	Drawable drawable;
 	ItemizedOverlay itemizedoverlay;
-	private String firstname, lastname, farmid, farmsize, farmer_id, parishStr, ext, dist;
+	private String firstname, lastname, farmID, farmsize, farmer_id, parishStr, ext, dist;
 	private Double lat, lng;
 	
 	@Override
@@ -42,7 +43,8 @@ public class FarmDetails extends MapActivity{
 		setContentView(R.layout.farm_details);
 		initMapView();
 		
-		agroDB = new AgroAssistantDB(this);
+		agroApp = ((AgroApplication)getApplication());
+		//agroDB = new AgroAssistantDB(this);
 		
 		final TextView farmername     = (TextView) findViewById(R.id.dtl_farm_farmername);
         final TextView farmerid       = (TextView) findViewById(R.id.dtl_farm_farmerid);
@@ -58,7 +60,7 @@ public class FarmDetails extends MapActivity{
         lastname    =  farminfo.getString("lastname");
         farmer_id   =  farminfo.getString("farmerid");
         farmsize	=  farminfo.getString("size");*/
-		farmid		=  farminfo.getString("farmid");
+		farmID		=  farminfo.getString(FARM_ID);
 		/*parishStr 	=  farminfo.getString("parish"     );
 		ext			=  farminfo.getString("extension"  );
 		dist		=   farminfo.getString("district"  );
@@ -67,8 +69,10 @@ public class FarmDetails extends MapActivity{
         
         
         try {
-        	Log.d("AgroAssistant", "FarmDetails: Farm ID: " + farmid);
-        	Cursor farmInfo = agroDB.getFarmDetails(farmid);
+        	//Log.d("AgroAssistant", "FarmDetails: Farm ID: " + farmID);
+        	//Cursor farmInfo = agroDB.getFarmDetails(farmID);
+        	Cursor farmInfo = agroApp.agroData.getFarm(farmID);
+        	startManagingCursor(farmInfo);
             farmInfo.moveToFirst();
             
             firstname   =  farmInfo.getString(farmInfo.getColumnIndex(FARMER_FNAME));
@@ -89,18 +93,17 @@ public class FarmDetails extends MapActivity{
 		
 		updateMap();
 		
-		farmername.setText(firstname + " " + lastname);
+		farmername.setText(AgroApplication.UppercaseFirstLetters(firstname + " " + lastname));
         farmerid.setText(farmer_id);
-        propertysize.setText(farmsize);
-        propertyid.setText(farmid);
-        parish.setText(parishStr);
-        extension.setText(ext);
-        district.setText(dist);
+        propertysize.setText(AgroApplication.UppercaseFirstLetters(farmsize));
+        propertyid.setText(farmID);
+        parish.setText(AgroApplication.UppercaseFirstLetters(parishStr));
+        extension.setText(AgroApplication.UppercaseFirstLetters(ext));
+        district.setText(AgroApplication.UppercaseFirstLetters(dist));
 	}	
 	
 	@Override
 	protected boolean isRouteDisplayed() {
-		// TODO Auto-generated method stub
 		return false;
 	}
 	
