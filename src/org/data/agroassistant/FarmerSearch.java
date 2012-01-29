@@ -35,18 +35,15 @@ public class FarmerSearch extends Activity{
             .setView(textEntryView)
             .setPositiveButton(R.string.alert_dialog_ok, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-
                     /* User clicked OK so do some stuff */
                 }
             })
             .setNegativeButton(R.string.alert_dialog_cancel, new DialogInterface.OnClickListener() {
                 public void onClick(DialogInterface dialog, int whichButton) {
-
                     /* User clicked cancel so do some stuff */
                 }
             })
             .create();
-	    
 	    //******************
 	    
 	    final RadioGroup rdg_farmer = (RadioGroup) findViewById(R.id.rdgrp_fsearch);
@@ -58,7 +55,6 @@ public class FarmerSearch extends Activity{
 	    searchInput = new ContentValues();
 		
 	    btn_search.setOnClickListener(new OnClickListener() {
-			//@Override
 			public void onClick(View v) {
 				String userInput = edt_farmer_search.getText().toString();
 				if ( userInput.equals("") || userInput.length() < 1 ){
@@ -67,13 +63,6 @@ public class FarmerSearch extends Activity{
 					
 					switch(rdg_farmer.getCheckedRadioButtonId()) {
 						case R.id.rdo_fname:
-							//userInput = edt_farmer_search.getText().toString();
-							//Toast.makeText(FarmerSearch.this, "Farmer Name: " + userInput, //Toast.LENGTH_SHORT).show();
-							/*returnIntent.putExtra("selection", "1");
-							returnIntent.putExtra("column", "Farmer Name");
-							returnIntent.putExtra("value", userInput );*/
-							
-							//Refactor
 							userInput.trim();
 							String[] name = userInput.split(" ");
 							if (name.length == 1 ) {
@@ -82,23 +71,14 @@ public class FarmerSearch extends Activity{
 								searchInput.put(FARMER_FNAME, name[0]);
 								searchInput.put(FARMER_LNAME, name[1]);
 							}
-							//searchInput.put(FARMER_NAME, userInput);
 							returnIntent.putExtra(SEARCH_PARAMS, searchInput);
 							returnIntent.putExtra(SEARCH_TYPE, FNAME_SEARCH);
 							setResult(RESULT_OK,returnIntent);    	
 					    	finish();
 							break;
 						case R.id.rdo_fid:
-							//Toast.makeText(FarmerSearch.this, "Farmer ID: " + userInput, //Toast.LENGTH_SHORT).show();
-							/*returnIntent.putExtra("selection", "2");
-							returnIntent.putExtra("column", "Farmer ID");
-							returnIntent.putExtra("value", userInput );*/
-							
-							//Refactor
-							//searchInput.put(FARMER_ID, userInput);
 							returnIntent.putExtra(SEARCH_PARAMS, searchInput);
 							returnIntent.putExtra(SEARCH_TYPE, FID_SEARCH);
-							//
 							setResult(RESULT_OK,returnIntent);
 					    	finish();
 							break;

@@ -26,12 +26,10 @@ public class AreaSearch extends Activity {
 	    setContentView(R.layout.area_search);
 	    
 	    final RadioGroup rdg_area = (RadioGroup) findViewById(R.id.rdgrp_asearch);
-	    //final EditText edt_farmer_search = (EditText) findViewById(R.id.edt_area_search);
 	    final AutoCompleteTextView edt_farmer_search = (AutoCompleteTextView) findViewById(R.id.edt_area_search);
 	    final Button btn_search = (Button) findViewById(R.id.btn_area_search);
 	    
 	    AgroApplication agroApp = ((AgroApplication)getApplication());
-	    //AgroAssistantDB agroDB = new AgroAssistantDB(this);
 	    
 	    String[] saArea = agroApp.agroData.getArea();
 	    
@@ -78,6 +76,5 @@ public class AreaSearch extends Activity {
 				}
 			}
 		});
-		//agroDB.close();
 	}
 }
