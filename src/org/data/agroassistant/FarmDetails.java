@@ -1,11 +1,20 @@
 package org.data.agroassistant;
 
+import static org.data.agroassistant.DBConstants.FARMER_FNAME;
+import static org.data.agroassistant.DBConstants.FARMER_ID;
+import static org.data.agroassistant.DBConstants.FARMER_LNAME;
+import static org.data.agroassistant.DBConstants.FARM_DISTRICT;
+import static org.data.agroassistant.DBConstants.FARM_EXTENSION;
+import static org.data.agroassistant.DBConstants.FARM_ID;
+import static org.data.agroassistant.DBConstants.FARM_LAT;
+import static org.data.agroassistant.DBConstants.FARM_LONG;
+import static org.data.agroassistant.DBConstants.FARM_PARISH;
+import static org.data.agroassistant.DBConstants.FARM_SIZE;
+
 import java.util.List;
 
 import android.database.Cursor;
 import android.graphics.drawable.Drawable;
-import android.location.Location;
-import android.location.LocationManager;
 import android.os.Bundle;
 import android.util.Log;
 import android.widget.TextView;
@@ -17,15 +26,11 @@ import com.google.android.maps.MapController;
 import com.google.android.maps.MapView;
 import com.google.android.maps.Overlay;
 import com.google.android.maps.OverlayItem;
-import static org.data.agroassistant.DBConstants.*;
 
 public class FarmDetails extends MapActivity{
 	private MapView mapView;
 	private MapController mapController;
-	private LocationManager mgr;
 	private GeoPoint currentPoint;
-	private Location currentLoc;
-	//private AgroAssistantDB agroDB;
 	private AgroApplication agroApp;
 
 	//Map Items
@@ -38,13 +43,11 @@ public class FarmDetails extends MapActivity{
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.farm_details);
 		initMapView();
 		
 		agroApp = ((AgroApplication)getApplication());
-		//agroDB = new AgroAssistantDB(this);
 		
 		final TextView farmername     = (TextView) findViewById(R.id.dtl_farm_farmername);
         final TextView farmerid       = (TextView) findViewById(R.id.dtl_farm_farmerid);
@@ -55,22 +58,9 @@ public class FarmDetails extends MapActivity{
         final TextView district       = (TextView) findViewById(R.id.dtl_farm_dist);
         
         Bundle farminfo = getIntent().getExtras();
-        
-        /*firstname   =  farminfo.getString("firstname");
-        lastname    =  farminfo.getString("lastname");
-        farmer_id   =  farminfo.getString("farmerid");
-        farmsize	=  farminfo.getString("size");*/
 		farmID		=  farminfo.getString(FARM_ID);
-		/*parishStr 	=  farminfo.getString("parish"     );
-		ext			=  farminfo.getString("extension"  );
-		dist		=   farminfo.getString("district"  );
-		lat			=  Double.parseDouble(farminfo.getString("lat"  ));
-		lng			=  Double.parseDouble(farminfo.getString("long"  ));*/
-        
         
         try {
-        	//Log.d("AgroAssistant", "FarmDetails: Farm ID: " + farmID);
-        	//Cursor farmInfo = agroDB.getFarmDetails(farmID);
         	Cursor farmInfo = agroApp.agroData.getFarm(farmID);
         	startManagingCursor(farmInfo);
             farmInfo.moveToFirst();

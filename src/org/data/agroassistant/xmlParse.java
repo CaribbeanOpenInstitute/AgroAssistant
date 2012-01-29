@@ -180,9 +180,9 @@ public class xmlParse {
 		apiRecord.put(FARM_FARMER_ID, farmerid);
 		apiRecord.put(FARM_ID, farmid);
 		apiRecord.put(FARM_SIZE, propertySize);
-		apiRecord.put(FARM_PARISH, parish);
-		apiRecord.put(FARM_EXTENSION, extension);
-		apiRecord.put(FARM_DISTRICT, district);
+		apiRecord.put(FARM_PARISH, parish.toLowerCase());
+		apiRecord.put(FARM_EXTENSION, extension.toLowerCase());
+		apiRecord.put(FARM_DISTRICT, district.toLowerCase());
 		apiRecord.put(FARM_LONG, longitude);
 		apiRecord.put(FARM_LAT, latitude);
 		

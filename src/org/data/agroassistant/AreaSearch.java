@@ -1,8 +1,13 @@
 package org.data.agroassistant;
 
+import static org.data.agroassistant.AgroConstants.*;
+import static org.data.agroassistant.AgroConstants.SEARCH_TYPE;
+import static org.data.agroassistant.DBConstants.*;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.ArrayAdapter;
@@ -12,10 +17,11 @@ import android.widget.RadioGroup;
 import android.widget.SimpleCursorAdapter;
 
 public class AreaSearch extends Activity {
+	private final String TAG = AreaSearch.class.getSimpleName();
+	private ContentValues searchInput;
 	
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.area_search);
 	    
@@ -24,41 +30,45 @@ public class AreaSearch extends Activity {
 	    final AutoCompleteTextView edt_farmer_search = (AutoCompleteTextView) findViewById(R.id.edt_area_search);
 	    final Button btn_search = (Button) findViewById(R.id.btn_area_search);
 	    
-	    AgroAssistantDB agroDB = new AgroAssistantDB(this);
-	    String[] saArea = agroDB.getArea();
+	    AgroApplication agroApp = ((AgroApplication)getApplication());
+	    //AgroAssistantDB agroDB = new AgroAssistantDB(this);
+	    
+	    String[] saArea = agroApp.agroData.getArea();
+	    
 	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.autocomplete_list, saArea);
 	    edt_farmer_search.setAdapter(adapter);
-	    //scaArea = new SimpleCursorAdapter(this, R.layout.autocomplete_list, cComments, new String[agroDB.]); 
 
 	    
 	    final Intent returnIntent = new Intent();
+	    searchInput = new ContentValues();
 	    
 		btn_search.setOnClickListener(new OnClickListener() {
-			//@Override
 			public void onClick(View v) {
 				String userInput = "";
 				userInput = edt_farmer_search.getText().toString();
 				switch(rdg_area.getCheckedRadioButtonId()) {
 					case R.id.rdo_parish:
+						Log.d(TAG, "User Input: " + userInput);
+						searchInput.put(FARM_PARISH, userInput);
+						returnIntent.putExtra(SEARCH_TYPE, PARISH_SEARCH);
+						returnIntent.putExtra(SEARCH_PARAMS, searchInput);
 						
-						//Toast.makeText(AreaSearch.this, "Parish: " + userInput, //Toast.LENGTH_SHORT).show();
-						
-						returnIntent.putExtra("column", "Parish");
-						returnIntent.putExtra("value", userInput );
 						setResult(RESULT_OK,returnIntent);    	
 				    	finish();
 						break;
 					case R.id.rdo_extension:
-						//Toast.makeText(AreaSearch.this, "Extension: " + userInput, //Toast.LENGTH_SHORT).show();
-						returnIntent.putExtra("column", "Extension");
-						returnIntent.putExtra("value", userInput );
+						searchInput.put(FARM_EXTENSION, userInput);
+						returnIntent.putExtra(SEARCH_TYPE, EXTENSION_SEARCH);
+						returnIntent.putExtra(SEARCH_PARAMS, searchInput);
+						
 						setResult(RESULT_OK,returnIntent);    	
 				    	finish();
 						break;
 					case R.id.rdo_district:
-						//Toast.makeText(AreaSearch.this, "District: " + userInput, //Toast.LENGTH_SHORT).show();
-						returnIntent.putExtra("column", "District");
-						returnIntent.putExtra("value", userInput );
+						searchInput.put(FARM_DISTRICT, userInput);
+						returnIntent.putExtra(SEARCH_TYPE, DISTRICT_SEARCH);
+						returnIntent.putExtra(SEARCH_PARAMS, searchInput);
+						
 						setResult(RESULT_OK,returnIntent);    	
 				    	finish();
 						break;
@@ -68,6 +78,6 @@ public class AreaSearch extends Activity {
 				}
 			}
 		});
-		agroDB.close();
+		//agroDB.close();
 	}
 }

@@ -231,6 +231,77 @@ public class AgroData {
 		return cursor;
 	}
 	
+	/*==================================================================================================
+	 * Utility Functions
+	 ==================================================================================================*/
+	public String[] getArea() {
+		//String[] str = new String[] {};
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursorParish = db.query(FARMS_TABLE, new String[] {FARM_PARISH}, null, null, FARM_PARISH, null, null);
+		Cursor cursorDistrict = db.query(FARMS_TABLE, new String[] {FARM_DISTRICT}, null, null, FARM_DISTRICT, null, null);
+		Cursor cursorExtension = db.query(FARMS_TABLE, new String[] {FARM_EXTENSION}, null, null, FARM_EXTENSION, null, null);
+		 
+        if(cursorParish.getCount() >0) {
+            String[] str = new String[cursorParish.getCount()+cursorDistrict.getCount()+cursorExtension.getCount()];
+            int i = 0;
+ 
+            while (cursorParish.moveToNext()) {
+                 str[i] = cursorParish.getString(cursorParish.getColumnIndex(FARM_PARISH));
+                 i++;
+             }
+            while (cursorDistrict.moveToNext()) {
+                str[i] = cursorDistrict.getString(cursorDistrict.getColumnIndex(FARM_DISTRICT));
+                i++;
+            }
+            while (cursorExtension.moveToNext()) {
+                str[i] = cursorExtension.getString(cursorExtension.getColumnIndex(FARM_EXTENSION));
+                i++;
+            }
+            
+            db.close();
+            return str;
+        } else {
+        	db.close();
+            return new String[] {};
+        }
+        /*cursorParish.close();
+        cursorExtension.close();
+        cursorDistrict.close();
+        db.close();*/
+        //return str;
+	}
+	
+	public String[] getCrop() {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		//String query = "SELECT parish, extension, district  FROM farms GROUP BY parish, extension, district";
+		Cursor cursorCropGroup = db.query(CROPS_TABLE, new String[] {CROP_GROUP}, null, null, CROP_GROUP, null, null);
+		Cursor cursorCropType= db.query(CROPS_TABLE, new String[] {CROP_TYPE}, null, null, CROP_TYPE, null, null);
+		//Cursor cursor = db.rawQuery(query, null);
+		 
+        if(cursorCropGroup.getCount() >0) {
+            String[] str = new String[cursorCropGroup.getCount()+cursorCropType.getCount()];
+            int i = 0;
+ 
+            while (cursorCropGroup.moveToNext()) {
+                 str[i] = cursorCropGroup.getString(cursorCropGroup.getColumnIndex(CROP_GROUP));
+                 i++;
+             }
+            while (cursorCropType.moveToNext()) {
+                str[i] = cursorCropType.getString(cursorCropType.getColumnIndex(CROP_TYPE));
+                i++;
+            }
+            cursorCropGroup.close();
+            cursorCropType.close();
+            db.close();
+            return str;
+        } else {
+        	cursorCropGroup.close();
+            cursorCropType.close();
+        	db.close();
+            return new String[] {};
+        }
+	}
+	
 	private class DbHelper extends SQLiteOpenHelper {
 		
 		private static final String CREATE_TABLE_FARMERS = "create table " + FARMERS_TABLE + " ( " 
@@ -278,7 +349,7 @@ public class AgroData {
 			//+ PRICE_LAT + " double not null, "
 			//+ PRICE_LONG + " double not null);";
 		
-		private static final int DB_VERSION = 34;
+		private static final int DB_VERSION = 36;
 
 		public DbHelper(Context context) {
 			super(context, DATABASE_NAME, null, DB_VERSION);

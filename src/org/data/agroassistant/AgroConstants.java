@@ -24,12 +24,13 @@ public interface AgroConstants {
 	public static final int FID_SEARCH = 1;
 	public static final int PROPERTY_SEARCH = 2;
 	public static final int PARISH_SEARCH = 3;
-	public static final int AREA_SEARCH = 4;
-	public static final int LOCATION_SEARCH = 5;
-	public static final int CROP_SEARCH = 6;
-	public static final int CROP_PARISH_SEARCH = 7;
-	public static final int CROP_PRICE_SEARCH = 8;
-	public static final int DETAILED_SEARCH = 9;
+	public static final int EXTENSION_SEARCH = 4;
+	public static final int DISTRICT_SEARCH = 5;
+	public static final int LOCATION_SEARCH = 6;
+	public static final int CROP_SEARCH = 7;
+	public static final int CROP_PARISH_SEARCH = 8;
+	public static final int CROP_PRICE_SEARCH = 9;
+	public static final int DETAILED_SEARCH = 10;
 	
 	/*
 	 * Other Constants

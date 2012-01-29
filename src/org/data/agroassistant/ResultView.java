@@ -41,13 +41,11 @@ public class ResultView extends ListActivity {
 	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.result_search);
 		Bundle searchResultBundle = getIntent().getExtras();
 		agroDB = new AgroAssistantDB(this);
         searchType = searchResultBundle.getInt("searchType");
-        //final String searchResponse = searchResultBundle.getString("searchResponse");
         String searchParams = searchResultBundle.getString("searchParams");
         
       //Refactor

@@ -69,9 +69,9 @@ public class FarmerSearch extends Activity{
 						case R.id.rdo_fname:
 							//userInput = edt_farmer_search.getText().toString();
 							//Toast.makeText(FarmerSearch.this, "Farmer Name: " + userInput, //Toast.LENGTH_SHORT).show();
-							returnIntent.putExtra("selection", "1");
+							/*returnIntent.putExtra("selection", "1");
 							returnIntent.putExtra("column", "Farmer Name");
-							returnIntent.putExtra("value", userInput );
+							returnIntent.putExtra("value", userInput );*/
 							
 							//Refactor
 							userInput.trim();
@@ -82,22 +82,20 @@ public class FarmerSearch extends Activity{
 								searchInput.put(FARMER_FNAME, name[0]);
 								searchInput.put(FARMER_LNAME, name[1]);
 							}
-							
-							searchInput.put(FARMER_NAME, userInput);
+							//searchInput.put(FARMER_NAME, userInput);
 							returnIntent.putExtra(SEARCH_PARAMS, searchInput);
 							returnIntent.putExtra(SEARCH_TYPE, FNAME_SEARCH);
-							//
 							setResult(RESULT_OK,returnIntent);    	
 					    	finish();
 							break;
 						case R.id.rdo_fid:
 							//Toast.makeText(FarmerSearch.this, "Farmer ID: " + userInput, //Toast.LENGTH_SHORT).show();
-							returnIntent.putExtra("selection", "2");
+							/*returnIntent.putExtra("selection", "2");
 							returnIntent.putExtra("column", "Farmer ID");
-							returnIntent.putExtra("value", userInput );
+							returnIntent.putExtra("value", userInput );*/
 							
 							//Refactor
-							searchInput.put(FARMER_ID, userInput);
+							//searchInput.put(FARMER_ID, userInput);
 							returnIntent.putExtra(SEARCH_PARAMS, searchInput);
 							returnIntent.putExtra(SEARCH_TYPE, FID_SEARCH);
 							//
@@ -109,19 +107,6 @@ public class FarmerSearch extends Activity{
 							break;
 					}
 				}
-					
-			        
-			    	//returnIntent.putExtra("Selected Location",btn_search.getText().toString());	//Data to be returned
-			    	
-			    	
-					//final Intent farmerDataIntent = new Intent(APIImportDemo.this, FarmerData.class);
-					//final Bundle b = new Bundle();
-	
-					//b.putString("farmerId", txtSearch.getText().toString());
-					//b.putInt("operation", 1);
-	
-					//farmerDataIntent.putExtras(b);
-					//APIImportDemo.this.startActivity(farmerDataIntent);
 			}
 		});
 	}

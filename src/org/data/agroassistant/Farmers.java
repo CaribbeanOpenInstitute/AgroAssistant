@@ -1,6 +1,5 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.AgroConstants.AREA_SEARCH;
 import static org.data.agroassistant.AgroConstants.DETAILED_SEARCH;
 import static org.data.agroassistant.AgroConstants.FARMERS_SEARCH;
 import static org.data.agroassistant.AgroConstants.LOCATION_SEARCH;
@@ -52,19 +51,19 @@ public class Farmers extends ListActivity {
 		    	switch (position) {
 				case LIST_FARMER_SEARCH:
 					farmerSearchIntent.setClass(Farmers.this, FarmerSearch.class);
-					startActivityForResult(farmerSearchIntent,FARMER_SEARCH); //Define in AgroConstants
+					startActivityForResult(farmerSearchIntent,LIST_FARMER_SEARCH); //Define in AgroConstants
 					break;
 				case LIST_AREA_SEARCH:
 					farmerSearchIntent.setClass(Farmers.this, AreaSearch.class);
-					startActivityForResult(farmerSearchIntent,AREA_SEARCH);
+					startActivityForResult(farmerSearchIntent,LIST_AREA_SEARCH);
 					break;
 				case LIST_LOCATION_SEARCH:
 					farmerSearchIntent.setClass(Farmers.this, LocationSearch.class);
-					startActivityForResult(farmerSearchIntent,LOCATION_SEARCH);
+					startActivityForResult(farmerSearchIntent,LIST_LOCATION_SEARCH);
 					break;
 				case LIST_DETAILED_SEARCH:
 					farmerSearchIntent.setClass(Farmers.this, FarmerDetailSearch.class);
-					startActivityForResult(farmerSearchIntent,DETAILED_SEARCH);
+					startActivityForResult(farmerSearchIntent,LIST_DETAILED_SEARCH);
 					break;
 				default:
 					//Toast.makeText(Farmers.this, "No Selection made", Toast.LENGTH_SHORT).show();
