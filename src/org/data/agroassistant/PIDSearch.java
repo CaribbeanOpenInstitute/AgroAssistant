@@ -1,6 +1,11 @@
 package org.data.agroassistant;
 
+import static org.data.agroassistant.AgroConstants.*;
+import static org.data.agroassistant.AgroConstants.SEARCH_PARAMS;
+import static org.data.agroassistant.AgroConstants.SEARCH_TYPE;
+import static org.data.agroassistant.DBConstants.*;
 import android.app.Activity;
+import android.content.ContentValues;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.View;
@@ -11,10 +16,10 @@ import android.widget.Toast;
 
 
 public class PIDSearch extends Activity{
+	private ContentValues searchInput;
 
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
-		// TODO Auto-generated method stub
 		super.onCreate(savedInstanceState);
 	    setContentView(R.layout.pid_search);
 	    
@@ -26,6 +31,7 @@ public class PIDSearch extends Activity{
 //Returning query to farmer activity
         
 	    final Intent returnIntent = new Intent();
+	    searchInput = new ContentValues();
 		
 	    btn_search.setOnClickListener(new OnClickListener() {
 			//@Override
@@ -36,10 +42,16 @@ public class PIDSearch extends Activity{
 					Toast.makeText(PIDSearch.this, "Please enter a Property ID ", Toast.LENGTH_SHORT).show();
 				}else{
 					userInput = edt_farmer_search.getText().toString();
-					Toast.makeText(PIDSearch.this, "Property ID: " + userInput, Toast.LENGTH_SHORT).show();
-					returnIntent.putExtra("selection", "1");
+					//Toast.makeText(PIDSearch.this, "Property ID: " + userInput, Toast.LENGTH_SHORT).show();
+					
+					/*returnIntent.putExtra("selection", "1");
 					returnIntent.putExtra("column", "Property ID");
-					returnIntent.putExtra("value", userInput );
+					returnIntent.putExtra("value", userInput );*/
+					
+					searchInput.put(FARM_ID, userInput);
+					returnIntent.putExtra(SEARCH_PARAMS, searchInput);
+					returnIntent.putExtra(SEARCH_TYPE, PROPERTY_SEARCH);
+					
 					setResult(RESULT_OK,returnIntent);    	
 			    	finish();
 					

@@ -92,7 +92,7 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 			break;
 		case FARMS_SEARCH:	//PropertyID
 			client = new RESTServiceObj(FARMS_QUERY_URL);
-			queryTable = FARMERS_TABLE;
+			queryTable = FARMS_TABLE;
 			break;
 		case CROPS_SEARCH:
 			client = new RESTServiceObj(CROPS_QUERY_URL);

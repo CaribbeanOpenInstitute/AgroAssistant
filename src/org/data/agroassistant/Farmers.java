@@ -1,8 +1,6 @@
 package org.data.agroassistant;
 
-import static org.data.agroassistant.AgroConstants.DETAILED_SEARCH;
 import static org.data.agroassistant.AgroConstants.FARMERS_SEARCH;
-import static org.data.agroassistant.AgroConstants.LOCATION_SEARCH;
 import static org.data.agroassistant.AgroConstants.SEARCH_PARAMS;
 import static org.data.agroassistant.DBConstants.FARMER_SEARCH;
 import android.app.ListActivity;
@@ -111,7 +109,7 @@ public class Farmers extends ListActivity {
 			Bundle searchResultBundle = new Bundle();
 			
 			searchResultBundle.putInt("searchCode", searchCode);
-			searchResultBundle.putString("searchParams", queryParams);
+			searchResultBundle.putString(SEARCH_PARAMS, queryParams);
 			searchResultIntent.putExtras(searchResultBundle);
 
 			searchResultIntent.setClass(Farmers.this, ResultView.class);

@@ -7,9 +7,9 @@ public interface DBConstants extends BaseColumns {
 	
 	public static final int FARMER_SEARCH = 0;
 	public static final int FARM_SEARCH = 1;
-	public static final int FARMER_FARM_SEARCH = 2;
-	public static final int CROP_SEARCH = 3;
-	public static final int FARM_CROP_SEARCH = 4;
+	//public static final int FARMER_FARM_SEARCH = 2;
+	//public static final int CROP_SEARCH = 3;
+	//public static final int FARM_CROP_SEARCH = 4;
 	public static final int PRICE_SEARCH = 5;
 	
 	/*====DATABASE CONSTANTS======================

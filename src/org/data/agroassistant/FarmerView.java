@@ -3,7 +3,6 @@ package org.data.agroassistant;
 import static org.data.agroassistant.AgroConstants.*;
 import static org.data.agroassistant.DBConstants.DB_SEARCH;
 import static org.data.agroassistant.DBConstants.FARMERS_TABLE;
-import static org.data.agroassistant.DBConstants.FARMER_FARM_SEARCH;
 import static org.data.agroassistant.DBConstants.FARMER_ID;
 import static org.data.agroassistant.DBConstants.FARMS_TABLE;
 import android.app.TabActivity;
@@ -50,8 +49,8 @@ public class FarmerView extends TabActivity{
 	    
 	    queryParams = FARMERS_TABLE + "." + FARMER_ID + "=" + farmerID;
 	    farmIntent = new Intent();
-		searchResultBundle.putInt("searchType", FARMER_FARM_SEARCH);
-		searchResultBundle.putString("searchParams", queryParams);
+		searchResultBundle.putInt(SEARCH_TYPE, FARMER_FARM_SEARCH);
+		searchResultBundle.putString(SEARCH_PARAMS, queryParams);
 		farmIntent.putExtras(searchResultBundle);
 
 		

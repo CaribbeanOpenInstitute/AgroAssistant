@@ -10,7 +10,7 @@ public interface AgroConstants {
 	public static final String PRICES_QUERY_URL = "http://www.data.org.jm/api/prices.xml";  
 	
 	/*
-	 * Top Level Search Types
+	 * Top Level Search Codes
 	 */
 	public static final int FARMERS_SEARCH = 0;
 	public static final int FARMS_SEARCH = 1;
@@ -27,10 +27,12 @@ public interface AgroConstants {
 	public static final int EXTENSION_SEARCH = 4;
 	public static final int DISTRICT_SEARCH = 5;
 	public static final int LOCATION_SEARCH = 6;
-	public static final int CROP_SEARCH = 7;
-	public static final int CROP_PARISH_SEARCH = 8;
-	public static final int CROP_PRICE_SEARCH = 9;
-	public static final int DETAILED_SEARCH = 10;
+	public static final int FARMER_FARM_SEARCH = 7;
+	public static final int FARM_CROP_SEARCH = 8;
+	public static final int CROP_SEARCH = 9;
+	public static final int CROP_PARISH_SEARCH = 10;
+	public static final int CROP_PRICE_SEARCH = 11;
+	public static final int DETAILED_SEARCH = 12;
 	
 	/*
 	 * Other Constants
@@ -38,5 +40,6 @@ public interface AgroConstants {
 	public static final String FARMER_NAME = "farmerName";
 	public static final String SEARCH_PARAMS = "searchParams";
 	public static final String SEARCH_TYPE = "searchType";
+	public static final String SEARCH_CODE = "searchCode";	//Top-level searches
 
 }

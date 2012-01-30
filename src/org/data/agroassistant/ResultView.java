@@ -1,7 +1,7 @@
 package org.data.agroassistant;
 
 import android.app.ListActivity;
-import static org.data.agroassistant.AgroConstants.FARMERS_SEARCH;
+import static org.data.agroassistant.AgroConstants.*;
 import static org.data.agroassistant.DBConstants.*;
 
 import android.content.Intent;
@@ -53,7 +53,6 @@ public class ResultView extends ListActivity {
       /////////	
 		
 		
-        
         /*
          * Need
          * 	Cursor
@@ -71,11 +70,9 @@ public class ResultView extends ListActivity {
 	        	resultsCursor = agroApp.agroData.farmerRawQuery(FARMERS_TABLE, FROM_S_FARMERS_FARMS, searchParams);
 	    		break;
 	        case (FARM_SEARCH):
-	        	
 	        	resultsCursor = agroApp.agroData.farmerRawQuery( FARMS_TABLE, FROM_S_FARMS_FARMERS, searchParams);
 	        	break;
 	        case (FARMER_FARM_SEARCH):
-	        	
 	        	resultsCursor = agroDB.farmerRawQuery( FARMS_TABLE, FROM_S_FARMS_FARMERS, searchParams);
 	        	break;
 	        case (CROP_SEARCH):

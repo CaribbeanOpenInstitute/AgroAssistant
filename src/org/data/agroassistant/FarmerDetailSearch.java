@@ -92,7 +92,6 @@ public class FarmerDetailSearch extends Activity {
 			private void getArea() {
 				switch (rdg_area.getCheckedRadioButtonId()) {
 				case R.id.rdo_parish:
-
 					Toast.makeText(FarmerDetailSearch.this, "Parish: " + area,
 							Toast.LENGTH_SHORT).show();
 					searchInput.put(FARM_PARISH, area);
@@ -101,7 +100,6 @@ public class FarmerDetailSearch extends Activity {
 					Toast.makeText(FarmerDetailSearch.this,
 							"Extension: " + area, Toast.LENGTH_SHORT).show();
 					searchInput.put(FARM_EXTENSION, area);
-
 					break;
 				case R.id.rdo_district:
 					Toast.makeText(FarmerDetailSearch.this,

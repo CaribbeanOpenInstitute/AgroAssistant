@@ -2,6 +2,7 @@ package org.data.agroassistant;
 
 import java.util.ArrayList;
 import java.util.List;
+import static org.data.agroassistant.AgroConstants.*;
 import static org.data.agroassistant.DBConstants.*;
 
 

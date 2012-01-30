@@ -8,9 +8,8 @@ package org.data.agroassistant;
  * TODO:	Farm data pulled on UI thread.
  */
 
-import static org.data.agroassistant.AgroConstants.CROPS_SEARCH;
+import static org.data.agroassistant.AgroConstants.*;
 import static org.data.agroassistant.DBConstants.FARMS_TABLE;
-import static org.data.agroassistant.DBConstants.FARM_CROP_SEARCH;
 import static org.data.agroassistant.DBConstants.FARM_ID;
 import android.app.TabActivity;
 import android.content.ContentValues;
@@ -54,8 +53,8 @@ public class FarmView extends TabActivity{
 	    
 	    cropintent = new Intent();
 	    searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-		searchResultBundle.putInt("searchType", FARM_CROP_SEARCH);
-		searchResultBundle.putString("searchParams", queryParams);
+		searchResultBundle.putInt(SEARCH_TYPE, FARM_CROP_SEARCH);
+		searchResultBundle.putString(SEARCH_PARAMS, queryParams);
 		cropintent.putExtras(searchResultBundle);
 
 	    // Initialize a TabSpec for each tab and add it to the TabHost
