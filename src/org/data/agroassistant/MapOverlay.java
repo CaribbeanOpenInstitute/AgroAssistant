@@ -24,7 +24,7 @@ public class MapOverlay extends ItemizedOverlay  {
 
 	public MapOverlay(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
-		// TODO Auto-generated constructor stub
+		//Auto-generated constructor stub
 	}
 	
 	public void addOverlay(OverlayItem overlay) {

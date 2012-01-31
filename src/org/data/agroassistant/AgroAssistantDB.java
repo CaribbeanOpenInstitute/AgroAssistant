@@ -306,7 +306,6 @@ public class AgroAssistantDB extends SQLiteOpenHelper {
 	
 	/*
 	 * Desc:	Inserts crop into DB
-	 * TODO:	Insert duplication validation is not working
 	 */
 	public boolean insertCrop(int pid, String group, String type, int area, int count, String date) {
 		db = this.getWritableDatabase();

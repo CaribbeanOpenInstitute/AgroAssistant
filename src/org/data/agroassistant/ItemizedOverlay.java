@@ -14,7 +14,6 @@ public class ItemizedOverlay extends com.google.android.maps.ItemizedOverlay {
 	
 	public ItemizedOverlay(Drawable defaultMarker) {
 		super(boundCenterBottom(defaultMarker));
-		// TODO Auto-generated constructor stub
 	}
 	
 	public ItemizedOverlay(Drawable defaultMarker, Context context) {

@@ -20,7 +20,7 @@ public class ResultView extends ListActivity {
 	private Cursor resultsCursor;
 	private int searchType;
 	private int searchCode;
-	private String searchParams;
+	//private String searchParams;
 	
 	private static final int[] FARMER_TO    = {android.R.id.text1, R.id.text2, android.R.id.text2};
 	
@@ -54,14 +54,6 @@ public class ResultView extends ListActivity {
         agroApp = ((AgroApplication)getApplication());
       /////////	
 		
-		
-        /*
-         * Need
-         * 	Cursor
-         * 	CursorAdapter
-         * 	SQL query (params)
-         * 	SQL (from)
-         */
         //searchType = FARMER_SEARCH;
         //searchParams = FARMER_ID + "=201001261";
         try {

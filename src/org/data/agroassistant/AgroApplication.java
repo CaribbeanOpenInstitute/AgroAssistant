@@ -46,14 +46,6 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 	public String apiResponse;
 	String queryTable = "";
 	
-	
-	//@Override
-	/*public AgroApplication(Context ctx) {
-		agroData = new AgroData(ctx);
-		this.onCreate();
-	}*/
-	
-	
 	@Override
 	public void onCreate() {
 		super.onCreate();
@@ -184,134 +176,7 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 		searchResultBundle.putInt("searchType", tableCode);
 		searchResultBundle.putString("searchParams", queryParams);
 		searchResultIntent.putExtras(searchResultBundle);
-		
-		/*//Pass query params and search type to ResultView
-		searchResultBundle.putInt("searchType", searchType);
-		searchResultBundle.putString("searchParams", queryParams);
-		searchResultIntent.putExtras(searchResultBundle);
-
-		searchResultIntent.setClass(AgroApplication.this, ResultView.class);
-		startActivity(searchResultIntent);*/
 	}
-	/*
-	private class apiRequest extends AsyncTask<RESTServiceObj, String, String> {
-		@Override
-		protected void onPreExecute() {
-			super.onPreExecute();
-			animator.setDisplayedChild(1);
-		}
-
-		@Override
-		protected String doInBackground(RESTServiceObj... client) {
-			AgroAssistantDB agroDB = new AgroAssistantDB(Farmers.this);
-			if (agroDB.queryExists(FARMERS_TABLE, queryParams)) {
-				agroDB.close();
-				return DB_SEARCH;
-			} else {
-		    	try {
-		    	    client[0].Execute(RESTServiceObj.RequestMethod.GET);
-		    	    agroDB.insertQuery(FARMERS_TABLE, queryParams);
-		    	    agroDB.close();
-		    	} catch (Exception e) {
-		    	    e.printStackTrace();
-		    	    return null;
-		    	}
-			}
-	    	final String response = client[0].getResponse();
-			return response;
-		}
-		
-		@Override
-		protected void onPostExecute(String apiResponse) {
-			super.onPostExecute(apiResponse);
-			Intent searchResultIntent = new Intent();
-			Bundle searchResultBundle = new Bundle();
-			
-			if (apiResponse.equals(DB_SEARCH)) {
-				/*
-    			 *Call & pass necessary information to ResultView activity
-    			 *finish Farmer search activity
-    			 */
-	/*
-    			searchResultBundle.putInt("searchType", searchType);
-    			searchResultBundle.putString("searchParams", queryParams);
-    			searchResultIntent.putExtras(searchResultBundle);
-
-    			searchResultIntent.setClass(Farmers.this, ResultView.class);
-    			startActivity(searchResultIntent);
-    			finish();
-			}
-			else if((apiResponse == null) || !(apiResponse.contains("Parish"))){	//Checks if API for data and acts accordingly
-    			Toast.makeText(Farmers.this, "Error: No Data retrieved", Toast.LENGTH_SHORT).show();
-    			animator.setDisplayedChild(0);
-    		}else{
-				xmlParse parser = new xmlParse(Farmers.this, apiResponse);
-				parser.parseXML(FARMERS_TABLE);
-    			/*
-    			 *Call & pass necessary information to ResultView activity
-    			 *finish Farmer search activity
-    			 */
-	/*
-    			searchResultBundle.putInt("searchType", searchType);
-    			searchResultBundle.putString("searchParams", queryParams);
-    			searchResultIntent.putExtras(searchResultBundle);
-
-    			searchResultIntent.setClass(Farmers.this, ResultView.class);
-    			startActivity(searchResultIntent);
-    			finish();
-    		}
-		}
-	}
-	
-	private void addNames(String fullName, RESTServiceObj client){
-		String fname, lname;
-		fullName = fullName.trim();
-
-		int space = fullName.indexOf(' ');
-		if(space < 1){
-			client.AddParam("lastname", fullName);
-		}else{
-
-			fname = fullName.substring(0, space);
-			lname= fullName.substring(space, fullName.length());
-			lname = lname.trim();
-
-			client.AddParam("firstname", fname);
-			client.AddParam("lastname", lname);
-		}
-	}
-
-	private void addAreaParam(String value, RESTServiceObj client){
-
-		if(district.equals("") && extension.equals("")){
-			client.AddParam("Parish", parish);
-
-		}else if(parish.equals("") && district.equals("")){
-			client.AddParam("Extension", extension);
-
-		}else{
-			client.AddParam("District", district);
-		}
-	}
-
-
-	private void getAreaData(Intent intent){
-		if(intent.getStringExtra("AreaCol").equals("Parish")){
-
-			parish = intent.getStringExtra("Parish");
-			Toast.makeText(Farmers.this, "Parish: "+ parish, Toast.LENGTH_SHORT).show();
-
-		}else if(intent.getStringExtra("AreaCol").equals("Extension")) {
-
-			extension = intent.getStringExtra("Extension");
-			Toast.makeText(Farmers.this, "Extension "+ extension, Toast.LENGTH_SHORT).show();
-
-		}else{
-
-			district = intent.getStringExtra("District");
-			Toast.makeText(Farmers.this, "district "+ district, Toast.LENGTH_SHORT).show();
-		}
-	}*/
 	
 	public static String UppercaseFirstLetters(String str) 
 	{
