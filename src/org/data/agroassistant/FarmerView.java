@@ -49,7 +49,7 @@ public class FarmerView extends TabActivity{
 	    
 	    queryParams = FARMERS_TABLE + "." + FARMER_ID + "=" + farmerID;
 	    farmIntent = new Intent();
-		searchResultBundle.putInt(SEARCH_TYPE, FARMER_FARM_SEARCH);
+		searchResultBundle.putInt(SEARCH_CODE, FARMER_FARM_SEARCH);
 		searchResultBundle.putString(SEARCH_PARAMS, queryParams);
 		farmIntent.putExtras(searchResultBundle);
 

@@ -236,8 +236,8 @@ public class xmlParse {
 		apiRecord.put(CROP_FARM_ID, farmid);
 		apiRecord.put(CROP_AREA, area);
 		apiRecord.put(CROP_COUNT, count);
-		apiRecord.put(CROP_GROUP, group);
-		apiRecord.put(CROP_TYPE, type);
+		apiRecord.put(CROP_GROUP, group.toLowerCase());
+		apiRecord.put(CROP_TYPE, type.toLowerCase());
 		apiRecord.put(CROP_DATE, dateStr);
 		
 		//Create a new crop with the value read from the xml nodes

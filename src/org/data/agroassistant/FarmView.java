@@ -53,7 +53,7 @@ public class FarmView extends TabActivity{
 	    
 	    cropintent = new Intent();
 	    searchResultBundle.putString("response", apiResponse); // add return xml to bundle for next activity
-		searchResultBundle.putInt(SEARCH_TYPE, FARM_CROP_SEARCH);
+		searchResultBundle.putInt(SEARCH_CODE, FARM_CROP_SEARCH);
 		searchResultBundle.putString(SEARCH_PARAMS, queryParams);
 		cropintent.putExtras(searchResultBundle);
 

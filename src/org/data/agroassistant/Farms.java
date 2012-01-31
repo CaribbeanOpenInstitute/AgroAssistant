@@ -41,12 +41,13 @@ public class Farms extends ListActivity{
 	private static final int LIST_LOCATION_SEARCH = 3;
 	private static final int LIST_DETAILED_SEARCH = 4;
 	
-	/*private int searchType;
+	/*private int searchCode;
 	private static String farmer_name = "", parish = "", extension = "", district = "", crop_type = "", crop_group = "";
 	private static String farmer_id = "", property_id = "", latitude = "", longitude = "";
 	private String apiResponse;*/
 	private String queryParams;
 	
+	private int searchCode;
 	private int searchType;
 	private static ViewAnimator loadingAnimator;
 	private AgroApplication agroApp;
@@ -57,7 +58,7 @@ public class Farms extends ListActivity{
         setContentView(R.layout.farms_main);
         agroApp = new AgroApplication();
         
-        searchType = FARM_SEARCH;
+        searchCode = FARM_SEARCH;
         loadingAnimator = (ViewAnimator)findViewById(R.id.farmSwitcher);
 
         String[] farmItems = getResources().getStringArray(R.array.ary_farms_main);
@@ -105,6 +106,7 @@ public class Farms extends ListActivity{
         
         if( resultCode == RESULT_OK) {
         	ContentValues searchParams = (ContentValues) intent.getParcelableExtra(SEARCH_PARAMS);
+        	searchType = intent.getIntExtra(SEARCH_TYPE, 0);
 			new apiRequest().execute(searchParams);
     	}else if( resultCode == RESULT_CANCELED) {
         		//Toast.makeText(Farms.this, "Error: There was a problem requesting search", //Toast.LENGTH_SHORT).show();
@@ -124,7 +126,8 @@ public class Farms extends ListActivity{
 			agroApp = ((AgroApplication)getApplication());
 			agroApp.getQueryData(FARMS_SEARCH, searchParams[0]);
 			
-	    	String queryParams = agroApp.queryParams;	//e.g "parish=St.ANN and district=balaclava"
+			
+	    	queryParams = agroApp.queryParams;	//e.g "parish=St.ANN and district=balaclava"
 	    	//Log.e(TAG, String.format("Query Param String: %s", queryParams));
 			return queryParams;
 		}
@@ -135,6 +138,7 @@ public class Farms extends ListActivity{
 			Intent searchResultIntent = new Intent();
 			Bundle searchResultBundle = new Bundle();
 			
+			searchResultBundle.putInt(SEARCH_CODE, searchCode);
 			searchResultBundle.putInt(SEARCH_TYPE, searchType);
 			searchResultBundle.putString(SEARCH_PARAMS, queryParams);
 			searchResultIntent.putExtras(searchResultBundle);

@@ -206,6 +206,22 @@ public class AgroData {
 		return cursor;
 	}
 	
+	public Cursor cropRawQuery(String tableName, String tableColumns, String queryParams) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		String query = "SELECT "+ "*" + " FROM " + FARMERS_TABLE + " JOIN " + FARMS_TABLE + " ON " +  "(" + FARMERS_TABLE +"."+FARMER_ID + "=" + FARMS_TABLE +"."+FARM_FARMER_ID  + ")" + " JOIN " + CROPS_TABLE + " ON " +  "(" + FARMS_TABLE +"."+FARM_ID + "=" + CROPS_TABLE +"."+CROP_FARM_ID  + ")" + " WHERE " + queryParams;
+		try {
+			cursor = db.rawQuery(query, null);
+			Log.d(TAG, "Crops Raw Query: " + query);
+		} catch (SQLException e) {
+			Log.e(TAG, "Crops raw Query Exception: " + e.toString());
+		}
+		
+		Log.d("AgroAssistant", "Farmer Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d("AgroAssistant", "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		return cursor;
+	}
+	
 	public Cursor getFarmer(String farmerID) {
 		SQLiteDatabase db = dbHelper.getReadableDatabase();
 		Cursor cursor = db.query(FARMERS_TABLE, FROM_FARMERS, FARMER_ID + "=" + farmerID, null, null, null, null);
