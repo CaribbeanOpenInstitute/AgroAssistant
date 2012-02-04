@@ -77,7 +77,7 @@ public class ResultView extends ListActivity {
 	        	resultsCursor = agroApp.agroData.cropRawQuery(CROPS_TABLE, FROM_S_CROPS, searchParams);
 	        	break;
 	        case (PRICE_SEARCH):
-	        	//resultsCursor = agroDB.rawQuery(PRICES_TABLE, FROM_S_PRICES, searchParams);
+	        	resultsCursor = agroApp.agroData.priceRawQuery(PRICES_TABLE, FROM_S_PRICES, searchParams);
 	        	break;
 	        default:
 	        	break;
@@ -114,7 +114,6 @@ public class ResultView extends ListActivity {
 			bar.setVisibility(8);
         	results = new SimpleCursorAdapter(this, R.layout.result_crop_row, cursor, CROP_FROM, CROP_TO);
     		break;
-    	
         case (PRICE_SEARCH):
         	//results = new SimpleCursorAdapter(this, R.layout.result_price_row, cursor, PRICE_FROM, PRICE_TO);
         	break;

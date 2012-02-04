@@ -77,6 +77,7 @@ public class FarmerSearch extends Activity{
 					    	finish();
 							break;
 						case R.id.rdo_fid:
+							searchInput.put(FARMER_ID, userInput);
 							returnIntent.putExtra(SEARCH_PARAMS, searchInput);
 							returnIntent.putExtra(SEARCH_TYPE, FID_SEARCH);
 							setResult(RESULT_OK,returnIntent);

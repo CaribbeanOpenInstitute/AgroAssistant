@@ -29,10 +29,9 @@ public class AreaSearch extends Activity {
 	    final AutoCompleteTextView edt_farmer_search = (AutoCompleteTextView) findViewById(R.id.edt_area_search);
 	    final Button btn_search = (Button) findViewById(R.id.btn_area_search);
 	    
+	    //AutoComplete for Area
 	    AgroApplication agroApp = ((AgroApplication)getApplication());
-	    
 	    String[] saArea = agroApp.agroData.getArea();
-	    
 	    ArrayAdapter<String> adapter = new ArrayAdapter<String>(this, R.layout.autocomplete_list, saArea);
 	    edt_farmer_search.setAdapter(adapter);
 
@@ -46,7 +45,6 @@ public class AreaSearch extends Activity {
 				userInput = edt_farmer_search.getText().toString();
 				switch(rdg_area.getCheckedRadioButtonId()) {
 					case R.id.rdo_parish:
-						Log.d(TAG, "User Input: " + userInput);
 						searchInput.put(FARM_PARISH, userInput);
 						returnIntent.putExtra(SEARCH_TYPE, PARISH_SEARCH);
 						returnIntent.putExtra(SEARCH_PARAMS, searchInput);

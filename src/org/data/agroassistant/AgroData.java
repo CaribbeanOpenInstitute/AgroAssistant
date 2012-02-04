@@ -156,7 +156,7 @@ public class AgroData {
 
 		//Checks if query already exists in the database
 		if (cursor.getCount() >= 1) {
-			Log.d("AgroAssistant", "insertquery: Query on " + tableName + " where " + queryParams + " already exist in table");
+			Log.d(TAG, "insertquery: Query on " + tableName + " where " + queryParams + " already exist in table");
 			//update query entry and date
 		} else {
 			ContentValues values = new ContentValues();
@@ -166,12 +166,12 @@ public class AgroData {
 			//values.put(FARMER_SIZE, farmersize.toLowerCase());
 			try {
 				db.insertOrThrow(QUERY_TABLE, null, values);
-				Log.d("AgroAssistant", "Insert query: " + tableName + " where " + queryParams);
+				Log.d(TAG, "Insert query: " + tableName + " where " + queryParams);
 			}
 			catch (RuntimeException e) {
 				cursor.close();
 				db.close();
-				Log.e("AgroAssistant","Query Insertion Exception: "+e.toString());
+				Log.e(TAG,"Query Insertion Exception: "+e.toString());
 				return false;
 			}
 		}
@@ -217,8 +217,24 @@ public class AgroData {
 			Log.e(TAG, "Crops raw Query Exception: " + e.toString());
 		}
 		
-		Log.d("AgroAssistant", "Farmer Raw Query Result: Returned " + cursor.getCount() + " record(s)");
-		Log.d("AgroAssistant", "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		Log.d(TAG, "Farmer Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d(TAG, "farmerRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
+		return cursor;
+	}
+	
+	public Cursor priceRawQuery(String tableName, String tableColumns, String queryParams) {
+		SQLiteDatabase db = dbHelper.getReadableDatabase();
+		Cursor cursor = null;
+		String query = "SELECT "+ "*" + " FROM " + PRICES_TABLE +  " WHERE " + queryParams;
+		try {
+			cursor = db.rawQuery(query, null);
+			Log.d(TAG, "Prices Raw Query: " + query);
+		} catch (SQLException e) {
+			Log.e(TAG, "Prices raw Query Exception: " + e.toString());
+		}
+		
+		Log.d(TAG, "Prices Raw Query Result: Returned " + cursor.getCount() + " record(s)");
+		Log.d(TAG, "PricesRawQuery: Cursor strings "+Arrays.toString(cursor.getColumnNames()));
 		return cursor;
 	}
 	

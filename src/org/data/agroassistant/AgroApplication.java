@@ -70,7 +70,7 @@ public class AgroApplication extends Application implements OnSharedPreferenceCh
 	 * 
 	 * @param table		Table int constant being searched 
 	 * @param values	Name/Pair pair of params being searched
-	 * TODO:		Logic for DB vs API searching
+	 * TODO:		Farm searches that have crop level parameters
 	 */
 	public void getQueryData(int table, ContentValues values) {
 		tableCode = table;

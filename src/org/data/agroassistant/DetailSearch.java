@@ -61,24 +61,15 @@ public class DetailSearch extends Activity {
 
 					} else if ((fname.length() > 1) && area.equals("")
 							&& crop.equals("")) {
-						// Toast.makeText(DetailSearch.this, "Farmer Name: " +
-						// fname, //Toast.LENGTH_SHORT).show();
-						/*returnIntent.putExtra("selection", "1");
-						returnIntent.putExtra("Farmer", fname);*/
 						getName();
 
 					} else if (fname.equals("") && area.equals("")
 							&& (crop.length() > 1)) {
-						//returnIntent.putExtra("selection", "3");
 						getCrop();
 
 					} else if ((fname.length() > 1) && (area.length() > 1)
 							&& crop.equals("")) {
-						//returnIntent.putExtra("selection", "4");
 						getArea();
-						/*returnIntent.putExtra("Farmer", fname);*/
-						// Toast.makeText(DetailSearch.this, "Farmer Name: " +
-						// fname, //Toast.LENGTH_SHORT).show();
 						getName();
 
 					} else if (fname.equals("") && (area.length() > 1)
@@ -89,21 +80,13 @@ public class DetailSearch extends Activity {
 
 					} else if ((fname.length() > 1) && area.equals("")
 							&& (crop.length() > 1)) {
-						/*returnIntent.putExtra("selection", "6");
-						returnIntent.putExtra("Farmer", fname);*/
 						getName();
 						getCrop();
-						// Toast.makeText(DetailSearch.this, "Farmer Name: " +
-						// fname, //Toast.LENGTH_SHORT).show();
 
 					} else {
-						/*returnIntent.putExtra("selection", "7");
-						returnIntent.putExtra("Farmer", fname);*/
 						getName();
 						getArea();
 						getCrop();
-						// Toast.makeText(DetailSearch.this, "Farmer Name: " +
-						// fname, //Toast.LENGTH_SHORT).show();
 					}
 					
 					returnIntent.putExtra(SEARCH_TYPE, DETAILED_SEARCH);
@@ -132,24 +115,15 @@ public class DetailSearch extends Activity {
 				switch (rdg_area.getCheckedRadioButtonId()) {
 				case R.id.rdo_parish:
 
-					// Toast.makeText(DetailSearch.this, "Parish: " + area,
-					// //Toast.LENGTH_SHORT).show();
 					searchInput.put(FARM_PARISH, area);
 					break;
 				case R.id.rdo_extension:
-					// Toast.makeText(DetailSearch.this, "Extension: " + area,
-					// //Toast.LENGTH_SHORT).show();
 					searchInput.put(FARM_EXTENSION, area);
 					break;
 				case R.id.rdo_district:
-					// Toast.makeText(DetailSearch.this, "District: " + area,
-					// //Toast.LENGTH_SHORT).show();
 					searchInput.put(FARM_DISTRICT, area);
 					break;
 				case -1:
-					// Toast.makeText(DetailSearch.this,
-					// "Please check area to search",
-					// //Toast.LENGTH_SHORT).show();
 					break;
 				}
 			}
@@ -157,26 +131,13 @@ public class DetailSearch extends Activity {
 			private void getCrop() {
 				switch (rdg_crop.getCheckedRadioButtonId()) {
 				case R.id.rdo_cropType:
-
-					// Toast.makeText(DetailSearch.this, "Crop Type: " + crop,
-					// //Toast.LENGTH_SHORT).show();
-					/*returnIntent.putExtra("CropCol", "Crop Type");
-					returnIntent.putExtra("Crop Type", crop);*/
-					
 					searchInput.put(CROP_TYPE, crop);
 					break;
 				case R.id.rdo_cropGroup:
-					// Toast.makeText(DetailSearch.this, "Crop Group: " + crop,
-					// //Toast.LENGTH_SHORT).show();
-					/*returnIntent.putExtra("CropCol", "Crop Group");
-					returnIntent.putExtra("Crop Group", crop);*/
-
 					searchInput.put(CROP_GROUP, crop);
 					break;
 				case -1:
-					// Toast.makeText(DetailSearch.this,
 					// "Please check Crop Group or Crop Type",
-					// //Toast.LENGTH_SHORT).show();
 					break;
 				}
 			}

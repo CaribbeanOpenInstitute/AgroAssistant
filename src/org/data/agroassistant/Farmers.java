@@ -31,7 +31,6 @@ public class Farmers extends ListActivity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		agroApp = new AgroApplication();
-		
 		setContentView(R.layout.farmers_main);
 
 		searchCode = FARMER_SEARCH;

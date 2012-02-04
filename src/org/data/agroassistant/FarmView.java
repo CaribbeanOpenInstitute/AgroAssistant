@@ -93,7 +93,6 @@ public class FarmView extends TabActivity{
 		@Override
 		protected void onPostExecute(String apiResponse) {
 			super.onPostExecute(apiResponse);
-			
 		}
 	}
 	
